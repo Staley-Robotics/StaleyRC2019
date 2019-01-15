@@ -24,4 +24,7 @@ public class RobotMap {
 	public static final int LEFT_FOLLOWER_DRIVE_MOTOR_PORT = 5;
 	public static final int RIGHT_FRONT_DRIVE_MOTOR_PORT = 0;
 	public static final int RIGHT_FOLLOWER_DRIVE_MOTOR_PORT = 1;
+
+	// ***** Pneumatics Ports *****
+	public static final int COMPRESSOR_PORT = 0;
 }
