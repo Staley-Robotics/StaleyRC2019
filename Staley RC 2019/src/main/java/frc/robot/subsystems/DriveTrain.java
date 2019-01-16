@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
-import frc.robot.commands.ControllerDrive;
+import frc.robot.commands.drivetrain.ControllerDrive;
 
 /**
  * Add your docs here.
