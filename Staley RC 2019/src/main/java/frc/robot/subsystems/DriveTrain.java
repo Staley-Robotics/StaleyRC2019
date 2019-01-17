@@ -42,6 +42,10 @@ public class DriveTrain extends Subsystem {
 
   public DifferentialDrive drive;
 
+  private final double kP = 0.015;
+	private final double kI = 0.0;
+  private final double kD = 0.7;
+
   private DriveTrain() {
 
     brakeFront = false;
@@ -54,6 +58,9 @@ public class DriveTrain extends Subsystem {
       leftFront = new WPI_TalonSRX(RobotMap.LEFT_FRONT_DRIVE_MOTOR_PORT);
       leftFollower = new WPI_VictorSPX(RobotMap.LEFT_FOLLOWER_DRIVE_MOTOR_PORT);
 
+      rightFollower.follow(rightFront);
+      leftFollower.follow(leftFront);
+
       rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
       leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
@@ -64,6 +71,15 @@ public class DriveTrain extends Subsystem {
       leftFront.setNeutralMode(brakeFront ? NeutralMode.Brake : NeutralMode.Coast);
       rightFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
       leftFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
+
+      rightFront.config_kP(0, kP, 0);
+      leftFront.config_kP(0, kP, 0);
+
+      rightFront.config_kI(0, kI, 0);
+      leftFront.config_kI(0, kI, 0);
+
+      rightFront.config_kD(0, kD, 0);
+      leftFront.config_kD(0, kD, 0);
 
     } catch (RuntimeException ex) {
         DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
@@ -92,8 +108,16 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new ControllerDrive());
   }
 
+  public void execute(double power, double turn) {
+		arcadeDrive(power, turn);
+  }
+
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void arcadeDrive(double power, double turn) {
+		drive.arcadeDrive(power, turn);
   }
 
   public void zeroDriveEncoders() {
@@ -106,6 +130,14 @@ public class DriveTrain extends Subsystem {
   public double getPosition() {
     double avg = (rightFront.getSelectedSensorPosition(0) + leftFront.getSelectedSensorPosition(0)) / 2;
     return avg;
+  }
+
+  public double getRightPosition() {
+    return rightFront.getSelectedSensorPosition(0);
+  }
+
+  public double getLeftPosition() {
+    return leftFront.getSelectedSensorPosition(0);
   }
 
   public void stopMotors() {
