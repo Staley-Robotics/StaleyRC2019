@@ -27,4 +27,6 @@ public class RobotMap {
 
 	// ***** Pneumatics Ports *****
 	public static final int COMPRESSOR_PORT = 0;
+	public static final int SOLENOID_FORWARD = 0;
+	public static final int SOLENOID_REVERSE = 1;
 }

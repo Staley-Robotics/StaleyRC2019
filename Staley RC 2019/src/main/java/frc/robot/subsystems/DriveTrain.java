@@ -13,12 +13,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
+import frc.robot.enums.GearStates;
 
 /**
  * Add your docs here.
@@ -37,14 +40,18 @@ public class DriveTrain extends Subsystem {
 
   private AHRS navx;
 
+  private DoubleSolenoid shifter;
+
   private boolean brakeFront;
   private boolean brakeFollower;
 
-  public DifferentialDrive drive;
+  private DifferentialDrive drive;
 
   private final double kP = 0.015;
   private final double kI = 0.0;
   private final double kD = 0.7;
+
+  public static GearStates gearState; 
 
   private DriveTrain() {
 
@@ -80,6 +87,8 @@ public class DriveTrain extends Subsystem {
 
       rightFront.config_kD(0, kD, 0);
       leftFront.config_kD(0, kD, 0);
+
+      shifter = new DoubleSolenoid(0, 1);
 
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
@@ -162,5 +171,21 @@ public class DriveTrain extends Subsystem {
   public void stopMotors() {
     rightFront.stopMotor();
     leftFront.stopMotor();
+  }
+
+  // ***** Shifters *****
+
+  // Shifts the gear-box up
+  public void shifterOn() {
+    shifter.set(Value.kForward);
+    gearState = GearStates.HIGH_GEAR;
+    // Robot.ldrive.setColor(Color.WHITE);
+  }
+
+  // Shifts the gear-box down
+  public void shifterOff() {
+    shifter.set(Value.kReverse);
+    gearState = GearStates.LOW_GEAR;
+    // Robot.ldrive.setColor(Color.YELLOW);
   }
 }
