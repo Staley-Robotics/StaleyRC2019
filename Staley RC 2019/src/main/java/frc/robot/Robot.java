@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivetrain.ControllerDrive;
+import frc.robot.commands.auto.commands.Delay;
+import frc.robot.commands.auto.commands.GyroTurning;
+import frc.robot.commands.auto.modes.AutoBrettV6;
+import frc.robot.commands.auto.modes.DriveTurn;;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,6 +40,9 @@ public class Robot extends TimedRobot {
     m_oi = OI.getInstance();
     m_chooser.setDefaultOption("Default Auto", new ControllerDrive());
     // chooser.addOption("My Auto", new MyAutoCommand());
+    m_chooser.setDefaultOption("Delay", new Delay(5));
+    m_chooser.addOption("AutoBrett", new AutoBrettV6());
+    m_chooser.addOption("Turn", new DriveTurn());
     SmartDashboard.putData("Auto mode", m_chooser);
   }
 

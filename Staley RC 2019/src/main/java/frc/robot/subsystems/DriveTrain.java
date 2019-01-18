@@ -43,7 +43,7 @@ public class DriveTrain extends Subsystem {
   public DifferentialDrive drive;
 
   private final double kP = 0.015;
-	private final double kI = 0.0;
+  private final double kI = 0.0;
   private final double kD = 0.7;
 
   private DriveTrain() {
@@ -51,7 +51,7 @@ public class DriveTrain extends Subsystem {
     brakeFront = false;
     brakeFollower = false;
 
-    try{
+    try {
       rightFront = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_DRIVE_MOTOR_PORT);
       rightFollower = new WPI_VictorSPX(RobotMap.RIGHT_FOLLOWER_DRIVE_MOTOR_PORT);
 
@@ -82,11 +82,11 @@ public class DriveTrain extends Subsystem {
       leftFront.config_kD(0, kD, 0);
 
     } catch (RuntimeException ex) {
-        DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
+      DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
     }
 
-    try{
-      navx = new AHRS(Port.kUSB);
+    try {
+      navx = new AHRS(Port.kMXP);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error Instantiating NavX: " + ex.getMessage(), true);
     }
@@ -95,11 +95,30 @@ public class DriveTrain extends Subsystem {
   }
 
   public static DriveTrain getInstance() {
-    if(instance == null) {
+    if (instance == null) {
       instance = new DriveTrain();
     }
 
     return instance;
+  }
+
+  public AHRS getNavx() {
+    return navx;
+  }
+
+  public void resetNavx() {
+    navx.reset();
+  }
+
+  /*
+   * Resets the yaw value set by user (Z-axis by default)
+   */
+  public void resetYaw() {
+    navx.zeroYaw();
+  }
+
+  public double getYaw() {
+    return navx.getYaw();
   }
 
   @Override
@@ -109,7 +128,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void execute(double power, double turn) {
-		arcadeDrive(power, turn);
+    arcadeDrive(power, turn);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -117,7 +136,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public void arcadeDrive(double power, double turn) {
-		drive.arcadeDrive(power, turn);
+    drive.arcadeDrive(power, turn);
   }
 
   public void zeroDriveEncoders() {
