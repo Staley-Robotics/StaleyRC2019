@@ -42,17 +42,24 @@ public class DriveTrain extends Subsystem {
 
   public DifferentialDrive drive;
 
+  private final double kP = 0.015;
+  private final double kI = 0.0;
+  private final double kD = 0.7;
+
   private DriveTrain() {
 
     brakeFront = false;
     brakeFollower = false;
 
-    try{
+    try {
       rightFront = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_DRIVE_MOTOR_PORT);
       rightFollower = new WPI_VictorSPX(RobotMap.RIGHT_FOLLOWER_DRIVE_MOTOR_PORT);
 
       leftFront = new WPI_TalonSRX(RobotMap.LEFT_FRONT_DRIVE_MOTOR_PORT);
       leftFollower = new WPI_VictorSPX(RobotMap.LEFT_FOLLOWER_DRIVE_MOTOR_PORT);
+
+      rightFollower.follow(rightFront);
+      leftFollower.follow(leftFront);
 
       rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
       leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -65,12 +72,21 @@ public class DriveTrain extends Subsystem {
       rightFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
       leftFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
 
+      rightFront.config_kP(0, kP, 0);
+      leftFront.config_kP(0, kP, 0);
+
+      rightFront.config_kI(0, kI, 0);
+      leftFront.config_kI(0, kI, 0);
+
+      rightFront.config_kD(0, kD, 0);
+      leftFront.config_kD(0, kD, 0);
+
     } catch (RuntimeException ex) {
-        DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
+      DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
     }
 
-    try{
-      navx = new AHRS(Port.kUSB);
+    try {
+      navx = new AHRS(Port.kMXP);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error Instantiating NavX: " + ex.getMessage(), true);
     }
@@ -79,11 +95,30 @@ public class DriveTrain extends Subsystem {
   }
 
   public static DriveTrain getInstance() {
-    if(instance == null) {
+    if (instance == null) {
       instance = new DriveTrain();
     }
 
     return instance;
+  }
+
+  public AHRS getNavx() {
+    return navx;
+  }
+
+  public void resetNavx() {
+    navx.reset();
+  }
+
+  /*
+   * Resets the yaw value set by user (Z-axis by default)
+   */
+  public void resetYaw() {
+    navx.zeroYaw();
+  }
+
+  public double getYaw() {
+    return navx.getYaw();
   }
 
   @Override
@@ -92,8 +127,16 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new ControllerDrive());
   }
 
+  public void execute(double power, double turn) {
+    arcadeDrive(power, turn);
+  }
+
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drive.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void arcadeDrive(double power, double turn) {
+    drive.arcadeDrive(power, turn);
   }
 
   public void zeroDriveEncoders() {
@@ -106,6 +149,14 @@ public class DriveTrain extends Subsystem {
   public double getPosition() {
     double avg = (rightFront.getSelectedSensorPosition(0) + leftFront.getSelectedSensorPosition(0)) / 2;
     return avg;
+  }
+
+  public double getRightPosition() {
+    return rightFront.getSelectedSensorPosition(0);
+  }
+
+  public double getLeftPosition() {
+    return leftFront.getSelectedSensorPosition(0);
   }
 
   public void stopMotors() {
