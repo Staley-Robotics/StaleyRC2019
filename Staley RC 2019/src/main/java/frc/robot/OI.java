@@ -27,14 +27,14 @@ public class OI {
     driveController = new XboxController(RobotMap.XBOX_PORT);
 
     // Toggle for shifting between high and low gear
-		Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
+    Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
     shifterToggle.whenPressed(new ShifterToggle());
 
   }
 
   public static OI getInstance() {
-    if(instance == null) {
-        instance = new OI();
+    if (instance == null) {
+      instance = new OI();
     }
     return instance;
   }
@@ -45,5 +45,17 @@ public class OI {
 
   public double getDriveRightY() {
     return driveController.getY(Hand.kRight);
+  }
+
+  public double getDriveLeftTrigger() {
+    return driveController.getTriggerAxis(Hand.kLeft);
+  }
+
+  public double getDriveRightTrigger() {
+    return driveController.getTriggerAxis(Hand.kRight);
+  }
+
+  public double getDriveLeftX() {
+    return driveController.getX(Hand.kLeft);
   }
 }

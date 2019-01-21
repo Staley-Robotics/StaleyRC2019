@@ -15,6 +15,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -51,7 +52,9 @@ public class DriveTrain extends Subsystem {
   private final double kI = 0.0;
   private final double kD = 0.7;
 
-  public static GearStates gearState; 
+  private final double distancePerPulse = 0.0024543693; // (1/4096) * 8 * Math.PI * 0.4
+
+  public static GearStates gearState;
 
   private DriveTrain() {
 
@@ -95,7 +98,7 @@ public class DriveTrain extends Subsystem {
     }
 
     try {
-      navx = new AHRS(Port.kMXP);
+      navx = new AHRS(I2C.Port.kMXP);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error Instantiating NavX: " + ex.getMessage(), true);
     }
@@ -148,6 +151,27 @@ public class DriveTrain extends Subsystem {
     drive.arcadeDrive(power, turn);
   }
 
+  public void worldOfTanksDrive(double forward, double backward, double rotate) {
+    double speedModifier = 1;
+    double turnSpeedModifier = 0.85;
+
+    backward = backward * speedModifier;
+    forward = forward * speedModifier;
+    if (rotate > 0.1 || rotate < 0.1) {
+      rotate = -rotate * turnSpeedModifier;
+    } else {
+      rotate = 0;
+    }
+
+    if (backward > 0) {
+      drive.arcadeDrive(backward, rotate);
+    } else if (forward > 0) {
+      drive.arcadeDrive(-forward, rotate);
+    } else {
+      drive.arcadeDrive(0, rotate);
+    }
+  }
+
   public void zeroDriveEncoders() {
     rightFront.setSelectedSensorPosition(0, 0, 0);
     leftFront.setSelectedSensorPosition(0, 0, 0);
@@ -187,5 +211,13 @@ public class DriveTrain extends Subsystem {
     shifter.set(Value.kReverse);
     gearState = GearStates.LOW_GEAR;
     // Robot.ldrive.setColor(Color.YELLOW);
+  }
+
+  public double inchesToPulses(double inches) {
+    return (inches / distancePerPulse);
+  }
+
+  public double pulsesToInches(double pulses) {
+    return (pulses * distancePerPulse);
   }
 }

@@ -17,9 +17,9 @@ public class GyroTurning extends Command implements PIDOutput {
     private double angle;
 
     // PID Values
-    private final double kP = 0.023;
-    private final double kI = 0;
-    private final double kD = 0.06;
+    private final double kP = 0.03; //0.023
+    private final double kI = 0; //0
+    private final double kD = 0.06; //0.06
 
     public GyroTurning(double angle) {
         requires(DriveTrain.getInstance());

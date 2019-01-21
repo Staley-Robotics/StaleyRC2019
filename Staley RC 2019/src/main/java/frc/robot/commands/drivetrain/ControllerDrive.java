@@ -22,10 +22,16 @@ public class ControllerDrive extends Command {
     @Override
     protected void execute() {
 
-        double leftPower = OI.getInstance().getDriveLeftY();
-        double rightPower = OI.getInstance().getDriveRightY();
+        // double leftPower = OI.getInstance().getDriveLeftY();
+        // double rightPower = OI.getInstance().getDriveRightY();
 
-        driveTrain.tankDrive(leftPower, rightPower);
+        // driveTrain.tankDrive(leftPower, rightPower);
+
+        double forwardPower = OI.getInstance().getDriveRightTrigger();
+        double reversePower = OI.getInstance().getDriveLeftTrigger();
+        double turnPower = OI.getInstance().getDriveLeftX();
+
+        driveTrain.worldOfTanksDrive(forwardPower, reversePower, turnPower);
     }
 
     // Make this return true when this Command no longer needs to run execute()
