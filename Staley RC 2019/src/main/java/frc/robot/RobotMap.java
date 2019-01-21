@@ -20,10 +20,10 @@ public class RobotMap {
 	public static final int XBOX_TWO_PORT = 1;
 
 	// ***** Motor/Speed Controller Ports *****
-	public static final int LEFT_FRONT_DRIVE_MOTOR_PORT = 3;
-	public static final int LEFT_FOLLOWER_DRIVE_MOTOR_PORT = 8;
-	public static final int RIGHT_FRONT_DRIVE_MOTOR_PORT = 2;
-	public static final int RIGHT_FOLLOWER_DRIVE_MOTOR_PORT = 5;
+	public static final int LEFT_MASTER_DRIVE_CAN_ID = 4;
+	public static final int LEFT_FOLLOWER_DRIVE_CAN_ID = 8;
+	public static final int RIGHT_MASTER_DRIVE_CAN_ID = 2;
+	public static final int RIGHT_FOLLOWER_DRIVE_CAN_ID = 5;
 
 	// ***** Pneumatics Ports *****
 	public static final int COMPRESSOR_PORT = 0;

@@ -7,22 +7,20 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
+import frc.robot.util.SpeedControllerFactory;
 
 /**
  * Add your docs here.
@@ -31,79 +29,53 @@ public class DriveTrain extends Subsystem {
 
   private final String TAG = (this.getName() + ": ");
 
+  // number of inches per pulse for encoders
+  private final double distancePerPulse = 0.0024543693; // (1/4096) * 8 * Math.PI * 0.4
+
   private static DriveTrain instance;
-
-  private WPI_TalonSRX rightFront;
-  private WPI_VictorSPX rightFollower;
-
-  private WPI_TalonSRX leftFront;
-  private WPI_VictorSPX leftFollower;
 
   private AHRS navx;
 
-  private DoubleSolenoid shifter;
-
-  private boolean brakeFront;
+  // whether speed controllers in brake mode or coast mode
+  private boolean brakeMaster;
   private boolean brakeFollower;
+
+  private WPI_TalonSRX rightMaster;
+  private WPI_VictorSPX rightFollower;
+
+  private WPI_TalonSRX leftMaster;
+  private WPI_VictorSPX leftFollower;
 
   private DifferentialDrive drive;
 
-  private final double kP = 0.015;
-  private final double kI = 0.0;
-  private final double kD = 0.7;
-
-  private final double distancePerPulse = 0.0024543693; // (1/4096) * 8 * Math.PI * 0.4
-
+  // tracks whether shifter is in low or high gear
   public static GearStates gearState;
+
+  private DoubleSolenoid shifter;
 
   private DriveTrain() {
 
-    brakeFront = false;
-    brakeFollower = false;
-
-    try {
-      rightFront = new WPI_TalonSRX(RobotMap.RIGHT_FRONT_DRIVE_MOTOR_PORT);
-      rightFollower = new WPI_VictorSPX(RobotMap.RIGHT_FOLLOWER_DRIVE_MOTOR_PORT);
-
-      leftFront = new WPI_TalonSRX(RobotMap.LEFT_FRONT_DRIVE_MOTOR_PORT);
-      leftFollower = new WPI_VictorSPX(RobotMap.LEFT_FOLLOWER_DRIVE_MOTOR_PORT);
-
-      rightFollower.follow(rightFront);
-      leftFollower.follow(leftFront);
-
-      rightFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-      leftFront.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-
-      rightFront.setSensorPhase(false);
-      leftFront.setSensorPhase(true);
-
-      rightFront.setNeutralMode(brakeFront ? NeutralMode.Brake : NeutralMode.Coast);
-      leftFront.setNeutralMode(brakeFront ? NeutralMode.Brake : NeutralMode.Coast);
-      rightFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
-      leftFollower.setNeutralMode(brakeFollower ? NeutralMode.Brake : NeutralMode.Coast);
-
-      rightFront.config_kP(0, kP, 0);
-      leftFront.config_kP(0, kP, 0);
-
-      rightFront.config_kI(0, kI, 0);
-      leftFront.config_kI(0, kI, 0);
-
-      rightFront.config_kD(0, kD, 0);
-      leftFront.config_kD(0, kD, 0);
-
-      shifter = new DoubleSolenoid(0, 1);
-
-    } catch (RuntimeException ex) {
-      DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
-    }
-
+    // initialize gyro
     try {
       navx = new AHRS(I2C.Port.kMXP);
     } catch (RuntimeException ex) {
       DriverStation.reportError("Error Instantiating NavX: " + ex.getMessage(), true);
     }
 
-    drive = new DifferentialDrive(leftFront, rightFront);
+    brakeMaster = false;
+    brakeFollower = false;
+
+    rightMaster = SpeedControllerFactory.createMasterSrx(RobotMap.RIGHT_MASTER_DRIVE_CAN_ID, false, brakeMaster);
+    rightFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.RIGHT_FOLLOWER_DRIVE_CAN_ID, rightMaster,
+        brakeFollower);
+
+    leftMaster = SpeedControllerFactory.createMasterSrx(RobotMap.LEFT_MASTER_DRIVE_CAN_ID, true, brakeMaster);
+    leftFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.LEFT_FOLLOWER_DRIVE_CAN_ID, leftMaster,
+        brakeFollower);
+
+    drive = new DifferentialDrive(leftMaster, rightMaster);
+
+    shifter = new DoubleSolenoid(0, 1);
   }
 
   public static DriveTrain getInstance() {
@@ -114,6 +86,13 @@ public class DriveTrain extends Subsystem {
     return instance;
   }
 
+  @Override
+  public void initDefaultCommand() {
+    setDefaultCommand(new ControllerDrive());
+  }
+
+  // ***** Gyro *****
+
   public AHRS getNavx() {
     return navx;
   }
@@ -122,26 +101,18 @@ public class DriveTrain extends Subsystem {
     navx.reset();
   }
 
-  /*
-   * Resets the yaw value set by user (Z-axis by default)
+  /**
+   * yaw is the axis we use from the gyro
    */
-  public void resetYaw() {
-    navx.zeroYaw();
-  }
-
   public double getYaw() {
     return navx.getYaw();
   }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    setDefaultCommand(new ControllerDrive());
+  public void resetYaw() {
+    navx.zeroYaw();
   }
 
-  public void execute(double power, double turn) {
-    arcadeDrive(power, turn);
-  }
+  // ***** Drive Modes *****
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     drive.tankDrive(leftSpeed, rightSpeed);
@@ -151,6 +122,14 @@ public class DriveTrain extends Subsystem {
     drive.arcadeDrive(power, turn);
   }
 
+  /**
+   * right trigger used to go forward, left trigger used to reverse, left joystick
+   * x-axis used to turn
+   * 
+   * @param forward  speed for moving forward
+   * @param backward speed for moving backward
+   * @param rotate   turning speed
+   */
   public void worldOfTanksDrive(double forward, double backward, double rotate) {
     double speedModifier = 1;
     double turnSpeedModifier = 0.85;
@@ -172,52 +151,70 @@ public class DriveTrain extends Subsystem {
     }
   }
 
+  public void stopMotors() {
+    rightMaster.stopMotor();
+    leftMaster.stopMotor();
+  }
+
+  // ***** Encoders *****
+
   public void zeroDriveEncoders() {
-    rightFront.setSelectedSensorPosition(0, 0, 0);
-    leftFront.setSelectedSensorPosition(0, 0, 0);
+    rightMaster.setSelectedSensorPosition(0, 0, 0);
+    leftMaster.setSelectedSensorPosition(0, 0, 0);
 
     System.out.println(TAG + "Zeroing Drive Encoders");
   }
 
+  /**
+   * @return average position of left and right encoders
+   */
   public double getPosition() {
-    double avg = (rightFront.getSelectedSensorPosition(0) + leftFront.getSelectedSensorPosition(0)) / 2;
+    double avg = (rightMaster.getSelectedSensorPosition(0) + leftMaster.getSelectedSensorPosition(0)) / 2;
     return avg;
   }
 
   public double getRightPosition() {
-    return rightFront.getSelectedSensorPosition(0);
+    return rightMaster.getSelectedSensorPosition(0);
   }
 
   public double getLeftPosition() {
-    return leftFront.getSelectedSensorPosition(0);
+    return leftMaster.getSelectedSensorPosition(0);
   }
 
-  public void stopMotors() {
-    rightFront.stopMotor();
-    leftFront.stopMotor();
-  }
-
-  // ***** Shifters *****
-
-  // Shifts the gear-box up
-  public void shifterOn() {
-    shifter.set(Value.kForward);
-    gearState = GearStates.HIGH_GEAR;
-    // Robot.ldrive.setColor(Color.WHITE);
-  }
-
-  // Shifts the gear-box down
-  public void shifterOff() {
-    shifter.set(Value.kReverse);
-    gearState = GearStates.LOW_GEAR;
-    // Robot.ldrive.setColor(Color.YELLOW);
-  }
-
+  /**
+   * The encoder measures distance in pulses, this converts inches to pulses to be
+   * used as a setpoint
+   * 
+   * @param inches distance setpoint
+   * @return number of encoder pulses to setpoint
+   */
   public double inchesToPulses(double inches) {
     return (inches / distancePerPulse);
   }
 
+  /**
+   * @param pulses value recorded by encoder
+   * @return pulses converted to inches
+   */
   public double pulsesToInches(double pulses) {
     return (pulses * distancePerPulse);
+  }
+
+  // ***** Shifter *****
+
+  /**
+   * Shifts into high gear
+   */
+  public void shifterOn() {
+    shifter.set(Value.kForward);
+    gearState = GearStates.HIGH_GEAR;
+  }
+
+  /**
+   * Shifts into low gear
+   */
+  public void shifterOff() {
+    shifter.set(Value.kReverse);
+    gearState = GearStates.LOW_GEAR;
   }
 }

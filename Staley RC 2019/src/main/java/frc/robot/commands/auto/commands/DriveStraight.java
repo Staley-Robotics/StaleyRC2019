@@ -39,12 +39,13 @@ public class DriveStraight extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return drivePos.onTarget();
+		return true;
+		// return drivePos.onTarget();
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		driveTrain.execute(0, 0);
+		// driveTrain.execute(0, 0);
 	}
 
 	// Called when another command which requires one or more of the same
