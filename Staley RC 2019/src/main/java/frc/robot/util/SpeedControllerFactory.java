@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class SpeedControllerFactory {
 
     // PID Values for TalonSRX
-    private static final double kP = 0.09;
-    private static final double kI = 0.00000001;
-    private static final double kD = 0.9;
+    private static final double kP = 0.1;
+    private static final double kI = 0.00001;
+    private static final double kD = 0.0;
 
     /**
      * Creates a master TalonSRX
@@ -30,9 +30,11 @@ public class SpeedControllerFactory {
             talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
             talon.setSensorPhase(sensorPhase);
             talon.setNeutralMode(brakeMode ? NeutralMode.Brake : NeutralMode.Coast);
-            talon.config_kP(0, kP, 0);
-            talon.config_kI(0, kI, 0);
-            talon.config_kD(0, kD, 0);
+            talon.configClosedLoopPeakOutput(0, 0.5);
+            talon.config_kP(0, kP);
+            talon.config_kI(0, kI);
+            talon.config_kD(0, kD);
+            talon.config_IntegralZone(0, 100);
             talon.configPeakOutputForward(1);
             talon.configPeakOutputReverse(-1);
             talon.configNominalOutputForward(0);

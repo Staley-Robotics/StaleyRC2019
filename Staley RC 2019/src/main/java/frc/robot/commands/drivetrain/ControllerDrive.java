@@ -9,8 +9,8 @@ public class ControllerDrive extends Command {
     private DriveTrain driveTrain;
 
     public ControllerDrive() {
-        requires(DriveTrain.getInstance());
         driveTrain = DriveTrain.getInstance();
+        requires(driveTrain);
     }
 
     // Called just before this Command runs the first time

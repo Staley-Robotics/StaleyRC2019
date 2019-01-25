@@ -27,6 +27,7 @@ public class DriveStraight extends Command {
 	protected void initialize() {
 		driveTrain.zeroDriveEncoders();
 		driveTrain.setTarget(distance);
+		driveTrain.shiftLowGear();
 		System.out.println("Starting target with distance of " + distance + " inches");
 	}
 

@@ -17,10 +17,11 @@ import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.DriveStraight;
+import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
 import frc.robot.commands.auto.modes.AutoBrettV6;
-import frc.robot.commands.auto.modes.DriveTurn;;
+import frc.robot.commands.auto.modes.DriveTurnMode;;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -49,14 +50,15 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     m_chooser.setDefaultOption("Delay", new Delay(5));
     m_chooser.addOption("AutoBrett", new AutoBrettV6());
-    m_chooser.addOption("Turn", new DriveTurn());
+    m_chooser.addOption("Turn", new DriveTurnMode());
     m_chooser.addOption("Reset Encoders", new ResetEncoders());
-    m_chooser.addOption("Drive 10 inches", new DriveStraight(10));
-    m_chooser.addOption("Drive -10 inches", new DriveStraight(-10));
-    m_chooser.addOption("Drive 20 inches", new DriveStraight(20));
-    m_chooser.addOption("Drive -20 inches", new DriveStraight(-20));
-    m_chooser.addOption("Drive 30 inches", new DriveStraight(30));
-    m_chooser.addOption("Drive -30 inches", new DriveStraight(-30));
+    m_chooser.addOption("Drive 10 inches", new DriveTurn(10, 0.4, 0));
+    m_chooser.addOption("Drive -10 inches", new DriveTurn(-10, 0.4, 0));
+    m_chooser.addOption("Drive 20 inches", new DriveTurn(20, 0.6, 0));
+    m_chooser.addOption("Drive -20 inches", new DriveTurn(-20, 0.6, 0));
+    m_chooser.addOption("Drive 30 inches", new DriveTurn(30, 0.6, 0));
+    m_chooser.addOption("Drive -30 inches", new DriveTurn(-30, 0.6, 0));
+    m_chooser.addOption("Drive 48 inches", new DriveTurn(48, 0.6, 0));
 
     SmartDashboard.putData("Auto mode", m_chooser);
   }

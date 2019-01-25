@@ -29,13 +29,13 @@ public class ShifterToggle extends Command {
 	protected void execute() {
 		// Toggles to high gear
 		if (driveTrain.gearState == GearStates.LOW_GEAR) {
-			driveTrain.shifterOn();
+			driveTrain.shiftHighGear();
 						
 			System.out.println(TAG + "High Gear");
 		}
 		// Toggles to low gear
 		else {
-			driveTrain.shifterOff();
+			driveTrain.shiftLowGear();
 						
 			System.out.println(TAG + "Low Gear");
         }

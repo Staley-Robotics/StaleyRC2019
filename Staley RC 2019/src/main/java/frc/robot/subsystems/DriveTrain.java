@@ -238,7 +238,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Shifts into high gear
    */
-  public void shifterOn() {
+  public void shiftHighGear() {
     shifter.set(Value.kForward);
     gearState = GearStates.HIGH_GEAR;
   }
@@ -246,7 +246,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Shifts into low gear
    */
-  public void shifterOff() {
+  public void shiftLowGear() {
     shifter.set(Value.kReverse);
     gearState = GearStates.LOW_GEAR;
   }
