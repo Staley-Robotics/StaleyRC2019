@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class SpeedControllerFactory {
 
     // PID Values for TalonSRX
-    private static final double kP = 0.015;
-    private static final double kI = 0.0;
-    private static final double kD = 0.7;
+    private static final double kP = 0.09;
+    private static final double kI = 0.00000001;
+    private static final double kD = 0.9;
 
     /**
      * Creates a master TalonSRX
@@ -33,6 +33,10 @@ public class SpeedControllerFactory {
             talon.config_kP(0, kP, 0);
             talon.config_kI(0, kI, 0);
             talon.config_kD(0, kD, 0);
+            talon.configPeakOutputForward(1);
+            talon.configPeakOutputReverse(-1);
+            talon.configNominalOutputForward(0);
+            talon.configNominalOutputReverse(0);
         } catch (RuntimeException ex) {
             DriverStation.reportError("Error Instantiating TalonSRX: " + ex.getMessage(), true);
         }

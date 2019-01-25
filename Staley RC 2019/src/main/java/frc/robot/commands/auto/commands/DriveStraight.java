@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveStraight extends Command {
@@ -15,37 +16,37 @@ public class DriveStraight extends Command {
 	private DriveTrain driveTrain;
 	private double distance;
 
-	// PID values
-	private final double kP = 0.0353;
-	private final double kI = 0.005;
-	private final double kD = 0.2; // 0.2
-
 	public DriveStraight(double distance) {
-		requires(DriveTrain.getInstance());
 		driveTrain = DriveTrain.getInstance();
-		this.distance = distance;
+		requires(driveTrain);
 
+		this.distance = distance;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
+		driveTrain.zeroDriveEncoders();
+		driveTrain.setTarget(distance);
+		System.out.println("Starting target with distance of " + distance + " inches");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		System.out.println("Left encoder pos: " + driveTrain.pulsesToInches(driveTrain.getLeftPosition())
+				+ "\nRight encoder pos: " + driveTrain.pulsesToInches(driveTrain.getRightPosition())
+				+ "\nAvg encoder pos: " + driveTrain.pulsesToInches(driveTrain.getPosition()));
 
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
-		// return drivePos.onTarget();
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		// driveTrain.execute(0, 0);
+		driveTrain.stopMotors();
+		System.out.println("End");
 	}
 
 	// Called when another command which requires one or more of the same

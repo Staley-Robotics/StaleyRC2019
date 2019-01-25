@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
@@ -68,12 +70,18 @@ public class DriveTrain extends Subsystem {
     rightMaster = SpeedControllerFactory.createMasterSrx(RobotMap.RIGHT_MASTER_DRIVE_CAN_ID, false, brakeMaster);
     rightFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.RIGHT_FOLLOWER_DRIVE_CAN_ID, rightMaster,
         brakeFollower);
+    rightMaster.setInverted(false);
+    rightFollower.setInverted(false);
 
-    leftMaster = SpeedControllerFactory.createMasterSrx(RobotMap.LEFT_MASTER_DRIVE_CAN_ID, true, brakeMaster);
+    leftMaster = SpeedControllerFactory.createMasterSrx(RobotMap.LEFT_MASTER_DRIVE_CAN_ID, false, brakeMaster);
     leftFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.LEFT_FOLLOWER_DRIVE_CAN_ID, leftMaster,
         brakeFollower);
+    leftMaster.setInverted(true);
+    leftFollower.setInverted(true);
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
+    drive.setSafetyEnabled(false);
+    drive.setRightSideInverted(false);
 
     shifter = new DoubleSolenoid(0, 1);
   }
@@ -137,15 +145,15 @@ public class DriveTrain extends Subsystem {
     backward = backward * speedModifier;
     forward = forward * speedModifier;
     if (rotate > 0.1 || rotate < 0.1) {
-      rotate = -rotate * turnSpeedModifier;
+      rotate = rotate * turnSpeedModifier;
     } else {
       rotate = 0;
     }
 
     if (backward > 0) {
-      drive.arcadeDrive(backward, rotate);
+      drive.arcadeDrive(-backward, rotate);
     } else if (forward > 0) {
-      drive.arcadeDrive(-forward, rotate);
+      drive.arcadeDrive(forward, rotate);
     } else {
       drive.arcadeDrive(0, rotate);
     }
@@ -159,8 +167,8 @@ public class DriveTrain extends Subsystem {
   // ***** Encoders *****
 
   public void zeroDriveEncoders() {
-    rightMaster.setSelectedSensorPosition(0, 0, 0);
-    leftMaster.setSelectedSensorPosition(0, 0, 0);
+    rightMaster.setSelectedSensorPosition(0, 0, 10);
+    leftMaster.setSelectedSensorPosition(0, 0, 10);
 
     System.out.println(TAG + "Zeroing Drive Encoders");
   }
@@ -179,6 +187,31 @@ public class DriveTrain extends Subsystem {
 
   public double getLeftPosition() {
     return leftMaster.getSelectedSensorPosition(0);
+  }
+
+  public void setTarget(double inches) {
+    double target = inchesToPulses(inches);
+    System.out.println("Target in pulses: " + target);
+
+    leftMaster.set(ControlMode.Position, target);
+    rightMaster.set(ControlMode.Position, target);
+  }
+
+  public void putCrap() {
+    SmartDashboard.putNumber("Left Master Power", leftMaster.getMotorOutputPercent());
+    SmartDashboard.putNumber("Left Follower Power", leftFollower.getMotorOutputPercent());
+    SmartDashboard.putNumber("Right Master Power", rightMaster.getMotorOutputPercent());
+    SmartDashboard.putNumber("Right Follower Power", rightFollower.getMotorOutputPercent());
+
+    if (leftMaster.getControlMode() == ControlMode.Position) {
+      SmartDashboard.putNumber("Left Master Target", leftMaster.getClosedLoopTarget());
+      SmartDashboard.putNumber("Right Master Target", rightMaster.getClosedLoopTarget());
+    }
+  }
+
+  public boolean onTarget() {
+    // leftMaster.getClosedLoopError();
+    return false;
   }
 
   /**

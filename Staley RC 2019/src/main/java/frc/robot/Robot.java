@@ -16,6 +16,7 @@ import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.commands.auto.commands.Delay;
+import frc.robot.commands.auto.commands.DriveStraight;
 import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
 import frc.robot.commands.auto.modes.AutoBrettV6;
@@ -50,6 +51,13 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("AutoBrett", new AutoBrettV6());
     m_chooser.addOption("Turn", new DriveTurn());
     m_chooser.addOption("Reset Encoders", new ResetEncoders());
+    m_chooser.addOption("Drive 10 inches", new DriveStraight(10));
+    m_chooser.addOption("Drive -10 inches", new DriveStraight(-10));
+    m_chooser.addOption("Drive 20 inches", new DriveStraight(20));
+    m_chooser.addOption("Drive -20 inches", new DriveStraight(-20));
+    m_chooser.addOption("Drive 30 inches", new DriveStraight(30));
+    m_chooser.addOption("Drive -30 inches", new DriveStraight(-30));
+
     SmartDashboard.putData("Auto mode", m_chooser);
   }
 
@@ -71,6 +79,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new ResetEncoders());
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
+    driveTrain.putCrap();
+    
     // SmartDashboard.putRaw(driveTrain.gearState);
   }
 

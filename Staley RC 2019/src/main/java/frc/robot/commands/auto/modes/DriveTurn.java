@@ -6,6 +6,6 @@ import frc.robot.commands.auto.commands.GyroTurning;
 public class DriveTurn extends CommandGroup {
     
     public DriveTurn() {
-        addSequential(new GyroTurning(90), 5);
+        addSequential(new GyroTurning(-90), 5);
     }
 }

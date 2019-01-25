@@ -22,8 +22,10 @@ public class ControllerDrive extends Command {
     @Override
     protected void execute() {
 
-        // double leftPower = OI.getInstance().getDriveLeftY();
-        // double rightPower = OI.getInstance().getDriveRightY();
+        // double leftPower = -1 * OI.getInstance().getDriveLeftY();
+        // double rightPower = -1 * OI.getInstance().getDriveRightY();
+
+        // System.out.println("Left Stick: " + leftPower + "\tRight Power: " + rightPower);
 
         // driveTrain.tankDrive(leftPower, rightPower);
 
