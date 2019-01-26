@@ -15,13 +15,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Vision;
 import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.DriveStraight;
 import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
 import frc.robot.commands.auto.modes.AutoBrettV6;
-import frc.robot.commands.auto.modes.DriveTurnMode;;
+import frc.robot.commands.auto.modes.DriveTurnMode;
+import frc.robot.commands.PutNewtorkTableValues;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,7 +35,7 @@ import frc.robot.commands.auto.modes.DriveTurnMode;;
 public class Robot extends TimedRobot {
   private OI oi;
   private DriveTrain driveTrain;
-
+  private Vision visionTrain;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -45,6 +47,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
+    visionTrain = Vision.getInstance();
 
     m_chooser.setDefaultOption("Default Auto", new ControllerDrive());
     // chooser.addOption("My Auto", new MyAutoCommand());
