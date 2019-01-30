@@ -12,58 +12,51 @@ public class GyroTurning extends Command implements PIDOutput {
 
     private PIDController pidTurn;
 
-    private Timer delay;
-
-    private double angle;
+    private double currentAngle;
+    private double targetAngle;
+    private double angleDifference;
 
     // PID Values
-    private final double kP = 0.03; //0.023
-    private final double kI = 0; //0
-    private final double kD = 0.06; //0.06
+    private final double kP = 0.03; // 0.023
+    private final double kI = 0; // 0
+    private final double kD = 0.06; // 0.06
 
     public GyroTurning(double angle) {
         requires(DriveTrain.getInstance());
         driveTrain = DriveTrain.getInstance();
 
-        delay = new Timer();
-        delay.reset();
+        angleDifference = angle;
+    }
 
-        this.angle = angle;
+    // Called just before this Command runs the first time
+    protected void initialize() {
+        currentAngle = driveTrain.getYaw();
+        targetAngle = angleDifference + currentAngle;
+
+        targetAngle = bindTo180(targetAngle);
 
         pidTurn = new PIDController(kP, kI, kD, driveTrain.getNavx(), this);
         // Range of angles that can be inputted
         pidTurn.setInputRange(-180, 180);
 
         // prevent the motors from receiving too little power
-        if (angle > 0)
-            pidTurn.setOutputRange(0.5, 1);
-        else if (angle < 0)
-            pidTurn.setOutputRange(-1, -0.5);
+        if (angleDifference > 0)
+            pidTurn.setOutputRange(0.5, 0.8);
+        else if (angleDifference < 0)
+            pidTurn.setOutputRange(-0.8, -0.5);
 
         // Tolerance of how far off the angle can be
         pidTurn.setAbsoluteTolerance(1.0);
-        pidTurn.setContinuous(false);
+        pidTurn.setContinuous(true);
 
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-        driveTrain.resetNavx();
-
-        // Delay while the gyro is reseting
-        delay.start();
-        while (delay.get() < 0.1) {
-            System.out.println("Delaying Gyro");
-        }
-        delay.stop();
-
-        pidTurn.setSetpoint(angle);
+        pidTurn.setSetpoint(targetAngle);
         pidTurn.enable();
+        System.out.println("Starting to turn");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        System.out.println("Angle: " + driveTrain.getYaw());
+        System.out.println("Angle: " + driveTrain.getYaw() + "\tTarget Angle:" + targetAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -75,11 +68,10 @@ public class GyroTurning extends Command implements PIDOutput {
     protected void end() {
         driveTrain.arcadeDrive(0, 0);
 
-        System.out.println("Finished: " + driveTrain.getYaw());
+        System.out.println("Finished - Angle: " + driveTrain.getYaw() + "\tTarget Angle:" + targetAngle);
 
         pidTurn.disable();
         pidTurn.reset();
-
     }
 
     // Called when another command which requires one or more of the same
@@ -93,7 +85,17 @@ public class GyroTurning extends Command implements PIDOutput {
      */
     @Override
     public void pidWrite(double output) {
-        driveTrain.arcadeDrive(0, -output);
+        driveTrain.arcadeDrive(0, output);
     }
 
+    private double bindTo180(double angle) {
+        // Keshvi magic
+        while(angle >= 180) {
+            angle -= 360;
+        }
+        while(angle < -180) {
+            angle += 360;
+        }
+        return angle;
+    }
 }
