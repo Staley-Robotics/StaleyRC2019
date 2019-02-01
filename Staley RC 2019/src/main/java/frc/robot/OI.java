@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.drivetrain.ShifterToggle;
@@ -30,6 +30,8 @@ public class OI {
     Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
     shifterToggle.whenPressed(new ShifterToggle());
 
+    Button lifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
+    //lifterToggle.whenPressed(new LifterToggle());
   }
 
   public static OI getInstance() {
