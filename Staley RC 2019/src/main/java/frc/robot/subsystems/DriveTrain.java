@@ -23,12 +23,16 @@ import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
 import frc.robot.util.SpeedControllerFactory;
+import jaci.pathfinder.Pathfinder;
+
+import java.util.ArrayList;
 
 /**
  * Add your docs here.
  */
 public class DriveTrain extends Subsystem {
 
+  public ArrayList<String> itsfine = new ArrayList<>();
   private final String TAG = (this.getName() + ": ");
 
   // number of inches per pulse for encoders
@@ -84,6 +88,7 @@ public class DriveTrain extends Subsystem {
     drive.setRightSideInverted(false);
 
     shifter = new DoubleSolenoid(0, 1);
+    zeroDriveEncoders();
   }
 
   public static DriveTrain getInstance() {
@@ -197,7 +202,11 @@ public class DriveTrain extends Subsystem {
     rightMaster.set(ControlMode.Position, target);
   }
 
+  private int counter = 0;
+
   public void putCrap() {
+    // counter ++;
+    itsfine.add("addSequential(new DriveTurn(" + getLeftPosition() + ",val," + getYaw() + ",true));");
     SmartDashboard.putNumber("Left Master Power", leftMaster.getMotorOutputPercent());
     SmartDashboard.putNumber("Left Follower Power", leftFollower.getMotorOutputPercent());
     SmartDashboard.putNumber("Right Master Power", rightMaster.getMotorOutputPercent());
@@ -207,6 +216,34 @@ public class DriveTrain extends Subsystem {
       SmartDashboard.putNumber("Left Master Target", leftMaster.getClosedLoopTarget());
       SmartDashboard.putNumber("Right Master Target", rightMaster.getClosedLoopTarget());
     }
+    // System.out.println("counter: " + counter);
+    if (counter > 300 * 5) {
+      System.out.println("hitting");
+      for (String Bethan : itsfine) {
+        System.out.println(Bethan);
+      }
+    }
+
+  }
+
+  public void cleanitsfine() {
+    ArrayList<String> cleaneritsfine = new ArrayList<String>();
+    for (int i = 0; i < itsfine.size() - 2; i++) {
+      if (!itsfine.get(i).equals(itsfine.get(i + 1))) {
+        cleaneritsfine.add(itsfine.get(i));
+      }
+    }
+    ArrayList<String> cleanercleaneritsfine = new ArrayList<String>();
+    for (int i = 0; i < cleaneritsfine.size() - 2; i++) {
+      if (!cleaneritsfine.get(i).equals(cleaneritsfine.get(i + 1))) {
+        cleanercleaneritsfine.add(cleaneritsfine.get(i));
+      }
+      itsfine = cleanercleaneritsfine;
+      for (String x : itsfine) {
+        System.out.println(x);
+      }
+    }
+
   }
 
   public boolean onTarget() {
