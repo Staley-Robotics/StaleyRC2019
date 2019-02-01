@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.Random;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,8 +23,11 @@ import frc.robot.commands.auto.commands.DriveStraight;
 import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
+import frc.robot.commands.auto.commands.VisionTurning;
 import frc.robot.commands.auto.modes.AutoBrettV6;
 import frc.robot.commands.auto.modes.DriveTurnMode;
+import frc.robot.commands.auto.modes.SickoMode;
+import frc.robot.commands.auto.modes.VisionTurnTest;
 import frc.robot.commands.PutNewtorkTableValues;
 
 /**
@@ -33,37 +38,43 @@ import frc.robot.commands.PutNewtorkTableValues;
  * project.
  */
 public class Robot extends TimedRobot {
+  private Random gen = new Random();
   private OI oi;
   private DriveTrain driveTrain;
-  private Vision visionTrain;
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private Command autonomousCommand;
+  private SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
+   * 
+   * Tyler sux at building
    */
   @Override
   public void robotInit() {
+
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
-    visionTrain = Vision.getInstance();
 
-    m_chooser.setDefaultOption("Default Auto", new ControllerDrive());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    m_chooser.setDefaultOption("Delay", new Delay(5));
-    m_chooser.addOption("AutoBrett", new AutoBrettV6());
-    m_chooser.addOption("Turn", new DriveTurnMode());
-    m_chooser.addOption("Reset Encoders", new ResetEncoders());
-    m_chooser.addOption("Drive 10 inches", new DriveTurn(10, 0.4, 0));
-    m_chooser.addOption("Drive -10 inches", new DriveTurn(-10, 0.4, 0));
-    m_chooser.addOption("Drive 20 inches", new DriveTurn(20, 0.6, 0));
-    m_chooser.addOption("Drive -20 inches", new DriveTurn(-20, 0.6, 0));
-    m_chooser.addOption("Drive 30 inches", new DriveTurn(30, 0.6, 0));
-    m_chooser.addOption("Drive -30 inches", new DriveTurn(-30, 0.6, 0));
-    m_chooser.addOption("Drive 48 inches", new DriveTurn(48, 0.6, 0));
+    chooser.setDefaultOption("Default Auto", new ControllerDrive());
+    chooser.setDefaultOption("Delay", new Delay(5));
+    chooser.addOption("AutoBrett", new AutoBrettV6());
+    chooser.addOption("Drive Turn", new DriveTurnMode());
+    chooser.addOption("Turn 90", new GyroTurning(90));
+    chooser.addOption("Sicko Mode", new SickoMode());
+    chooser.addOption("Turn -90", new GyroTurning(-90));
+    chooser.addOption("Turn -45", new GyroTurning(-45));
+    chooser.addOption("Vision Turn", new VisionTurnTest());
+    chooser.addOption("Reset Encoders", new ResetEncoders());
+    chooser.addOption("Drive 5 inches", new DriveTurn(5, 0.8, 0));
+    chooser.addOption("Drive -10 inches", new DriveTurn(-10, 0.8, 0));
+    chooser.addOption("Drive 20 inches", new DriveTurn(20, 0.6, 0));
+    chooser.addOption("Drive -20 inches", new DriveTurn(-20, 0.6, 0));
+    chooser.addOption("Drive 30 inches", new DriveTurn(30, 0.6, 0));
+    chooser.addOption("Drive -30 inches", new DriveTurn(-30, 0.6, 0));
+    chooser.addOption("Drive 48 inches", new DriveTurn(48, 0.6, 0));
 
-    SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Auto mode", chooser);
   }
 
   /**
@@ -85,8 +96,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
     driveTrain.putCrap();
-    
-    // SmartDashboard.putRaw(driveTrain.gearState);
   }
 
   /**
@@ -117,7 +126,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    autonomousCommand = chooser.getSelected();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -127,8 +136,8 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
+    if (autonomousCommand != null) {
+      autonomousCommand.start();
     }
   }
 
@@ -146,8 +155,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
   }
 
