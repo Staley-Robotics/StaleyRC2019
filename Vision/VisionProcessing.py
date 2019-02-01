@@ -175,8 +175,8 @@ green_blur = 7
 orange_blur = 27
 
 # define range of green of retroreflective tape in HSV
-lower_green = np.array([0,220,25])
-upper_green = np.array([101, 255, 255])
+lower_green = np.array([0,200,25]) # 0,220,25
+upper_green = np.array([121,255,255]) # 101,255,255
 #define range of orange from cargo ball in HSV
 lower_orange = np.array([0,193,92])
 upper_orange = np.array([23, 255, 255])
@@ -479,9 +479,14 @@ def findTape(contours, image, centerX, centerY):
         currentAngleError = finalTarget[1]
         # pushes vision target angle to network tables
         networkTable.putNumber("tapeYaw", currentAngleError)
+
+        print("Tape Detected")
     else:
         # pushes that it deosn't see vision target to network tables
         networkTable.putBoolean("tapeDetected", False)
+        networkTable.putNumber("tapeYaw", 0)
+        print("No Tape Detected")
+
 
     cv2.line(image, (round(centerX), screenHeight), (round(centerX), 0), (255, 255, 255), 2)
 

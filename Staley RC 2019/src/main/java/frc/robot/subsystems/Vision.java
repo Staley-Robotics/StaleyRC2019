@@ -23,6 +23,7 @@ public class Vision extends Subsystem {
   private NetworkTableInstance inst;
   private NetworkTable table;
   private NetworkTableEntry tape;
+  private NetworkTableEntry tapeYaw;
 
   private Vision() {
     inst = NetworkTableInstance.getDefault();
@@ -41,7 +42,10 @@ public class Vision extends Subsystem {
   public void initDefaultCommand() {
     setDefaultCommand(new PutNewtorkTableValues());
   }
-
+  public double getYaw(){
+    tapeYaw = table.getEntry("tapeYaw");
+    return tapeYaw.getDouble(0.0);
+  }
   public void setTapeTrue() {
     tape = table.getEntry("Tape");
     tape.setBoolean(true);
