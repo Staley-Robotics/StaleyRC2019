@@ -35,7 +35,16 @@ public class DriveTurn extends Command {
 		
 		this.turn = turn;
 	}
-
+	public DriveTurn(double pulses, double power, double turn, boolean b){
+		driveTrain = DriveTrain.getInstance();
+        requires(driveTrain);
+		
+		desiredDistance = driveTrain.pulsesToInches(pulses);
+		desiredPower = power;
+		
+		this.turn = turn;
+		
+	}
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		driveTrain.zeroDriveEncoders();

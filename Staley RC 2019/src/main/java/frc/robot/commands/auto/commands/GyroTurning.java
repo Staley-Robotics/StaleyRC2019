@@ -17,8 +17,8 @@ public class GyroTurning extends Command implements PIDOutput {
     private double angleDifference;
 
     // PID Values
-    private final double kP = 0.03; // 0.023
-    private final double kI = 0; // 0
+    private final double kP = 0.03; // 0.023 //0.03
+    private final double kI = 0.0; // 0
     private final double kD = 0.06; // 0.06
 
     public GyroTurning(double angle) {
@@ -46,7 +46,7 @@ public class GyroTurning extends Command implements PIDOutput {
             pidTurn.setOutputRange(-0.8, -0.5);
 
         // Tolerance of how far off the angle can be
-        pidTurn.setAbsoluteTolerance(1.0);
+        pidTurn.setAbsoluteTolerance(1);
         pidTurn.setContinuous(true);
 
         pidTurn.setSetpoint(targetAngle);
