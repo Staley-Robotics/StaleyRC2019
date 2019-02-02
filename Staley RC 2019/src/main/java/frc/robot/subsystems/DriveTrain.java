@@ -23,7 +23,6 @@ import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
 import frc.robot.util.SpeedControllerFactory;
-import jaci.pathfinder.Pathfinder;
 
 import java.util.ArrayList;
 
