@@ -29,6 +29,7 @@ public class OI {
     // Toggle for shifting between high and low gear
     Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
     shifterToggle.whenPressed(new ShifterToggle());
+    shifterToggle.close();
 
     Button lifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
     //lifterToggle.whenPressed(new LifterToggle());
