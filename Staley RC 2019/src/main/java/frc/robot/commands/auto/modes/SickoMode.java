@@ -8,7 +8,8 @@ public class SickoMode extends CommandGroup {
 
     public SickoMode() {
         // addSequential(new GyroTurning(-90), 5);
-        MoBamba();
+        //MoBamba();
+        int yee;
     }
 
     public void MoBamba() {

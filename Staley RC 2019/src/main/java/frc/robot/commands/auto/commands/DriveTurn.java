@@ -17,7 +17,7 @@ public class DriveTurn extends Command {
 	private double desiredPower;
 	private double currentDisplacement;
 	
-	private final int pThreshold = 5;
+	private final int pThreshold = 4;//5
 	private final double stopThreshold = 0.5;
 	
 	private double turn;
@@ -61,18 +61,18 @@ public class DriveTurn extends Command {
 		currentDisplacement = driveTrain.pulsesToInches(driveTrain.getPosition());
 		
 		double error = Math.abs(desiredDistance) - Math.abs(currentDisplacement);
-		
+		double anglet = 0.24;
 		if (error < pThreshold) {
 			if (turn == 0 && desiredPower > 0) {
-				driveTrain.arcadeDrive(error * kP, -currentAngle * .24);
+				driveTrain.arcadeDrive(error * kP, -currentAngle * anglet);
 			} else if (turn == 0 && desiredPower < 0) {
-				driveTrain.arcadeDrive(-error * kP, currentAngle * .24);
+				driveTrain.arcadeDrive(-error * kP, currentAngle * anglet);
 			} else {
 				driveTrain.arcadeDrive(desiredPower, turn);
 			}
 		} else {
 			if (turn == 0) {
-				driveTrain.arcadeDrive(desiredPower, -currentAngle * .24);
+				driveTrain.arcadeDrive(desiredPower, -currentAngle * anglet);
 			} else {
 				driveTrain.arcadeDrive(desiredPower, turn);
 			}
