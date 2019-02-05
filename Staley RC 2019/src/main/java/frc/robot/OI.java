@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.drivetrain.ShifterToggle;
+import frc.robot.commands.hatch.HatchExtenderToggle;
+import frc.robot.commands.hatch.RunPivotMotor;
 import frc.robot.enums.XBoxButtons;
 
 /**
@@ -22,17 +24,21 @@ public class OI {
   private static OI instance;
 
   private XboxController driveController;
+  private XboxController altController;
 
   private OI() {
-    driveController = new XboxController(RobotMap.XBOX_PORT);
+    driveController = new XboxController(RobotMap.XBOX_DRIVE_PORT);
+    altController = new XboxController(RobotMap.XBOX_ALT_PORT);
 
     // Toggle for shifting between high and low gear
     Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
     shifterToggle.whenPressed(new ShifterToggle());
-    shifterToggle.close();
 
-    Button lifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
+    // Button lifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
     //lifterToggle.whenPressed(new LifterToggle());
+
+    Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getvalue());
+    hatchToggle.whenPressed(new HatchExtenderToggle());
   }
 
   public static OI getInstance() {
@@ -60,5 +66,13 @@ public class OI {
 
   public double getDriveLeftX() {
     return driveController.getX(Hand.kLeft);
+  }
+
+  public double getAltLeftTrigger() {
+    return altController.getTriggerAxis(Hand.kLeft);
+  }
+
+  public double getAltRightTrigger() {
+    return altController.getTriggerAxis(Hand.kRight);
   }
 }
