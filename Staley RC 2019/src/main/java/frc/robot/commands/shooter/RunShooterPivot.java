@@ -35,9 +35,9 @@ public class RunShooterPivot extends Command {
       double power = oi.getAltLeftY();
 
       if (Math.abs(power) > 0.1) {
-        shooter.pivotShooter(power);
+        shooter.runPivot(power);
       } else {
-        shooter.pivotShooter(0);
+        shooter.runPivot(0);
       }
     }
   }
@@ -51,7 +51,7 @@ public class RunShooterPivot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    shooter.pivotShooter(0);
+    shooter.runPivot(0);
   }
 
   // Called when another command which requires one or more of the same

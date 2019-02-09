@@ -62,7 +62,7 @@ public class Shooter extends Subsystem {
         topMotor.set(0);
     }
 
-    public void pivotShooter(double speed) {
+    public void runPivot(double speed) {
         pivotTalon.set(speed);
     }
 
