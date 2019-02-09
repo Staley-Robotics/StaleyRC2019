@@ -31,4 +31,8 @@ public class RobotMap {
 	// ***** Hatch Slinging Slasher Ports *****
 	public static final int HATCH_SOLENOID = 3;
 	public static final int HATCH_PIVOT_MOTOR = 2;
+
+	public static final int SHOOTER_LEFT_TALON = 10;
+	public static final int SHOOTER_RIGHT_TALON = 11;
+	public static final int SHOOTER_TOP_TALON = 12;
 }

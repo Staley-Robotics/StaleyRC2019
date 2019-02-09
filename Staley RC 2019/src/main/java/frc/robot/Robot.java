@@ -22,6 +22,7 @@ import frc.robot.commands.auto.modes.SickoMode;
 import frc.robot.commands.auto.modes.VisionTurnTest;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.util.Constants;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.PathfinderFRC;
@@ -41,7 +42,6 @@ public class Robot extends TimedRobot {
   private DriveTrain driveTrain;
   private Command autonomousCommand;
   private SendableChooser<Command> chooser = new SendableChooser<>();
-
   private EncoderFollower leftFollower;
   private EncoderFollower rightFollower;
 
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Drive 100 inches", new DriveTurn(100, 0.8, 0));
     chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
     chooser.addOption("Drive 108 inches", new DriveTurn(108, 0.8, 0));
-    // chooser.addOption("Follow Path", new FollowPath());
+    //chooser.addOption("Follow Path", new FollowPath());
 
     SmartDashboard.putData("Auto mode", chooser);
 
@@ -130,18 +130,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // autonomousCommand = chooser.getSelected();
+     autonomousCommand = chooser.getSelected();
 
     // schedule the autonomous command (example)
-    // if (autonomousCommand != null) {
-    // autonomousCommand.start();
-    // }
+     if (autonomousCommand != null) {
+     autonomousCommand.start();
+     }
     // leftTrajectory = Pathfinder.readFromCSV(new File(
     // "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC
     // 2019\\src\\main\\resources\\output\\DriveAutoLine.right.pf1.csv"));
     // rightTrajectory = Pathfinder.readFromCSV(new File(
     // "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC
     // 2019\\src\\main\\resources\\output\\DriveAutoLine.left.pf1.csv"));
+    /*
     System.out.println("Hitting");
 
     Trajectory rightTrajectory;
@@ -179,6 +180,7 @@ public class Robot extends TimedRobot {
 
     followerNotifier = new Notifier(this::followPath);
     followerNotifier.startPeriodic(leftTrajectory.get(0).dt);
+    */
 
   }
 
@@ -194,8 +196,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
+      
+    //followerNotifier.stop();
     }
-    followerNotifier.stop();
     driveTrain.tankDrive(0, 0);
   }
 
@@ -248,7 +251,8 @@ public class Robot extends TimedRobot {
         right = rightSpeed - turn;
       }
       System.out.println(driveTrain.getRightMaster().getMotorOutputVoltage());
-      System.out.println(driveTrain.getLeftMaster().getMotorOutputVoltage());
+      System.out.println(
+driveTrain.getLeftMaster().getMotorOutputVoltage());
       System.out.println("driveTrain.tankDrive(" + left + ", " + right + "));");
       System.out.println("\n");
 

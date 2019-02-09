@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.drivetrain.ShifterToggle;
 import frc.robot.commands.hatch.HatchExtenderToggle;
 import frc.robot.commands.hatch.RunPivotMotor;
+import frc.robot.commands.shooter.RunShooter;
 import frc.robot.enums.XBoxButtons;
 
 /**
@@ -39,6 +40,9 @@ public class OI {
 
     Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getvalue());
     hatchToggle.whenPressed(new HatchExtenderToggle());
+
+    Button runShooter = new JoystickButton(altController, XBoxButtons.kA.getvalue());
+    hatchToggle.whileHeld(new RunShooter(0.4));
   }
 
   public static OI getInstance() {
@@ -74,5 +78,13 @@ public class OI {
 
   public double getAltRightTrigger() {
     return altController.getTriggerAxis(Hand.kRight);
+  }
+
+  public double getAltLeftY() {
+    return altController.getY(Hand.kLeft);
+  }
+
+  public double getAltRightY() {
+    return altController.getY(Hand.kRight);
   }
 }
