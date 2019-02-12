@@ -30,7 +30,7 @@ public class Shooter extends Subsystem {
         rightMotor = new Talon(RobotMap.SHOOTER_RIGHT_TALON);
         topMotor = new Talon(RobotMap.SHOOTER_TOP_TALON);
 
-        shooterPiston = new Solenoid(9);
+        shooterPiston = new Solenoid(7);//9, >=8 gives an error
 
         pivotTalon = SpeedControllerFactory.createMasterSrx(6, false, true);
         pivotVictor = SpeedControllerFactory.createFollowerSpx(9, pivotTalon, true);
