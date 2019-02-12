@@ -2,7 +2,6 @@ package frc.robot.commands.auto.commands;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
@@ -89,11 +88,11 @@ public class GyroTurning extends Command implements PIDOutput {
     }
 
     private double bindTo180(double angle) {
-        // Keshvi magic
-        while(angle >= 180) {
+        // Not Keshvi magic - She couldn't figure it out
+        while (angle >= 180) {
             angle -= 360;
         }
-        while(angle < -180) {
+        while (angle < -180) {
             angle += 360;
         }
         return angle;
