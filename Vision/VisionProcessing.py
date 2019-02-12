@@ -175,7 +175,7 @@ green_blur = 7
 orange_blur = 27
 
 # define range of green of retroreflective tape in HSV
-lower_green = np.array([0,200,25]) # 0,220,25
+lower_green = np.array([0,210,25]) # 0,220,25s
 upper_green = np.array([121,255,255]) # 101,255,255
 #define range of orange from cargo ball in HSV
 lower_orange = np.array([0,193,92])
@@ -332,6 +332,7 @@ def findBall(contours, image, centerX, centerY):
             # Draws yaw of target + line where center of target is
             cv2.putText(image, "Yaw: " + str(finalTarget), (40, 40), cv2.FONT_HERSHEY_COMPLEX, .6,
                         (255, 255, 255))
+           
             cv2.line(image, (xCoord, screenHeight), (xCoord, 0), (255, 0, 0), 2)
 
             currentAngleError = finalTarget
@@ -385,7 +386,6 @@ def findTape(contours, image, centerX, centerY):
                     yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
                     # Calculates yaw of contour (horizontal position in degrees)
                     pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
-
                     ##### DRAWS CONTOUR######
                     # Gets rotated bounding rectangle of contour
                     rect = cv2.minAreaRect(cnt)
@@ -399,8 +399,10 @@ def findTape(contours, image, centerX, centerY):
 
                     # Calculates yaw of contour (horizontal position in degrees)
                     yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
-                    # Calculates yaw of contour (horizontal position in degrees)
+                    # Calculates pitch of contour (vertical position in degrees)
                     pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
+
+                    
 
 
                     # Draws a vertical white line passing through center of contour
@@ -446,7 +448,8 @@ def findTape(contours, image, centerX, centerY):
             cy2 = biggestCnts[i + 1][1]
             # If contour angles are opposite
             if (np.sign(tilt1) != np.sign(tilt2)):
-                centerOfTarget = math.floor((cx1 + cx2) / 2)
+                centerOfTargetX = math.floor((cx1 + cx2) / 2)
+                centerOfTargetY = math.floor((cy1+cy2)/2)
                 #ellipse negative tilt means rotated to right
                 #Note: if using rotated rect (min area rectangle)
                 #      negative tilt means rotated to left
@@ -459,10 +462,15 @@ def findTape(contours, image, centerX, centerY):
                     if (cx2 < cx1):
                         continue
                 #Angle from center of camera to target (what you should pass into gyro)
-                yawToTarget = calculateYaw(centerOfTarget, centerX, H_FOCAL_LENGTH)
+                yawToTarget = calculateYaw(centerOfTargetX, centerX, H_FOCAL_LENGTH)
+                pitch = calculatePitch(centerOfTargetY,centerY,V_FOCAL_LENGTH)
+                if pitch != 0:
+                    distanceToTarget =calculateDistance(29,7,pitch)
+                else:
+                    distanceToTarget = 0
                 #Make sure no duplicates, then append
-                if [centerOfTarget, yawToTarget] not in targets:
-                    targets.append([centerOfTarget, yawToTarget])
+                if [centerOfTargetX, yawToTarget,distanceToTarget,pitch] not in targets:
+                    targets.append([centerOfTargetX, yawToTarget,distanceToTarget,pitch])
     #Check if there are targets seen
     if (len(targets) > 0):
         # pushes that it sees vision target to network tables
@@ -474,18 +482,20 @@ def findTape(contours, image, centerX, centerY):
         #Draws yaw of target + line where center of target is
         cv2.putText(image, "Yaw: " + str(finalTarget[1]), (40, 40), cv2.FONT_HERSHEY_COMPLEX, .6,
                     (255, 255, 255))
+        #cv2.putText(image, "Distance: " + str(finalTarget[2]), (20, 100), cv2.FONT_HERSHEY_COMPLEX, .3,
+        #            (255, 255, 255))
+        print("Pitch: " + str(finalTarget[3]))
+        print("Distance: " + str(finalTarget[2]))
         cv2.line(image, (finalTarget[0], screenHeight), (finalTarget[0], 0), (255, 0, 0), 2)
 
         currentAngleError = finalTarget[1]
         # pushes vision target angle to network tables
         networkTable.putNumber("tapeYaw", currentAngleError)
 
-        print("Tape Detected")
     else:
         # pushes that it deosn't see vision target to network tables
         networkTable.putBoolean("tapeDetected", False)
         networkTable.putNumber("tapeYaw", 0)
-        print("No Tape Detected")
 
 
     cv2.line(image, (round(centerX), screenHeight), (round(centerX), 0), (255, 255, 255), 2)
@@ -752,7 +762,7 @@ if __name__ == "__main__":
                 boxBlur = blurImg(frame, orange_blur)
                 threshold = threshold_video(lower_orange, upper_orange, boxBlur)
                 processed = findCargo(frame, threshold)
-        #Puts timestamp of camera on netowrk tables
+        #Puts timestamp of camera on network tables
         networkTable.putNumber("VideoTimestamp", timestamp)
         streamViewer.frame = processed;
         # update the FPS counter

@@ -17,12 +17,17 @@ import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
+import frc.robot.commands.auto.commands.VisionTurning;
+import frc.robot.commands.auto.commands.VisionTurning2;
 import frc.robot.commands.auto.modes.AutoBrettV6;
+import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
+import frc.robot.commands.auto.modes.MidToFrontCargoRight;
 import frc.robot.commands.auto.modes.SickoMode;
 import frc.robot.commands.auto.modes.VisionTurnTest;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 import frc.robot.util.Constants;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.PathfinderFRC;
@@ -62,16 +67,18 @@ public class Robot extends TimedRobot {
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
 
-    chooser.setDefaultOption("Delay", new Delay(5));
+    // chooser.setDefaultOption("Delay", new Delay(5));
+    chooser.setDefaultOption("Mid front cargo left", new MidToFrontCargoLeft());
+    chooser.addOption("Mid front cargo right", new MidToFrontCargoRight());
     chooser.addOption("AutoBrett", new AutoBrettV6());
-    chooser.addOption("Turn 90", new GyroTurning(90));
-    chooser.addOption("Sicko Mode", new SickoMode());
-    chooser.addOption("Vision Turn", new VisionTurnTest());
-    chooser.addOption("Reset Encoders", new ResetEncoders());
-    chooser.addOption("Drive 100 inches", new DriveTurn(100, 0.8, 0));
-    chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
-    chooser.addOption("Drive 108 inches", new DriveTurn(108, 0.8, 0));
-    //chooser.addOption("Follow Path", new FollowPath());
+    // chooser.addOption("Turn 90", new GyroTurning(90));
+    // chooser.addOption("Sicko Mode", new SickoMode());
+    chooser.addOption("Vision Turn", new VisionTurning2());
+    // chooser.addOption("Reset Encoders", new ResetEncoders());
+    // chooser.addOption("Drive 100 inches", new DriveTurn(100, 0.8, 0));
+    // chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
+    // chooser.addOption("Drive 108 inches", new DriveTurn(108, 0.8, 0));
+    // chooser.addOption("Follow Path", new FollowPath());
 
     SmartDashboard.putData("Auto mode", chooser);
 
@@ -100,6 +107,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Shifter State", DriveTrain.gearState.toString());
     // driveTrain.putCrap(); This might be taking too long and causing the annoying
     // warning messages about the overriding 20ms loop
+
+    Vision.getInstance().setTapeTrue();
   }
 
   /**
@@ -130,12 +139,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-     autonomousCommand = chooser.getSelected();
+    autonomousCommand = chooser.getSelected();
 
     // schedule the autonomous command (example)
-     if (autonomousCommand != null) {
-     autonomousCommand.start();
-     }
+    if (autonomousCommand != null) {
+      autonomousCommand.start();
+    }
     // leftTrajectory = Pathfinder.readFromCSV(new File(
     // "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC
     // 2019\\src\\main\\resources\\output\\DriveAutoLine.right.pf1.csv"));
@@ -143,44 +152,39 @@ public class Robot extends TimedRobot {
     // "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC
     // 2019\\src\\main\\resources\\output\\DriveAutoLine.left.pf1.csv"));
     /*
-    System.out.println("Hitting");
-
-    Trajectory rightTrajectory;
-    Trajectory leftTrajectory;
-
-    // Waypoint[] points = new Waypoint[] {
-    // new Waypoint(0, 0, 0),
-    // new Waypoint(2, 0, 0),
-    // new Waypoint(4, 0, 0) };
-    // Trajectory.Config config = new
-    // Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-    // Trajectory.Config.SAMPLES_HIGH,
-    // 0.05, 1.7, 2.0, 60.0);
-    // Trajectory trajectory = Pathfinder.generate(points, config);
-
-    // // Wheelbase Width = 0.635m
-    // TankModifier modifier = new TankModifier(trajectory).modify(0.635);
-
-    // // Do something with the new Trajectories...
-    // Trajectory leftTrajectory = modifier.getLeftTrajectory();
-    // Trajectory rightTrajectory = modifier.getRightTrajectory();
-    rightTrajectory = PathfinderFRC.getTrajectory("DriveAutoLine.left");
-    leftTrajectory = PathfinderFRC.getTrajectory("DriveAutoLine.right");
-
-    leftFollower = new EncoderFollower(leftTrajectory);
-    rightFollower = new EncoderFollower(rightTrajectory);
-
-    leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int) Constants.PULSES_PER_REV,
-        Constants.WHEEL_DIAMETER);
-    leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
-
-    rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int) Constants.PULSES_PER_REV,
-        Constants.WHEEL_DIAMETER);
-    rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
-
-    followerNotifier = new Notifier(this::followPath);
-    followerNotifier.startPeriodic(leftTrajectory.get(0).dt);
-    */
+     * System.out.println("Hitting");
+     * 
+     * Trajectory rightTrajectory; Trajectory leftTrajectory;
+     * 
+     * // Waypoint[] points = new Waypoint[] { // new Waypoint(0, 0, 0), // new
+     * Waypoint(2, 0, 0), // new Waypoint(4, 0, 0) }; // Trajectory.Config config =
+     * new // Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, //
+     * Trajectory.Config.SAMPLES_HIGH, // 0.05, 1.7, 2.0, 60.0); // Trajectory
+     * trajectory = Pathfinder.generate(points, config);
+     * 
+     * // // Wheelbase Width = 0.635m // TankModifier modifier = new
+     * TankModifier(trajectory).modify(0.635);
+     * 
+     * // // Do something with the new Trajectories... // Trajectory leftTrajectory
+     * = modifier.getLeftTrajectory(); // Trajectory rightTrajectory =
+     * modifier.getRightTrajectory(); rightTrajectory =
+     * PathfinderFRC.getTrajectory("DriveAutoLine.left"); leftTrajectory =
+     * PathfinderFRC.getTrajectory("DriveAutoLine.right");
+     * 
+     * leftFollower = new EncoderFollower(leftTrajectory); rightFollower = new
+     * EncoderFollower(rightTrajectory);
+     * 
+     * leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int)
+     * Constants.PULSES_PER_REV, Constants.WHEEL_DIAMETER);
+     * leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
+     * 
+     * rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int)
+     * Constants.PULSES_PER_REV, Constants.WHEEL_DIAMETER);
+     * rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
+     * 
+     * followerNotifier = new Notifier(this::followPath);
+     * followerNotifier.startPeriodic(leftTrajectory.get(0).dt);
+     */
 
   }
 
@@ -196,8 +200,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
-      
-    //followerNotifier.stop();
+
+      // followerNotifier.stop();
     }
     driveTrain.tankDrive(0, 0);
   }
@@ -251,8 +255,7 @@ public class Robot extends TimedRobot {
         right = rightSpeed - turn;
       }
       System.out.println(driveTrain.getRightMaster().getMotorOutputVoltage());
-      System.out.println(
-driveTrain.getLeftMaster().getMotorOutputVoltage());
+      System.out.println(driveTrain.getLeftMaster().getMotorOutputVoltage());
       System.out.println("driveTrain.tankDrive(" + left + ", " + right + "));");
       System.out.println("\n");
 

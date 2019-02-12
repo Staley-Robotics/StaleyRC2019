@@ -15,25 +15,26 @@ public class DriveTurn extends Command {
 
 	private double desiredDistance;
 	private double desiredPower;
+	private double startingDisplacement;
 	private double currentDisplacement;
 	
 	private final int pThreshold = 4;//5
 	private final double stopThreshold = 0.5;
 	
-	private double turn;
+	private double turnPower;
 	private double startingAngle;
 	private double currentAngle;
 
 	private final double kP = 0.15;
 
-	public DriveTurn(double inches, double power, double turn) {
+	public DriveTurn(double inches, double power, double turnPower) {
         driveTrain = DriveTrain.getInstance();
         requires(driveTrain);
 		
 		desiredDistance = inches;
 		desiredPower = power;
 		
-		this.turn = turn;
+		this.turnPower = turnPower;
 	}
 	public DriveTurn(double pulses, double power, double turn, boolean b){
 		driveTrain = DriveTrain.getInstance();
@@ -42,12 +43,13 @@ public class DriveTurn extends Command {
 		desiredDistance = driveTrain.pulsesToInches(pulses);
 		desiredPower = power;
 		
-		this.turn = turn;
+		this.turnPower = turn;
 		
 	}
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		driveTrain.zeroDriveEncoders();
+		// driveTrain.zeroDriveEncoders();
+		startingDisplacement = driveTrain.pulsesToInches(driveTrain.getPosition());
 		
 		startingAngle = driveTrain.getYaw();
 		currentAngle = startingAngle;
@@ -58,23 +60,23 @@ public class DriveTurn extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		currentAngle = driveTrain.getYaw() - startingAngle;
-		currentDisplacement = driveTrain.pulsesToInches(driveTrain.getPosition());
+		currentDisplacement = driveTrain.pulsesToInches(driveTrain.getPosition()) - startingDisplacement;
 		
 		double error = Math.abs(desiredDistance) - Math.abs(currentDisplacement);
-		double anglet = 0.24;
+		double kTurnP = 0.24;
 		if (error < pThreshold) {
-			if (turn == 0 && desiredPower > 0) {
-				driveTrain.arcadeDrive(error * kP, -currentAngle * anglet);
-			} else if (turn == 0 && desiredPower < 0) {
-				driveTrain.arcadeDrive(-error * kP, currentAngle * anglet);
+			if (turnPower == 0 && desiredPower > 0) {
+				driveTrain.arcadeDrive(error * kP, -currentAngle * kTurnP);
+			} else if (turnPower == 0 && desiredPower < 0) {
+				driveTrain.arcadeDrive(-error * kP, currentAngle * kTurnP);
 			} else {
-				driveTrain.arcadeDrive(desiredPower, turn);
+				driveTrain.arcadeDrive(desiredPower, turnPower);
 			}
 		} else {
-			if (turn == 0) {
-				driveTrain.arcadeDrive(desiredPower, -currentAngle * anglet);
+			if (turnPower == 0) {
+				driveTrain.arcadeDrive(desiredPower, -currentAngle * kTurnP);
 			} else {
-				driveTrain.arcadeDrive(desiredPower, turn);
+				driveTrain.arcadeDrive(desiredPower, turnPower);
 			}
 		}
 		System.out.println(TAG + "Gyro: " + currentAngle + "\t\tError: " + error  + "\t\tCurrent Diplacemnt: " + currentDisplacement);
@@ -91,6 +93,7 @@ public class DriveTurn extends Command {
 	protected void end() {
 		System.out.println(TAG + "Target: " + desiredDistance + "\tCurrent Displacement: " + currentDisplacement + "\n");
 		driveTrain.arcadeDrive(0, 0);
+		currentDisplacement = 0;
 	}
 
 	// Called when another command which requires one or more of the same

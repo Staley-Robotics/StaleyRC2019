@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.commands.VisionTurning;
+import frc.robot.commands.climber.FrontLifterToggle;
+import frc.robot.commands.climber.RearLifterToggle;
+import frc.robot.commands.climber.ShiftToClimberToggle;
 import frc.robot.commands.drivetrain.ShifterToggle;
 import frc.robot.commands.hatch.HatchExtenderToggle;
 import frc.robot.commands.hatch.RunPivotMotor;
@@ -35,14 +39,25 @@ public class OI {
     Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
     shifterToggle.whenPressed(new ShifterToggle());
 
-    // Button lifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
-    //lifterToggle.whenPressed(new LifterToggle());
+    Button shiftToClimberToggle = new JoystickButton(driveController, XBoxButtons.kX.getvalue());
+    //shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
+
+    Button rearLifterToggle = new JoystickButton(driveController, XBoxButtons.kY.getvalue());
+    //rearLifterToggle.whenPressed(new RearLifterToggle());
+
+    Button frontLifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
+    //frontLifterToggle.whenPressed(new FrontLifterToggle());
 
     Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getvalue());
     hatchToggle.whenPressed(new HatchExtenderToggle());
 
     Button runShooter = new JoystickButton(altController, XBoxButtons.kA.getvalue());
     hatchToggle.whileHeld(new RunShooter(0.4));
+
+    Button setPivotLow = new JoystickButton(altController, XBoxButtons.kUp.getvalue());
+    // What thi supposed be setPivotLow.whenPressed(new Se);
+    Button focus = new JoystickButton(driveController, XBoxButtons.kBumperRight.getvalue());
+    focus.whenPressed(new VisionTurning());
   }
 
   public static OI getInstance() {
