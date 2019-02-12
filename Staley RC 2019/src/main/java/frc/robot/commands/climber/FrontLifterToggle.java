@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Climber;
@@ -6,16 +6,13 @@ import frc.robot.subsystems.Climber;
 /**
  * Toggles the front piston for the climber.
  */
-public class LifterToggle extends Command {
+public class FrontLifterToggle extends Command {
 
 	private static boolean out;
 
 	private Climber climber;
 
-	// Color lowColor = Color.RED;
-	// Color highColor = Color.GREEN;
-
-	public LifterToggle() {
+	public FrontLifterToggle() {
 		climber = Climber.getInstance();
 		requires(climber);
 	}

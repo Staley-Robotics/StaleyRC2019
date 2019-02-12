@@ -10,10 +10,12 @@ public class Climber extends Subsystem {
 
     private DoubleSolenoid frontLifter;
     private DoubleSolenoid rearLifter;
+    private DoubleSolenoid shiftToClimber;
 
     private Climber() {
         frontLifter = new DoubleSolenoid(2, 3);
         rearLifter = new DoubleSolenoid(3, 4);
+        shiftToClimber = new DoubleSolenoid(4, 5);
     }
 
     public static Climber getInstance() {
@@ -43,5 +45,13 @@ public class Climber extends Subsystem {
 
     public void retractRear() {
         rearLifter.set(Value.kReverse);
+    }
+
+    public void shiftToClimber() {
+        shiftToClimber.set(Value.kForward);
+    }
+
+    public void shiftToDrive() {
+        shiftToClimber.set(Value.kReverse);
     }
 }
