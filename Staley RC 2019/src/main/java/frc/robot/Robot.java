@@ -24,6 +24,7 @@ import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
 import frc.robot.commands.auto.modes.MidToFrontCargoRight;
 import frc.robot.commands.auto.modes.SickoMode;
 import frc.robot.commands.auto.modes.VisionTurnTest;
+import frc.robot.commands.drivetrain.EncoderDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -33,7 +34,6 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
     // chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
     // chooser.addOption("Drive 108 inches", new DriveTurn(108, 0.8, 0));
     // chooser.addOption("Follow Path", new FollowPath());
-
+    chooser.addOption("Encoder drive 600 ", new EncoderDrive(600, 800));
     SmartDashboard.putData("Auto mode", chooser);
 
     SmartDashboard.putData(new ResetGyro());
