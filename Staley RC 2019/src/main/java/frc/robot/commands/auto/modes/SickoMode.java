@@ -3,14 +3,20 @@ package frc.robot.commands.auto.modes;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.commands.DriveTurn;
+import frc.robot.commands.drivetrain.EncoderDrive;
 
+/**
+ * This shouldnt even be a thing yeet
+ */
 public class SickoMode extends CommandGroup {
 
     public SickoMode() {
         // addSequential(new GyroTurning(-90), 5);
-        MoBamba();
+        //MoBamba();
+        addSequential(new EncoderDrive(3000,3500));
+        int yee;
     }
-
+    //sicko mode uses encoder turn
     public void MoBamba() {
         double val = 0.6;
         int ang = 1;

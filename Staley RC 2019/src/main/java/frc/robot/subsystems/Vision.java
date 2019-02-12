@@ -50,4 +50,7 @@ public class Vision extends Subsystem {
     tape = table.getEntry("Tape");
     tape.setBoolean(true);
   }
+  public boolean tapeDetected(){
+    return tape.getBoolean(false);
+  }
 }

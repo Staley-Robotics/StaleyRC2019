@@ -16,8 +16,8 @@ package frc.robot;
 public class RobotMap {
 
   // ***** HID Controllers *****
-	public static final int XBOX_PORT = 0;
-	public static final int XBOX_TWO_PORT = 1;
+	public static final int XBOX_DRIVE_PORT = 0;
+	public static final int XBOX_ALT_PORT = 1;
 
 	// ***** Motor/Speed Controller Ports *****
 	public static final int LEFT_MASTER_DRIVE_CAN_ID = 4;
@@ -27,6 +27,12 @@ public class RobotMap {
 
 	// ***** Pneumatics Ports *****
 	public static final int COMPRESSOR_PORT = 0;
-	public static final int SOLENOID_FORWARD = 0;
-	public static final int SOLENOID_REVERSE = 1;
+
+	// ***** Hatch Slinging Slasher Ports *****
+	public static final int HATCH_SOLENOID = 3;
+	public static final int HATCH_PIVOT_MOTOR = 2;
+
+	public static final int SHOOTER_LEFT_TALON = 10;
+	public static final int SHOOTER_RIGHT_TALON = 11;
+	public static final int SHOOTER_TOP_TALON = 12;
 }
