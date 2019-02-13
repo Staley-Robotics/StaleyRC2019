@@ -3,6 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Vision;
 
+/**
+ * Sets boolean tape value to true in NetworkTables
+ */
 public class PutNewtorkTableValues extends Command {
 
     private Vision vision;

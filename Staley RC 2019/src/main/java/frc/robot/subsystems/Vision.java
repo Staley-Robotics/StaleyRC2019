@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.PutNewtorkTableValues;
 
 /**
- * Add your docs here.
+ * Retrieves data from NetworkTables for Vision use
  */
 public class Vision extends Subsystem {
 
@@ -42,15 +42,27 @@ public class Vision extends Subsystem {
   public void initDefaultCommand() {
     setDefaultCommand(new PutNewtorkTableValues());
   }
-  public double getYaw(){
+
+  public double getYaw() {
     tapeYaw = table.getEntry("tapeYaw");
     return tapeYaw.getDouble(0.0);
   }
+  /**
+   * For PyVision to process image, tape must be true
+   */
   public void setTapeTrue() {
     tape = table.getEntry("Tape");
     tape.setBoolean(true);
   }
-  public boolean tapeDetected(){
+  /**
+   * In case we want PyVision to not process the image, call this
+   */
+  public void setTapeFalse(){
+    tape = table.getEntry("Tape");
+    tape.setBoolean(false);
+  }
+
+  public boolean tapeDetected() {
     return tape.getBoolean(false);
   }
 }

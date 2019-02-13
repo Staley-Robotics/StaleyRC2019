@@ -1,9 +1,20 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.DriveTrain;
 
+/**
+ * Controls the power to the drivetrain with input from a controller. This
+ * command is always active.
+ */
 public class ControllerDrive extends Command {
 
     private DriveTrain driveTrain;
@@ -22,18 +33,13 @@ public class ControllerDrive extends Command {
     @Override
     protected void execute() {
 
-        // double leftPower = -1 * OI.getInstance().getDriveLeftY();
-        // double rightPower = -1 * OI.getInstance().getDriveRightY();
-
-        // System.out.println("Left Stick: " + leftPower + "\tRight Power: " + rightPower);
-
-        // driveTrain.tankDrive(leftPower, rightPower);
-
         double forwardPower = OI.getInstance().getDriveRightTrigger();
         double reversePower = OI.getInstance().getDriveLeftTrigger();
         double turnPower = OI.getInstance().getDriveLeftX();
 
         driveTrain.worldOfTanksDrive(forwardPower, reversePower, turnPower);
+
+        // driveTrain.tankDrive(leftPower, rightPower);
     }
 
     // Make this return true when this Command no longer needs to run execute()

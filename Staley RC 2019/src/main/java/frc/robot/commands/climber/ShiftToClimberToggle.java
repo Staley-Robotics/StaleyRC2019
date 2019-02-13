@@ -10,6 +10,9 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Climber;
 
+/**
+ * Toggles between climber mode and drive mode
+ */
 public class ShiftToClimberToggle extends Command {
 
   private Climber climber;

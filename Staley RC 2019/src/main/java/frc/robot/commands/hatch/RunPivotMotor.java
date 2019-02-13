@@ -11,12 +11,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
+/**
+ * Pivots hatch collecting mechanism
+ */
 public class RunPivotMotor extends Command {
 
   private static OI oi;
   private static HatchSlingingSlasher hatchSlingingSlasher;
-
-  private double speed;
 
   public RunPivotMotor() {
     hatchSlingingSlasher = HatchSlingingSlasher.getInstance();
@@ -35,9 +36,9 @@ public class RunPivotMotor extends Command {
     double forwardPower = oi.getAltRightTrigger();
     double reversePower = oi.getAltLeftTrigger();
 
-    if(forwardPower > 0.1) {
+    if (forwardPower > 0.1) {
       hatchSlingingSlasher.runPivotMotor(forwardPower);
-    } else if(reversePower > 0.1) {
+    } else if (reversePower > 0.1) {
       hatchSlingingSlasher.runPivotMotor(reversePower);
     } else {
       hatchSlingingSlasher.runPivotMotor(0);

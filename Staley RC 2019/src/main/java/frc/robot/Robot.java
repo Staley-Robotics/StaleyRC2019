@@ -13,27 +13,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.commands.Delay;
-import frc.robot.commands.auto.commands.DriveTurn;
-import frc.robot.commands.auto.commands.GyroTurning;
 import frc.robot.commands.auto.commands.ResetGyro;
-import frc.robot.commands.auto.commands.VisionTurning;
 import frc.robot.commands.auto.commands.VisionTurning2;
 import frc.robot.commands.auto.modes.AutoBrettV6;
 import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
 import frc.robot.commands.auto.modes.MidToFrontCargoRight;
-import frc.robot.commands.auto.modes.SickoMode;
-import frc.robot.commands.auto.modes.VisionTurnTest;
 import frc.robot.commands.drivetrain.EncoderDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
-import frc.robot.util.Constants;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -105,8 +97,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
     SmartDashboard.putString("Shifter State", DriveTrain.gearState.toString());
-    // driveTrain.putCrap(); This might be taking too long and causing the annoying
-    // warning messages about the overriding 20ms loop
 
     Vision.getInstance().setTapeTrue();
   }

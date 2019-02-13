@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
+/**
+ * Toggles between extending and retracting the hatch placing mechanism
+ */
 public class HatchExtenderToggle extends Command {
 
   private HatchSlingingSlasher hatchSlingingSlasher;

@@ -10,6 +10,9 @@ package frc.robot.commands.hatch;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
+/**
+ * Pushes hatch panel off hatch holding mechanism to place panel
+ */
 public class ExtendHatchSlingingSlasher extends Command {
 
   private HatchSlingingSlasher hatchSlingingSlasher;
