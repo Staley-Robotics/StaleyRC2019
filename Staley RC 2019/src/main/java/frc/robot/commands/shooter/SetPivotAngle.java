@@ -10,14 +10,23 @@ package frc.robot.commands.shooter;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * Sets target angle for shooting mechanism. When started, will run until
+ * another target angle is given or input from controller is received
+ */
 public class SetPivotAngle extends Command {
 
+  private OI oi;
   private Shooter shooter;
-  
 
-  public SetPivotAngle(int iterable) {
+  private double targetAngle;
+
+  public SetPivotAngle(double angle) {
     shooter = Shooter.getInstance();
     requires(shooter);
+    oi = OI.getInstance();
+
+    targetAngle = angle;
   }
 
   // Called just before this Command runs the first time
