@@ -9,72 +9,49 @@ package frc.robot.commands.auto.commands;
 
 import java.io.File;
 
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.Constants;
 import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.PathfinderFRC;
-import jaci.pathfinder.PathfinderJNI;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
 
+/**
+ * Follows PathWeaver and PathFinder, Doesn't work
+ */
 public class FollowPath extends Command {
+
+  private DriveTrain driveTrain;
 
   private EncoderFollower leftFollower;
   private EncoderFollower rightFollower;
 
-  // private Notifier followerNotifier;
-
   private Trajectory leftTrajectory;
   private Trajectory rightTrajectory;
 
-  private DriveTrain driveTrain;
+  // private Notifier followerNotifier;
 
   public FollowPath() {
-    System.out.println("a");
     driveTrain = DriveTrain.getInstance();
-    System.out.println("b");
     requires(driveTrain);
-    System.out.println("c");
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("d");
-    try {
-      System.out.println("e");
-      leftTrajectory = Pathfinder.readFromCSV(new File(
-          "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC 2019\\src\\main\\resources\\output\\DriveAutoLine.right.pf1.csv"));
-          System.out.println("f");
-    
-    } catch (Exception e) {
-      System.out.println('g');
-      //abcdefghijklmnopqrstuvwxyz
-      System.out.println("Failed on leftTrajectory ");
-      
-      e.printStackTrace();
-      System.out.println("h");
-    }
-    System.out.println("i");
-    try {
-      rightTrajectory = Pathfinder.readFromCSV(new File(
-          "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC 2019\\src\\main\\resources\\output\\DriveAutoLine.left.pf1.csv"));
-
-    } catch (Exception e) {
-      System.out.println("Failed on rightTrajectory ");
-      e.printStackTrace();
-    }
+    leftTrajectory = Pathfinder.readFromCSV(new File(
+        "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC 2019\\src\\main\\resources\\output\\DriveAutoLine.right.pf1.csv"));
+    rightTrajectory = Pathfinder.readFromCSV(new File(
+        "C:\\Users\\Staley Robotics\\Documents\\fuvk\\StaleyRC2019\\Staley RC 2019\\src\\main\\resources\\output\\DriveAutoLine.left.pf1.csv"));
 
     leftFollower = new EncoderFollower(leftTrajectory);
     rightFollower = new EncoderFollower(rightTrajectory);
 
-    leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int) Constants.PULSES_PER_REV,
+    leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int) Constants.PULSES_PER_REV_LOW,
         Constants.WHEEL_DIAMETER);
     leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
 
-    rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int) Constants.PULSES_PER_REV,
+    rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int) Constants.PULSES_PER_REV_LOW,
         Constants.WHEEL_DIAMETER);
     rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
 
@@ -116,18 +93,21 @@ public class FollowPath extends Command {
   }
 
   // private void followPath() {
-  //   if (leftFollower.isFinished() || rightFollower.isFinished()) {
-  //     followerNotifier.stop();
-  //   } else {
-  //     double leftSpeed = leftFollower.calculate((int) driveTrain.getLeftPosition());
-  //     double rightSpeed = rightFollower.calculate((int) driveTrain.getRightPosition());
+  // if (leftFollower.isFinished() || rightFollower.isFinished()) {
+  // followerNotifier.stop();
+  // } else {
+  // double leftSpeed = leftFollower.calculate((int)
+  // driveTrain.getLeftPosition());
+  // double rightSpeed = rightFollower.calculate((int)
+  // driveTrain.getRightPosition());
 
-  //     double heading = driveTrain.getYaw();
-  //     double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
-  //     double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading - heading);
-  //     double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
+  // double heading = driveTrain.getYaw();
+  // double desiredHeading = Pathfinder.r2d(leftFollower.getHeading());
+  // double headingDifference = Pathfinder.boundHalfDegrees(desiredHeading -
+  // heading);
+  // double turn = 0.8 * (-1.0 / 80.0) * headingDifference;
 
-  //     driveTrain.tankDrive(leftSpeed + turn, rightSpeed - turn);
-  //   }
+  // driveTrain.tankDrive(leftSpeed + turn, rightSpeed - turn);
+  // }
   // }
 }

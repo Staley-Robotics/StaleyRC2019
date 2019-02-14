@@ -11,22 +11,21 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
+/**
+ * Pivots hatch collecting mechanism during autonomous. Expected to be used with
+ * the timeout in a command group.
+ */
 public class RunPivotMotorAuto extends Command {
 
-  private static OI oi;
-  private static HatchSlingingSlasher hatchSlingingSlasher;
+  private HatchSlingingSlasher hatchSlingingSlasher;
 
-  private double speed;
+  private double power;
 
-  double forwardPower;
-  double reversePower;
-
-  public RunPivotMotorAuto(double forwardPower,double reversePower) {
+  public RunPivotMotorAuto(double power) {
     hatchSlingingSlasher = HatchSlingingSlasher.getInstance();
     requires(hatchSlingingSlasher);
-    oi = OI.getInstance();
-    this.forwardPower = forwardPower;
-    this.reversePower = reversePower;
+
+    this.power = power;
   }
 
   // Called just before this Command runs the first time
@@ -37,14 +36,7 @@ public class RunPivotMotorAuto extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    if(forwardPower > 0.1) {
-      hatchSlingingSlasher.runPivotMotor(forwardPower);
-    } else if(reversePower > 0.1) {
-      hatchSlingingSlasher.runPivotMotor(reversePower);
-    } else {
-      hatchSlingingSlasher.runPivotMotor(0);
-    }
+    hatchSlingingSlasher.runPivotMotor(power);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -56,11 +48,13 @@ public class RunPivotMotorAuto extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    hatchSlingingSlasher.runPivotMotor(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

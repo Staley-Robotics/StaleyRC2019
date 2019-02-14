@@ -11,17 +11,18 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
+/**
+ * Runs the pivot motor based off user input
+ */
 public class RunPivotMotor extends Command {
 
   private static OI oi;
   private static HatchSlingingSlasher hatchSlingingSlasher;
 
-  private double speed;
-
   public RunPivotMotor() {
+    oi = OI.getInstance();
     hatchSlingingSlasher = HatchSlingingSlasher.getInstance();
     requires(hatchSlingingSlasher);
-    oi = OI.getInstance();
   }
 
   // Called just before this Command runs the first time
@@ -35,9 +36,9 @@ public class RunPivotMotor extends Command {
     double forwardPower = oi.getAltRightTrigger();
     double reversePower = oi.getAltLeftTrigger();
 
-    if(forwardPower > 0.1) {
+    if (forwardPower > 0.1) {
       hatchSlingingSlasher.runPivotMotor(forwardPower);
-    } else if(reversePower > 0.1) {
+    } else if (reversePower > 0.1) {
       hatchSlingingSlasher.runPivotMotor(reversePower);
     } else {
       hatchSlingingSlasher.runPivotMotor(0);

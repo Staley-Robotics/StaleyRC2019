@@ -6,7 +6,7 @@ import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.drivetrain.EncoderDrive;
 
 /**
- * This shouldnt even be a thing yeet
+ * we're keepomg
  */
 public class SickoMode extends CommandGroup {
 

@@ -7,6 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+/**
+ * Creates default speed controllers with preset configs.
+ */
 public class SpeedControllerFactory {
 
     // PID Values for TalonSRX

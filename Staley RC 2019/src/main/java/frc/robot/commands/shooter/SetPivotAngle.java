@@ -12,18 +12,23 @@ import frc.robot.OI;
 import frc.robot.enums.ShooterPivotStates;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * Sets target angle for shooting mechanism. When started, will run until
+ * another target angle is given or input from controller is received
+ */
 public class SetPivotAngle extends Command {
-  
-  private Shooter shooter;
+
   private OI oi;
+  private Shooter shooter;
+
   private double targetAngle;
 
   public SetPivotAngle(double angle) {
-    targetAngle = angle;
     shooter = Shooter.getInstance();
     requires(shooter);
-
     oi = OI.getInstance();
+
+    targetAngle = angle;
   }
 
   // Called just before this Command runs the first time

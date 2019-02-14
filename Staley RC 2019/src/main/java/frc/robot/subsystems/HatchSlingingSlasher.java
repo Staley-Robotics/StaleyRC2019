@@ -13,23 +13,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.hatch.RunPivotMotor;
 
+/**
+ * Hatch placing and collecting mechanism that uses one piston to push the hatch
+ * off
+ */
 public class HatchSlingingSlasher extends Subsystem {
 
   private static HatchSlingingSlasher instance;
 
-  private static Solenoid hatchThing;
-  private static Talon pivotMotor;
+  private Talon pivotMotor;
+  private Solenoid hatchRelease;
 
   private HatchSlingingSlasher() {
-    hatchThing = new Solenoid(RobotMap.HATCH_SOLENOID);
-    pivotMotor = new Talon(RobotMap.HATCH_PIVOT_MOTOR);
+    pivotMotor = new Talon(RobotMap.HATCH_PIVOT_MOTOR_PORT);
+    hatchRelease = new Solenoid(RobotMap.HATCH_SOLENOID_PORT);
   }
 
   public static HatchSlingingSlasher getInstance() {
     if (instance == null) {
       instance = new HatchSlingingSlasher();
     }
-
     return instance;
   }
 
@@ -39,14 +42,14 @@ public class HatchSlingingSlasher extends Subsystem {
   }
 
   public void extend() {
-    hatchThing.set(true);
-  }
-  
-  public void retract() {
-    hatchThing.set(false);
+    hatchRelease.set(true);
   }
 
-  public void runPivotMotor(double speed) {
-    pivotMotor.set(speed);
+  public void retract() {
+    hatchRelease.set(false);
+  }
+
+  public void runPivotMotor(double power) {
+    pivotMotor.set(power);
   }
 }

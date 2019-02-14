@@ -11,10 +11,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.PutNewtorkTableValues;
 
 /**
- * Add your docs here.
+ * Handles everything vision related on the robot.
  */
 public class Vision extends Subsystem {
 
@@ -34,23 +33,30 @@ public class Vision extends Subsystem {
     if (instance == null) {
       instance = new Vision();
     }
-
     return instance;
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new PutNewtorkTableValues());
   }
-  public double getYaw(){
+
+  public double getYaw() {
     tapeYaw = table.getEntry("tapeYaw");
     return tapeYaw.getDouble(0.0);
   }
-  public void setTapeTrue() {
+
+  /**
+   * If trackTape is true, vision track. If it is false, the camera stream will
+   * not be affected.
+   * 
+   * @param trackTape Weather or not to track the tape using the pi
+   */
+  public void setTape(boolean trackTape) {
     tape = table.getEntry("Tape");
-    tape.setBoolean(true);
+    tape.setBoolean(trackTape);
   }
-  public boolean tapeDetected(){
+
+  public boolean tapeDetected() {
     return tape.getBoolean(false);
   }
 }

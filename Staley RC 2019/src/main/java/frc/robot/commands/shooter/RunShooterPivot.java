@@ -12,6 +12,9 @@ import frc.robot.OI;
 import frc.robot.enums.ShooterPivotStates;
 import frc.robot.subsystems.Shooter;
 
+/**
+ * Angles the shooting mechanism
+ */
 public class RunShooterPivot extends Command {
 
   private static OI oi;
@@ -58,6 +61,6 @@ public class RunShooterPivot extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-   end();
+    end();
   }
 }

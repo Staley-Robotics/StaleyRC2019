@@ -13,7 +13,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
 
+/**
+ * Uses gyro to turn the robot toward vision target until gyro yaw is zero
+ */
 public class VisionTurning2 extends Command implements PIDOutput {
+
+  // PID Values
+  private final double kP = 0.025; // 0.023 //0.03
+  private final double kI = 0.0; // 0
+  private final double kD = 0.06; // 0.06
 
   private DriveTrain driveTrain;
   private Vision vision;
@@ -23,11 +31,6 @@ public class VisionTurning2 extends Command implements PIDOutput {
   private double currentAngle;
   private double targetAngle;
   private double offset;
-
-  // PID Values
-  private final double kP = 0.025; // 0.023 //0.03
-  private final double kI = 0.0; // 0
-  private final double kD = 0.06; // 0.06
 
   public VisionTurning2() {
     requires(DriveTrain.getInstance());
@@ -48,10 +51,11 @@ public class VisionTurning2 extends Command implements PIDOutput {
     targetAngle = bindTo180(targetAngle);
 
     pidTurn = new PIDController(kP, kI, kD, driveTrain.getNavx(), this);
+
     // Range of angles that can be inputted
     pidTurn.setInputRange(-180, 180);
 
-    // prevent the motors from receiving too little power
+    // Prevents the motors from receiving too little power
     if (offset > 0)
       pidTurn.setOutputRange(0.5, 0.8);
     else if (offset < 0)
@@ -104,8 +108,15 @@ public class VisionTurning2 extends Command implements PIDOutput {
     driveTrain.arcadeDrive(0, output);
   }
 
+  /**
+   * Takes angle value and converts it to fall within a range of -180 to 180
+   * degrees
+   * 
+   * @param angle angle value
+   * @return angle value that falls between -180 and 180 degrees
+   */
   private double bindTo180(double angle) {
-    // Not Keshvi magic - She couldn't figure it out
+    // Keshvi magic; she is a math god
     while (angle >= 180) {
       angle -= 360;
     }

@@ -15,7 +15,7 @@ package frc.robot;
  */
 public class RobotMap {
 
-  // ***** HID Controllers *****
+	// ***** HID Controllers *****
 	public static final int XBOX_DRIVE_PORT = 0;
 	public static final int XBOX_ALT_PORT = 1;
 
@@ -25,14 +25,25 @@ public class RobotMap {
 	public static final int RIGHT_MASTER_DRIVE_CAN_ID = 2;
 	public static final int RIGHT_FOLLOWER_DRIVE_CAN_ID = 5;
 
-	// ***** Pneumatics Ports *****
+	// ***** Compressor Port *****
 	public static final int COMPRESSOR_PORT = 0;
 
 	// ***** Hatch Slinging Slasher Ports *****
-	public static final int HATCH_SOLENOID = 3;
-	public static final int HATCH_PIVOT_MOTOR = 2;
+	public static final int HATCH_SOLENOID_PORT = 3;
+	public static final int HATCH_PIVOT_MOTOR_PORT = 2;
 
-	public static final int SHOOTER_LEFT_TALON = 10;
-	public static final int SHOOTER_RIGHT_TALON = 11;
-	public static final int SHOOTER_TOP_TALON = 12;
+	// ***** Shooter Ports *****
+	public static final int SHOOTER_LEFT_TALON_PORT = 7;
+	public static final int SHOOTER_RIGHT_TALON_PORT = 8;
+	public static final int SHOOTER_TOP_TALON_PORT = 9;
+
+	// TODO: talonsrx and victorspx's id values need to be changed based off of
+	// which we use
+	public static final int SHOOTER_PIVOT_TALONSRX_CAN_ID = 3;
+	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 10;
+	
+	// ***** Climber Ports *****
+	public static final int FRONT_LIFTER_PORT = 9;
+	public static final int REAR_LIFTER_PORT = 8;
+	public static final int SHIFT_TO_CLIMBER_PORT = 7;
 }

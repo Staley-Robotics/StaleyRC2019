@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.DriveTurn;
 import frc.robot.commands.auto.commands.VisionTurning2;
-import frc.robot.commands.hatch.RunPivotMotorAuto;
 
+/**
+ * Drives robot from middle of Level 1 to left side of the front cargo
+ */
 public class MidToFrontCargoLeft extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
+
   public MidToFrontCargoLeft() {
     // Drive off ramp
     addSequential(new DriveTurn(50, 0.7, 0));
@@ -26,7 +26,7 @@ public class MidToFrontCargoLeft extends CommandGroup {
 
     addSequential(new DriveTurn(18, 0.7, 0.7));
 
-    // drive straight a bit (about halfway)
+    // drive straight halfway to cargo
     addSequential(new Delay(0.1));
     addSequential(new VisionTurning2(), 3);
 
@@ -36,21 +36,5 @@ public class MidToFrontCargoLeft extends CommandGroup {
 
     // addSequential(new RunPivotMotorAuto(0.5,0),0.5);
 
-    // Corrects itself one more time
-    // addSequential(new Delay(0.2));
-    // addSequential(new VisionTurning2());
-
-    // Drives the rest of the way towards the cargo ship
-    // addSequential(new DriveTurn(30,0.8,0.00)); // not correct distance
-    // addSequential(new DriveTurn(5,0.5,0));
-
-    // Vision turn
-    // vision turn temporary replacement
-    // addSequential(new DriveTurn(10,0.8,));
-    // Drive the rest of the way to the cargo bay
-
-    // place the hatch somehow
-
-    // win
   }
 }

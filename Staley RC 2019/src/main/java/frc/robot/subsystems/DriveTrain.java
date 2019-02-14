@@ -18,24 +18,21 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
 import frc.robot.util.SpeedControllerFactory;
 
-import java.util.ArrayList;
-
 /**
- * Add your docs here.
+ * Controls the basic drive functionality of the robot
  */
 public class DriveTrain extends Subsystem {
 
-  // public ArrayList<String> itsfine = new ArrayList<>();
   private final String TAG = (this.getName() + ": ");
 
   // number of inches per pulse for encoders
-  // private final double distancePerPulse = 0.0024543693; // (1/4096) * 8 * Math.PI * 0.4
+  // private final double distancePerPulse = 0.0024543693; // (1/4096) * 8 *
+  // Math.PI * 0.4
   private final double distancePerPulse = 0.002377670221223; // (1/4096) * 7.75 * Math.PI * 0.4
 
   private static DriveTrain instance;
@@ -58,12 +55,8 @@ public class DriveTrain extends Subsystem {
   public static GearStates gearState;
 
   private DoubleSolenoid shifter;
-  public WPI_TalonSRX getRightMaster(){
-    return rightMaster;
-  }
-  public WPI_TalonSRX getLeftMaster(){
-    return leftMaster;
-  }
+
+
   private DriveTrain() {
 
     // initialize gyro
@@ -93,15 +86,14 @@ public class DriveTrain extends Subsystem {
     drive.setRightSideInverted(false);
 
     shifter = new DoubleSolenoid(0, 1);
-    zeroDriveEncoders();
 
+    zeroDriveEncoders();
   }
 
   public static DriveTrain getInstance() {
     if (instance == null) {
       instance = new DriveTrain();
     }
-
     return instance;
   }
 
@@ -206,55 +198,6 @@ public class DriveTrain extends Subsystem {
 
     leftMaster.set(ControlMode.Position, target);
     rightMaster.set(ControlMode.Position, target);
-  }
-
-  //private int counter = 0;
-
-  public void putCrap() {
-    // counter ++;
-    // itsfine.add("addSequential(new DriveTurn(" + getLeftPosition() + ",val," + getYaw() + ",true));");
-    SmartDashboard.putNumber("Left Master Power", leftMaster.getMotorOutputPercent());
-    SmartDashboard.putNumber("Left Follower Power", leftFollower.getMotorOutputPercent());
-    SmartDashboard.putNumber("Right Master Power", rightMaster.getMotorOutputPercent());
-    SmartDashboard.putNumber("Right Follower Power", rightFollower.getMotorOutputPercent());
-
-    if (leftMaster.getControlMode() == ControlMode.Position) {
-      SmartDashboard.putNumber("Left Master Target", leftMaster.getClosedLoopTarget());
-      SmartDashboard.putNumber("Right Master Target", rightMaster.getClosedLoopTarget());
-    }
-    // System.out.println("counter: " + counter);
-    // if (counter > 300 * 5) {
-    //   System.out.println("hitting");
-    //   for (String Bethan : itsfine) {
-    //     System.out.println(Bethan);
-    //   }
-    // }
-
-  }
-
-  // public void cleanitsfine() {
-  //   ArrayList<String> cleaneritsfine = new ArrayList<String>();
-  //   for (int i = 0; i < itsfine.size() - 2; i++) {
-  //     if (!itsfine.get(i).equals(itsfine.get(i + 1))) {
-  //       cleaneritsfine.add(itsfine.get(i));
-  //     }
-  //   }
-  //   ArrayList<String> cleanercleaneritsfine = new ArrayList<String>();
-  //   for (int i = 0; i < cleaneritsfine.size() - 2; i++) {
-  //     if (!cleaneritsfine.get(i).equals(cleaneritsfine.get(i + 1))) {
-  //       cleanercleaneritsfine.add(cleaneritsfine.get(i));
-  //     }
-  //     itsfine = cleanercleaneritsfine;
-  //     for (String x : itsfine) {
-  //       System.out.println(x);
-  //     }
-  //   }
-
-  // }
-
-  public boolean onTarget() {
-    // leftMaster.getClosedLoopError();
-    return false;
   }
 
   /**
