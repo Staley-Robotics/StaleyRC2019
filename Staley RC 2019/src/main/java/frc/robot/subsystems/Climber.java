@@ -34,7 +34,6 @@ public class Climber extends Subsystem {
     if (instance == null) {
       instance = new Climber();
     }
-
     return instance;
   }
 
@@ -66,6 +65,9 @@ public class Climber extends Subsystem {
     shiftToClimber.set(Value.kForward);
   }
 
+  /**
+   * Shifts control back to the drivetrain
+   */
   public void shiftToDrive() {
     shiftToClimber.set(Value.kReverse);
   }

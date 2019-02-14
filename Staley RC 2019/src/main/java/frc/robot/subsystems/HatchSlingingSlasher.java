@@ -21,12 +21,12 @@ public class HatchSlingingSlasher extends Subsystem {
 
   private static HatchSlingingSlasher instance;
 
-  private static Solenoid hatchThing;
-  private static Talon pivotMotor;
+  private Talon pivotMotor;
+  private Solenoid hatchRelease;
 
   private HatchSlingingSlasher() {
-    hatchThing = new Solenoid(RobotMap.HATCH_SOLENOID_PORT);
     pivotMotor = new Talon(RobotMap.HATCH_PIVOT_MOTOR_PORT);
+    hatchRelease = new Solenoid(RobotMap.HATCH_SOLENOID_PORT);
   }
 
   public static HatchSlingingSlasher getInstance() {
@@ -42,11 +42,11 @@ public class HatchSlingingSlasher extends Subsystem {
   }
 
   public void extend() {
-    hatchThing.set(true);
+    hatchRelease.set(true);
   }
 
   public void retract() {
-    hatchThing.set(false);
+    hatchRelease.set(false);
   }
 
   public void runPivotMotor(double power) {

@@ -12,7 +12,7 @@ import frc.robot.OI;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
 /**
- * Pivots hatch collecting mechanism
+ * Runs the pivot motor based off user input
  */
 public class RunPivotMotor extends Command {
 
@@ -20,9 +20,9 @@ public class RunPivotMotor extends Command {
   private static HatchSlingingSlasher hatchSlingingSlasher;
 
   public RunPivotMotor() {
+    oi = OI.getInstance();
     hatchSlingingSlasher = HatchSlingingSlasher.getInstance();
     requires(hatchSlingingSlasher);
-    oi = OI.getInstance();
   }
 
   // Called just before this Command runs the first time

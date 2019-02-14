@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.shooter.RunShooterPivot;
+import frc.robot.enums.ShooterPivotSetpoints;
 import frc.robot.enums.ShooterPivotStates;
 import frc.robot.util.SpeedControllerFactory;
 
@@ -27,19 +28,21 @@ public class Shooter extends Subsystem {
 
     private static Shooter instance;
 
+    public static ShooterPivotStates shooterPivotState;
+    public static ShooterPivotSetpoints pivotSetpoints;
+
     private Talon leftMotor, rightMotor, topMotor;
-    private Solenoid shooterPiston;
     private WPI_TalonSRX pivotTalon;
     private WPI_VictorSPX pivotVictor;
 
-    public ShooterPivotStates shooterPivotState;
+    private Solenoid shooterPiston;
 
     private Shooter() {
         leftMotor = new Talon(RobotMap.SHOOTER_LEFT_TALON_PORT);
         rightMotor = new Talon(RobotMap.SHOOTER_RIGHT_TALON_PORT);
         topMotor = new Talon(RobotMap.SHOOTER_TOP_TALON_PORT);
 
-        shooterPiston = new Solenoid(7);// 9, >=8 gives an error
+        shooterPiston = new Solenoid(7); // 9, >=8 gives an error
 
         pivotTalon = SpeedControllerFactory.createMasterSrx(6, false, true);
         pivotVictor = SpeedControllerFactory.createFollowerSpx(9, pivotTalon, true);
@@ -88,8 +91,12 @@ public class Shooter extends Subsystem {
         pivotTalon.set(ControlMode.Position, angleToPulses(angle));
     }
 
+    public static void setAngle() {
+        
+    }
+
     /**
-     * Converts given angle value from degrees to pulses
+     * Converts given angle value from degrees to encoder pulses
      * 
      * @param angle angle in degrees
      * @return angle in pulses

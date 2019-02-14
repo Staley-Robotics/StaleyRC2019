@@ -15,9 +15,9 @@ import frc.robot.subsystems.Climber;
  */
 public class RearLifterToggle extends Command {
 
-	private static boolean out;
-
 	private Climber climber;
+
+	private static boolean isExtended;
 
 	public RearLifterToggle() {
 		climber = Climber.getInstance();
@@ -26,20 +26,20 @@ public class RearLifterToggle extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		out = false;
+		isExtended = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// Toggles to extend piston
-		if (out) {
+		if (isExtended) {
 			climber.retractRear();
-			out = false;
+			isExtended = false;
 		}
 		// Toggles to retract piston
 		else {
 			climber.extendRear();
-			out = true;
+			isExtended = true;
 		}
 	}
 
@@ -55,6 +55,5 @@ public class RearLifterToggle extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		end();
 	}
 }

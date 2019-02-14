@@ -15,17 +15,14 @@ import frc.robot.subsystems.DriveTrain;
  * Toggles the shifter between high and low gear
  */
 public class ShifterToggle extends Command {
-	
-    private final String TAG = (this.getName() + ": ");
-    
-    DriveTrain driveTrain;
-	
-	// Color lowColor = Color.RED;
-	// Color highColor = Color.GREEN;
+
+	private final String TAG = (this.getName() + ": ");
+
+	DriveTrain driveTrain;
 
 	public ShifterToggle() {
-        requires(DriveTrain.getInstance());
-        driveTrain = DriveTrain.getInstance();
+		driveTrain = DriveTrain.getInstance();
+		requires(driveTrain);
 	}
 
 	// Called just before this Command runs the first time
@@ -35,17 +32,17 @@ public class ShifterToggle extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// Toggles to high gear
-		if (driveTrain.gearState == GearStates.LOW_GEAR) {
+		if (DriveTrain.gearState == GearStates.LOW_GEAR) {
 			driveTrain.shiftHighGear();
-						
+
 			System.out.println(TAG + "High Gear");
 		}
 		// Toggles to low gear
 		else {
 			driveTrain.shiftLowGear();
-						
+
 			System.out.println(TAG + "Low Gear");
-        }
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -55,16 +52,11 @@ public class ShifterToggle extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		if (DriveTrain.gearState == GearStates.LOW_GEAR) {
-//			System.out.println(TAG + "Shifter on End");
-		} else {
-//			System.out.println(TAG + "Shifter off End");
-		}
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		this.end();
+		end();
 	}
 }

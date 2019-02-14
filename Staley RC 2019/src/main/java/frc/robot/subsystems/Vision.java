@@ -11,10 +11,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.PutNewtorkTableValues;
 
 /**
- * Retrieves data from NetworkTables for Vision use
+ * Handles everything vision related on the robot.
  */
 public class Vision extends Subsystem {
 
@@ -34,32 +33,27 @@ public class Vision extends Subsystem {
     if (instance == null) {
       instance = new Vision();
     }
-
     return instance;
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new PutNewtorkTableValues());
   }
 
   public double getYaw() {
     tapeYaw = table.getEntry("tapeYaw");
     return tapeYaw.getDouble(0.0);
   }
+
   /**
-   * For PyVision to process image, tape must be true
+   * If trackTape is true, vision track. If it is false, the camera stream will
+   * not be affected.
+   * 
+   * @param trackTape Weather or not to track the tape using the pi
    */
-  public void setTapeTrue() {
+  public void setTape(boolean trackTape) {
     tape = table.getEntry("Tape");
-    tape.setBoolean(true);
-  }
-  /**
-   * In case we want PyVision to not process the image, call this
-   */
-  public void setTapeFalse(){
-    tape = table.getEntry("Tape");
-    tape.setBoolean(false);
+    tape.setBoolean(trackTape);
   }
 
   public boolean tapeDetected() {

@@ -59,6 +59,10 @@ public class OI {
     
     Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperRight.getvalue());
     turnToTape.whenPressed(new VisionTurning());
+
+    Button pivotUp = new JoystickButton(altController, XBoxButtons.kBumperRight.getvalue());
+
+    Button pivotDown = new JoystickButton(altController, XBoxButtons.kBumperLeft.getvalue());
   }
 
   public static OI getInstance() {
@@ -121,5 +125,4 @@ public class OI {
   public double getAltRightTrigger() {
     return altController.getTriggerAxis(Hand.kRight);
   }
-
 }

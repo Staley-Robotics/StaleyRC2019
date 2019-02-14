@@ -16,6 +16,9 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
 
+/**
+ * Follows PathWeaver and PathFinder, Doesn't work
+ */
 public class FollowPath extends Command {
 
   private DriveTrain driveTrain;
@@ -44,11 +47,11 @@ public class FollowPath extends Command {
     leftFollower = new EncoderFollower(leftTrajectory);
     rightFollower = new EncoderFollower(rightTrajectory);
 
-    leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int) Constants.PULSES_PER_REV,
+    leftFollower.configureEncoder((int) driveTrain.getLeftPosition(), (int) Constants.PULSES_PER_REV_LOW,
         Constants.WHEEL_DIAMETER);
     leftFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
 
-    rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int) Constants.PULSES_PER_REV,
+    rightFollower.configureEncoder((int) driveTrain.getRightPosition(), (int) Constants.PULSES_PER_REV_LOW,
         Constants.WHEEL_DIAMETER);
     rightFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / Constants.MAX_VELOCITY, 0);
 

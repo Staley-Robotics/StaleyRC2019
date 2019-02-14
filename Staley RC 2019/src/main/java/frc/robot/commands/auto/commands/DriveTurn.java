@@ -17,11 +17,10 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveTurn extends Command {
 
 	private final String TAG = (this.getName() + ": ");
-
-	private final int pThreshold = 4;// 5
-	private final double stopThreshold = 0.5;
-
+	private final int P_THRESHOLD = 4;// 5
+	private final double STOP_THRESHOLD = 0.5;
 	private final double kP = 0.15;
+	private final double kTURN_P = 0.24;
 
 	DriveTrain driveTrain;
 
@@ -45,7 +44,7 @@ public class DriveTurn extends Command {
 	}
 
 	// For SickoMode
-	// Sickomode, more like "bad"omode
+	// Sickomode, more like edomokciS mode 
 	public DriveTurn(double pulses, double power, double turn, boolean b) {
 		driveTrain = DriveTrain.getInstance();
 		requires(driveTrain);
@@ -73,18 +72,18 @@ public class DriveTurn extends Command {
 		currentDisplacement = driveTrain.pulsesToInches(driveTrain.getPosition()) - startingDisplacement;
 
 		double error = Math.abs(desiredDistance) - Math.abs(currentDisplacement);
-		double kTurnP = 0.24;
-		if (error < pThreshold) {
+
+		if (error < P_THRESHOLD) {
 			if (turnPower == 0 && desiredPower > 0) {
-				driveTrain.arcadeDrive(error * kP, -currentAngle * kTurnP);
+				driveTrain.arcadeDrive(error * kP, -currentAngle * kTURN_P);
 			} else if (turnPower == 0 && desiredPower < 0) {
-				driveTrain.arcadeDrive(-error * kP, currentAngle * kTurnP);
+				driveTrain.arcadeDrive(-error * kP, currentAngle * kTURN_P);
 			} else {
 				driveTrain.arcadeDrive(desiredPower, turnPower);
 			}
 		} else {
 			if (turnPower == 0) {
-				driveTrain.arcadeDrive(desiredPower, -currentAngle * kTurnP);
+				driveTrain.arcadeDrive(desiredPower, -currentAngle * kTURN_P);
 			} else {
 				driveTrain.arcadeDrive(desiredPower, turnPower);
 			}
@@ -95,9 +94,9 @@ public class DriveTurn extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (Math.abs(currentDisplacement - desiredDistance) <= stopThreshold)
+		if (Math.abs(currentDisplacement - desiredDistance) <= STOP_THRESHOLD)
 			System.out.println(TAG + "Ended with distance");
-		return Math.abs(currentDisplacement - desiredDistance) <= stopThreshold
+		return Math.abs(currentDisplacement - desiredDistance) <= STOP_THRESHOLD
 				|| Math.abs(desiredDistance) - Math.abs(currentDisplacement) < 0;
 	}
 

@@ -33,14 +33,14 @@ public class RobotMap {
 	public static final int HATCH_PIVOT_MOTOR_PORT = 2;
 
 	// ***** Shooter Ports *****
-	public static final int SHOOTER_LEFT_TALON_PORT = 10;
-	public static final int SHOOTER_RIGHT_TALON_PORT = 11;
-	public static final int SHOOTER_TOP_TALON_PORT = 12;
+	public static final int SHOOTER_LEFT_TALON_PORT = 7;
+	public static final int SHOOTER_RIGHT_TALON_PORT = 8;
+	public static final int SHOOTER_TOP_TALON_PORT = 9;
 
 	// TODO: talonsrx and victorspx's id values need to be changed based off of
 	// which we use
 	public static final int SHOOTER_PIVOT_TALONSRX_CAN_ID = 3;
-	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 1;
+	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 10;
 	
 	// ***** Climber Ports *****
 	public static final int FRONT_LIFTER_PORT = 9;

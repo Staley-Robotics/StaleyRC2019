@@ -38,8 +38,6 @@ public class ControllerDrive extends Command {
         double turnPower = OI.getInstance().getDriveLeftX();
 
         driveTrain.worldOfTanksDrive(forwardPower, reversePower, turnPower);
-
-        // driveTrain.tankDrive(leftPower, rightPower);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,11 +49,13 @@ public class ControllerDrive extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        driveTrain.arcadeDrive(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

@@ -56,13 +56,6 @@ public class DriveTrain extends Subsystem {
 
   private DoubleSolenoid shifter;
 
-  public WPI_TalonSRX getRightMaster() {
-    return rightMaster;
-  }
-
-  public WPI_TalonSRX getLeftMaster() {
-    return leftMaster;
-  }
 
   private DriveTrain() {
 
@@ -93,15 +86,14 @@ public class DriveTrain extends Subsystem {
     drive.setRightSideInverted(false);
 
     shifter = new DoubleSolenoid(0, 1);
-    zeroDriveEncoders();
 
+    zeroDriveEncoders();
   }
 
   public static DriveTrain getInstance() {
     if (instance == null) {
       instance = new DriveTrain();
     }
-
     return instance;
   }
 

@@ -16,7 +16,8 @@ import frc.robot.subsystems.Climber;
 public class ShiftToClimberToggle extends Command {
 
   private Climber climber;
-  private boolean inClimberMode;
+  
+  private static boolean inClimberMode;
 
   public ShiftToClimberToggle() {
     climber = Climber.getInstance();
