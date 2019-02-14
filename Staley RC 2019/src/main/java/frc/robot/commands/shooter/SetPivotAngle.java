@@ -8,8 +8,6 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
-import frc.robot.enums.ShooterPivotStates;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -34,32 +32,28 @@ public class SetPivotAngle extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    shooter.setPivotTarget(targetAngle);
-    shooter.shooterPivotState = ShooterPivotStates.PID_CONTROL;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(oi.getAltLeftY()) > 0.1;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    shooter.runPivot(0);
-    shooter.shooterPivotState = ShooterPivotStates.USER_CONTROL;
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
