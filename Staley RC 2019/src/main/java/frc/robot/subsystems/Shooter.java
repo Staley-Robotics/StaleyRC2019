@@ -28,11 +28,11 @@ public class Shooter extends Subsystem {
 
     private static Shooter instance;
 
-    public static ShooterPivotStates shooterPivotState;
-    public static ShooterPivotSetpoints pivotSetpoints;
+    public ShooterPivotStates shooterPivotState;
+    public ShooterPivotSetpoints pivotSetpoint;
 
     private Talon leftMotor, rightMotor, topMotor;
-    private WPI_TalonSRX pivotTalon;
+    public WPI_TalonSRX pivotTalon;
     private WPI_VictorSPX pivotVictor;
 
     private Solenoid shooterPiston;
@@ -48,8 +48,13 @@ public class Shooter extends Subsystem {
         pivotVictor = SpeedControllerFactory.createFollowerSpx(9, pivotTalon, true);
 
         shooterPivotState = ShooterPivotStates.USER_CONTROL;
+
     }
 
+    /**
+     * ensures the user receives the instance of Shooter
+     * @return static instance of Shooter
+     */
     public static Shooter getInstance() {
         if (instance == null) {
             instance = new Shooter();
@@ -57,6 +62,10 @@ public class Shooter extends Subsystem {
         return instance;
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets the Default Command to make a new RunShooterPivot instance
+     */
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new RunShooterPivot());
@@ -70,11 +79,27 @@ public class Shooter extends Subsystem {
         rightMotor.set(power);
         topMotor.set(power);
     }
-
+    /**
+     * Stops the shooter from shooting by setting the 3 motors speed to 0
+     */
     public void stopShooter() {
         leftMotor.set(0);
         rightMotor.set(0);
         topMotor.set(0);
+    }
+    
+    /**
+     * expands the Shooter's piston by setting the toggle to true
+     */
+    public void extendShooterPiston() {
+        shooterPiston.set(true);
+    }
+
+    /**
+     * retracts the Shooter's piston by setting the toggle to false
+     */
+    public void retractShooterPiston() {
+        shooterPiston.set(false);
     }
 
     /**
@@ -91,8 +116,11 @@ public class Shooter extends Subsystem {
         pivotTalon.set(ControlMode.Position, angleToPulses(angle));
     }
 
-    public static void setAngle() {
-        
+    /**
+     * Gets the pivotTalon's position in angles with the pulsesToAngle method
+     */
+    public double getPivotAngle() {
+        return pulsesToAngle(pivotTalon.getSelectedSensorPosition(0));
     }
 
     /**
@@ -103,5 +131,15 @@ public class Shooter extends Subsystem {
      */
     public double angleToPulses(double angle) {
         return (angle / 360) * 4096;
+    }
+
+    /**
+     * Converts given angle value from encoder pulses to degrees
+     * 
+     * @param pulses angle in pulses
+     * @return angle in degrees
+     */
+    public double pulsesToAngle(double pulses) {
+        return (pulses * 360) / 4096;
     }
 }

@@ -23,19 +23,25 @@ public class Pneumatics extends Subsystem {
     private Pneumatics() {
         compressor = new Compressor(RobotMap.COMPRESSOR_PORT);
     }
-
+    /**
+     * @return static instance of Pneumatics
+     */
     public static Pneumatics getInstance() {
         if (instance == null) {
             instance = new Pneumatics();
         }
         return instance;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new RunCompressor());
     }
-
+    /**
+     * Runs the compressor using local Compressor object
+     */
     public void runCompressor() {
         compressor.setClosedLoopControl(true);
     }

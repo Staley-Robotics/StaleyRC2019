@@ -98,7 +98,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
   }
-
+  /**
+   * Disables robot periodic 
+   */
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
@@ -133,7 +135,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
   }
-
+  /**
+   * Insures no autonomous command is running when teleop is initialized
+   */
   @Override
   public void teleopInit() {
     if (autonomousCommand != null) {

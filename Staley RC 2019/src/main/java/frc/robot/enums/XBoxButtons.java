@@ -22,7 +22,7 @@ public enum XBoxButtons {
         this.value = value;
     }
 
-    public int getvalue() {
+    public int getValue() {
         return value;
     }
 }

@@ -27,44 +27,53 @@ public class OI {
   private XboxController driveController;
   private XboxController altController;
 
+  /**
+   * Sets driveController and altController. Sets the functions of each button for both controllers
+   */
   private OI() {
+    //Drive controller
     driveController = new XboxController(RobotMap.XBOX_DRIVE_PORT);
+    //Alt controller
     altController = new XboxController(RobotMap.XBOX_ALT_PORT);
 
     // Toggle for shifting between high and low gear
-    Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getvalue());
+    Button shifterToggle = new JoystickButton(driveController, XBoxButtons.kB.getValue());
     shifterToggle.whenPressed(new ShifterToggle());
 
     // Toggle for switching between climbing mode and driving mode
-    Button shiftToClimberToggle = new JoystickButton(driveController, XBoxButtons.kX.getvalue());
+    Button shiftToClimberToggle = new JoystickButton(driveController, XBoxButtons.kX.getValue());
     // shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
 
     // Toggle for extending and retracting the rear lifter piston
-    Button rearLifterToggle = new JoystickButton(driveController, XBoxButtons.kY.getvalue());
+    Button rearLifterToggle = new JoystickButton(driveController, XBoxButtons.kY.getValue());
     // rearLifterToggle.whenPressed(new RearLifterToggle());
 
     // Toggle for extending and retracting the front lifter piston
-    Button frontLifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getvalue());
+    Button frontLifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getValue());
     // frontLifterToggle.whenPressed(new FrontLifterToggle());
 
     // Toggle for extending and retracting hatch placer
-    Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getvalue());
+    Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getValue());
     hatchToggle.whenPressed(new HatchExtenderToggle());
 
-    Button runShooter = new JoystickButton(altController, XBoxButtons.kA.getvalue());
+    Button runShooter = new JoystickButton(altController, XBoxButtons.kA.getValue());
     hatchToggle.whileHeld(new RunShooter(0.4));
 
-    Button setPivotLow = new JoystickButton(altController, XBoxButtons.kUp.getvalue());
+    Button setPivotLow = new JoystickButton(altController, XBoxButtons.kUp.getValue());
     // What thi supposed be setPivotLow.whenPressed(new Se);
     
-    Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperRight.getvalue());
+    Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperRight.getValue());
     turnToTape.whenPressed(new VisionTurning());
 
-    Button pivotUp = new JoystickButton(altController, XBoxButtons.kBumperRight.getvalue());
-
-    Button pivotDown = new JoystickButton(altController, XBoxButtons.kBumperLeft.getvalue());
+    Button pivotUp = new JoystickButton(altController, XBoxButtons.kBumperRight.getValue());
+    
+    Button pivotDown = new JoystickButton(altController, XBoxButtons.kBumperLeft.getValue());
   }
 
+  /**
+   * Ensures that an instance of OI is received
+   * @return the instance of OI
+   */
   public static OI getInstance() {
     if (instance == null) {
       instance = new OI();
