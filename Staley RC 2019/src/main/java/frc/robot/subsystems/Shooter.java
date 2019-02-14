@@ -91,10 +91,6 @@ public class Shooter extends Subsystem {
         pivotTalon.set(ControlMode.Position, angleToPulses(angle));
     }
 
-    public static void setAngle() {
-        
-    }
-
     /**
      * Converts given angle value from degrees to encoder pulses
      * 
