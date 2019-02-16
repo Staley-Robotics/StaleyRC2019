@@ -7,7 +7,6 @@
 
 package frc.robot.commands.hatch;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
