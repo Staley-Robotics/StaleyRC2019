@@ -9,6 +9,7 @@ public class Constants {
     public static final double WHEEL_DIAMETER = 7.5;
     public static final double MAX_VELOCITY = 72;
 
+    public static final double GROUND_ANGLE = 0;
     public static final double LOW_ROCKET_ANGLE = 30;
     public static final double MID_ROCKET_ANGLE = 45;
     public static final double HIGH_ROCKET_ANGLE = 60;
