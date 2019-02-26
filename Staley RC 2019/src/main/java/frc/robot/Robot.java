@@ -19,7 +19,9 @@ import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
 import frc.robot.commands.auto.modes.MidToFrontCargoRight;
 import frc.robot.commands.drivetrain.EncoderDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
+import frc.robot.commands.shooter.ZeroShooterPivot;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
 
   private OI oi;
   private DriveTrain driveTrain;
+  private Shooter shooter;
   private Command autonomousCommand;
   private SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -47,6 +50,7 @@ public class Robot extends TimedRobot {
 
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
+    shooter = Shooter.getInstance();
 
     // chooser.setDefaultOption("Delay", new Delay(5));
     chooser.setDefaultOption("Mid front cargo left", new MidToFrontCargoLeft());
@@ -65,6 +69,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(new ResetGyro());
     SmartDashboard.putData(new ResetEncoders());
+
+    SmartDashboard.putData(new ZeroShooterPivot());
 
     driveTrain.shiftLowGear();
   }
@@ -86,6 +92,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
     SmartDashboard.putString("Shifter State", DriveTrain.gearState.toString());
+    SmartDashboard.putNumber("Shooter Pivot Encoder", shooter.getPivotPosition());
+    SmartDashboard.putNumber("Shooter Pivot Angle", shooter.getPivotAngle());
 
     Vision.getInstance().setTape(true);
   }
