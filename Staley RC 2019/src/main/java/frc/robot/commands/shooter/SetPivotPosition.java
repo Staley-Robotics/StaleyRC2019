@@ -9,10 +9,9 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.enums.ShooterPivotSetpoints;
-import frc.robot.enums.ShooterPivotStates;
+import frc.robot.enums.PivotTargets;
+import frc.robot.enums.PivotControlModes;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.Constants;
 
 /**
  * Sets target angle for shooting mechanism. When started, will run until
@@ -24,52 +23,52 @@ public class SetPivotPosition extends Command {
   private Shooter shooter;
   private static int index = 0;
   private int iter;
-  // fill these out
-  private double[] shooterConsts = { Constants.GROUND_ANGLE, Constants.LOW_ROCKET_ANGLE, Constants.MID_ROCKET_ANGLE,
-      Constants.HIGH_ROCKET_ANGLE, Constants.CARGO_ANGLE };
+  private double tolerance = 2;
 
-  public SetPivotPosition(int iter) {
+  // private double[] shooterAngleConsts = {
+  // ShooterPivotSetpoints.GROUND.getAngle(),
+  // ShooterPivotSetpoints.LOW.getAngle(), ShooterPivotSetpoints.MID.getAngle(),
+  // ShooterPivotSetpoints.HIGH.getAngle(), ShooterPivotSetpoints.CARGO.getAngle()
+  // };
+  // private double[] shooterPowerConsts =
+  // {ShooterPivotSetpoints.GROUND.getPower(),ShooterPivotSetpoints.LOW.getPower(),ShooterPivotSetpoints.MID.getPower(),ShooterPivotSetpoints.HIGH.getPower(),ShooterPivotSetpoints.CARGO.getPower()};
+  private PivotTargets[] pivotTargets = { PivotTargets.GROUND, PivotTargets.LOW, PivotTargets.MID, PivotTargets.HIGH,
+      PivotTargets.CARGO };
+
+  public SetPivotPosition(int index) {
     oi = OI.getInstance();
     shooter = Shooter.getInstance();
     requires(shooter);
 
-    this.iter = iter;
+    this.index = index;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    shooter.shooterPivotState = ShooterPivotStates.PID_CONTROL;
-
-    if (inBounds(index + iter)) {
-      index += iter;
-    } else {
-      if (index < 0) {
-        index = 0;
-      } else {
-        index = shooterConsts.length - 1;
-      }
-    }
-
+    shooter.pivotControlMode = PivotControlModes.PID_CONTROL;
     setEnum();
+    shooter.setPivotTarget(pivotTargets[index].getAngle());
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    shooter.runShooter(pivotTargets[index].getPower());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(shooter.getPivotAngle() - shooterConsts[index]) < 2 || Math.abs(oi.getAltLeftY()) > 0.2;
+    return Math.abs(shooter.getPivotAngle() - pivotTargets[index].getAngle()) < tolerance
+        || Math.abs(oi.getAltLeftY()) > 0.2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    shooter.shooterPivotState = ShooterPivotStates.USER_CONTROL;
+    shooter.pivotControlMode = PivotControlModes.USER_CONTROL;
+
   }
 
   // Called when another command which requires one or more of the same
@@ -82,19 +81,19 @@ public class SetPivotPosition extends Command {
   public void setEnum() {
     // GROUND, LOW, MID, HIGH, CARGO in order of height
     if (index == 0) {
-      shooter.pivotSetpoint = ShooterPivotSetpoints.GROUND;
+      shooter.pivotTarget = PivotTargets.GROUND;
     } else if (index == 1) {
-      shooter.pivotSetpoint = ShooterPivotSetpoints.LOW;
+      shooter.pivotTarget = PivotTargets.LOW;
     } else if (index == 2) {
-      shooter.pivotSetpoint = ShooterPivotSetpoints.MID;
+      shooter.pivotTarget = PivotTargets.MID;
     } else if (index == 3) {
-      shooter.pivotSetpoint = ShooterPivotSetpoints.HIGH;
+      shooter.pivotTarget = PivotTargets.HIGH;
     } else if (index == 4) {
-      shooter.pivotSetpoint = ShooterPivotSetpoints.CARGO;
+      shooter.pivotTarget = PivotTargets.CARGO;
     }
   }
 
-  protected boolean inBounds(int i) {
-    return i >= 0 && i < shooterConsts.length;
+  private boolean inBounds(int i) {
+    return i >= 0 && i < pivotTargets.length;
   }
 }
