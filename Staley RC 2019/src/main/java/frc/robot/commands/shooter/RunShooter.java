@@ -15,7 +15,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class RunShooter extends Command {
 
-	private static Shooter shooter;
+	private Shooter shooter;
 
 	private double power;
 
@@ -37,7 +37,7 @@ public class RunShooter extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	// Called once after isFinished returns true

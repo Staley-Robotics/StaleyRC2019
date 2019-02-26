@@ -9,7 +9,7 @@ package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.enums.ShooterPivotStates;
+import frc.robot.enums.PivotControlModes;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -34,7 +34,11 @@ public class RunShooterPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (shooter.shooterPivotState == ShooterPivotStates.USER_CONTROL) {
+    // if(shooter.getLimitSwitch()) {
+    //   shooter.zeroPivotEncoder();
+    // }
+    
+    if (shooter.pivotControlMode == PivotControlModes.USER_CONTROL) {
       double power = oi.getAltLeftY();
 
       if (Math.abs(power) > 0.1) {
