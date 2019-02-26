@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
 import frc.robot.enums.GearStates;
@@ -73,19 +74,19 @@ public class DriveTrain extends Subsystem {
     rightFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.RIGHT_FOLLOWER_DRIVE_CAN_ID, rightMaster,
         brakeFollower);
     rightMaster.setInverted(false);
-    rightFollower.setInverted(false);
+    rightFollower.setInverted(true);
 
     leftMaster = SpeedControllerFactory.createMasterSrx(RobotMap.LEFT_MASTER_DRIVE_CAN_ID, false, brakeMaster);
     leftFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.LEFT_FOLLOWER_DRIVE_CAN_ID, leftMaster,
         brakeFollower);
-    leftMaster.setInverted(true);
-    leftFollower.setInverted(true);
+    leftMaster.setInverted(false);
+    leftFollower.setInverted(false);
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
     drive.setRightSideInverted(false);
 
-    shifter = new DoubleSolenoid(0, 1);
+    shifter = new DoubleSolenoid(RobotMap.DRIVE_SHIFTER_SOLENOID_PORT1, RobotMap.DRIVE_SHIFTER_SOLENOID_PORT2);
 
     zeroDriveEncoders();
   }
