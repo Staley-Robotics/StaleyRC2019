@@ -9,17 +9,20 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * Toggles between climber mode and drive mode
  */
 public class ShiftToClimberToggle extends Command {
 
+  private DriveTrain driveTrain;
   private Climber climber;
   
   private static boolean inClimberMode;
 
   public ShiftToClimberToggle() {
+    driveTrain = DriveTrain.getInstance();
     climber = Climber.getInstance();
 		requires(climber);
   }
@@ -27,6 +30,7 @@ public class ShiftToClimberToggle extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    driveTrain.shiftLowGear();
     inClimberMode = false;
   }
 
