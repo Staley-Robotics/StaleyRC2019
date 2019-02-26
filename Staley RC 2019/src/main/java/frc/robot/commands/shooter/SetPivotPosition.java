@@ -22,7 +22,7 @@ public class SetPivotPosition extends Command {
   private OI oi;
   private Shooter shooter;
   private static int index = 0;
-  private int iter;
+
   private double tolerance = 2;
 
   // private double[] shooterAngleConsts = {
