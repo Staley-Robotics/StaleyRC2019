@@ -20,30 +20,29 @@ public class RobotMap {
 	public static final int XBOX_ALT_PORT = 1;
 
 	// ***** Motor/Speed Controller Ports *****
-	public static final int LEFT_MASTER_DRIVE_CAN_ID = 4;
-	public static final int LEFT_FOLLOWER_DRIVE_CAN_ID = 8;
+	public static final int LEFT_MASTER_DRIVE_CAN_ID = 0;
+	public static final int LEFT_FOLLOWER_DRIVE_CAN_ID = 7;
 	public static final int RIGHT_MASTER_DRIVE_CAN_ID = 2;
-	public static final int RIGHT_FOLLOWER_DRIVE_CAN_ID = 5;
+	public static final int RIGHT_FOLLOWER_DRIVE_CAN_ID = 10;
 
 	// ***** Compressor Port *****
 	public static final int COMPRESSOR_PORT = 0;
 
 	// ***** Hatch Slinging Slasher Ports *****
-	public static final int HATCH_SOLENOID_PORT = 3;
-	public static final int HATCH_PIVOT_MOTOR_PORT = 2;
+	public static final int HATCH_SOLENOID_PORT = 05;
+	public static final int HATCH_PIVOT_MOTOR_PORT = 3;
 
 	// ***** Shooter Ports *****
-	public static final int SHOOTER_LEFT_TALON_PORT = 7;
-	public static final int SHOOTER_RIGHT_TALON_PORT = 8;
-	public static final int SHOOTER_TOP_TALON_PORT = 9;
+	public static final int SHOOTER_TOP_TALON_PORT = 1; //0
+	public static final int SHOOTER_RIGHT_TALON_PORT = 2; //1
+	public static final int SHOOTER_LEFT_TALON_PORT = 0; //2
+	public static final int SHOOTER_LIMIT_SWITCH = 00;
 
-	// TODO: talonsrx and victorspx's id values need to be changed based off of
-	// which we use
-	public static final int SHOOTER_PIVOT_TALONSRX_CAN_ID = 3;
-	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 10;
+	public static final int SHOOTER_PIVOT_TALONSRX_CAN_ID = 1; //1
+	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 9; //7
 	
 	// ***** Climber Ports *****
-	public static final int FRONT_LIFTER_PORT = 9;
-	public static final int REAR_LIFTER_PORT = 8;
-	public static final int SHIFT_TO_CLIMBER_PORT = 7;
+	public static final int FRONT_LIFTER_PORT = 00;
+	public static final int REAR_LIFTER_PORT = 00;
+	public static final int SHIFT_TO_CLIMBER_PORT = 00;
 }
