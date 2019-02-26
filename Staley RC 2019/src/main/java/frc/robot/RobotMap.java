@@ -45,4 +45,7 @@ public class RobotMap {
 	public static final int FRONT_LIFTER_PORT = 00;
 	public static final int REAR_LIFTER_PORT = 00;
 	public static final int SHIFT_TO_CLIMBER_PORT = 00;
+
+	public static final int DRIVE_SHIFTER_SOLENOID_PORT1 = 0;
+	public static final int DRIVE_SHIFTER_SOLENOID_PORT2 = 1;
 }
