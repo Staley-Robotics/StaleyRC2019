@@ -8,8 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * This subsystem uses the Drivetrain motors to lift the robot up onto the platforms
@@ -20,14 +22,14 @@ public class Climber extends Subsystem {
 
   private DoubleSolenoid frontLifter;
   private DoubleSolenoid rearLifter;
-  private DoubleSolenoid shiftToClimber;
+  private Solenoid shiftToClimber;
 
   // Solenoid ports need to be changed;:,
   // ports are defined in robot map
   private Climber() {
-    frontLifter = new DoubleSolenoid(2, 3);
-    rearLifter = new DoubleSolenoid(3, 4);
-    shiftToClimber = new DoubleSolenoid(4, 5);
+    frontLifter = new DoubleSolenoid(RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT1, RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT2);
+    rearLifter = new DoubleSolenoid(RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT1, RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT2);
+    shiftToClimber = new Solenoid(RobotMap.CLIMBER_SHIFT_TO_CLIMB_SOLENOID_PORT);
   }
 
   public static Climber getInstance() {
@@ -62,13 +64,13 @@ public class Climber extends Subsystem {
    * Shifts to lifting mode
    */
   public void shiftToClimber() {
-    shiftToClimber.set(Value.kForward);
+    shiftToClimber.set(false);
   }
 
   /**
    * Shifts control back to the drivetrain
    */
   public void shiftToDrive() {
-    shiftToClimber.set(Value.kReverse);
+    shiftToClimber.set(true);
   }
 }
