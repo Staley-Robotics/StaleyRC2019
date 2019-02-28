@@ -14,17 +14,18 @@ import edu.wpi.first.wpilibj.buttons.Button;
  * Doesnt work yet
  */
 public class DPadButton extends Button {
+
     private XboxController xBox;
     private Direction direction;
 
     public DPadButton(XboxController xBox, Direction direction) {
-
+        this.xBox = xBox;
+        this.direction = direction;
     }
 
     @Override
     public boolean get() {
-        int degree = xBox.getPOV(0);
-
+        int degree = xBox.getPOV();
         return degree == direction.degree;
     }
 
@@ -35,6 +36,9 @@ public class DPadButton extends Button {
 
         Direction(int degree) {
             this.degree = degree;
+        }
+        public int getDegrees(){
+            return degree;
         }
     }
 }

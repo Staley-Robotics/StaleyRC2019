@@ -52,4 +52,8 @@ public class HatchSlingingSlasher extends Subsystem {
   public void runPivotMotor(double power) {
     pivotMotor.set(power);
   }
+
+  public void stopPivotMotor() {
+    pivotMotor.set(0);
+  }
 }
