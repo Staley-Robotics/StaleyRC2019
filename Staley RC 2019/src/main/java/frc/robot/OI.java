@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.commands.DPadforreal;
 import frc.robot.commands.auto.commands.VisionTurning;
+import frc.robot.commands.climber.FrontLifterToggle;
+import frc.robot.commands.climber.RearLifterToggle;
+import frc.robot.commands.climber.ShiftToClimberToggle;
 import frc.robot.commands.drivetrain.ShifterToggle;
 import frc.robot.commands.hatch.HatchExtenderToggle;
 import frc.robot.commands.shooter.RunShooter;
@@ -66,15 +69,25 @@ public class OI {
 
     // Toggle for switching between climbing mode and driving mode
     Button shiftToClimberToggle = new JoystickButton(driveController, XBoxButtons.kX.getValue());
-    // shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
+    shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
 
     // Toggle for extending and retracting the rear lifter pistons
     Button rearLifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getValue());
-    // rearLifterToggle.whenPressed(new RearLifterToggle());
+    rearLifterToggle.whenPressed(new RearLifterToggle());
+
+    /* Does rearLifter pistons with Dpad up rather than button A
+    Button rearLifterToggle = new DPadButton(driveController, Direction.Down);
+    rearLifterToggle.whenPressed(new RearLifterToggle());
+    */
 
     // Toggle for extending and retracting the front lifter pistons
     Button frontLifterToggle = new JoystickButton(driveController, XBoxButtons.kY.getValue());
-    // frontLifterToggle.whenPressed(new FrontLifterToggle());
+    frontLifterToggle.whenPressed(new FrontLifterToggle());
+
+    /* Does frontLifter pistons with Dpad dwon rather than button Y
+    Button frontLifterToggle = new DPadButton(driveController, Direction.Up);
+    frontLifterToggle.whenPressed(new FrontLifterToggle());
+    */
 
     Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperLeft.getValue());
     turnToTape.whenPressed(new VisionTurning());
