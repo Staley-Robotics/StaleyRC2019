@@ -5,14 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.commands.Delay;
 
 public class ShootSequence extends CommandGroup {
-
-  private final double retractDelay = 0.5;
 
   /**
    * Shooting sequence.
@@ -25,7 +23,7 @@ public class ShootSequence extends CommandGroup {
     // Extend shooter piston
     addSequential(new ExtendShooterPiston());
     // Little delay
-    addSequential(new Delay(retractDelay));
+    addSequential(new Delay(0.5));
     // Retract shooter piston
     addSequential(new RetractShooterPiston());
 

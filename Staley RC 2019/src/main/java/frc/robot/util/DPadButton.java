@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
- * Doesnt work yet
+ * Button for the up, down, left, and right on the DPad of an xbox controller.
+ * Apparently they are super jank and you need this special crap.
  */
 public class DPadButton extends Button {
 
@@ -37,7 +38,8 @@ public class DPadButton extends Button {
         Direction(int degree) {
             this.degree = degree;
         }
-        public int getDegrees(){
+
+        public int getDegrees() {
             return degree;
         }
     }

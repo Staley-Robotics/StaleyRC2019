@@ -8,24 +8,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.commands.DPadforreal;
 import frc.robot.commands.auto.commands.VisionTurning;
 import frc.robot.commands.climber.FrontLifterToggle;
 import frc.robot.commands.climber.RearLifterToggle;
-import frc.robot.commands.climber.ShiftToClimberToggle;
 import frc.robot.commands.drivetrain.ShifterToggle;
 import frc.robot.commands.hatch.HatchExtenderToggle;
-import frc.robot.commands.shooter.RunShooter;
-import frc.robot.commands.shooter.SetPivotAngle;
-import frc.robot.commands.shooter.ShootSequence;
-import frc.robot.enums.PivotTargets;
+import frc.robot.commands.shooter.pivot.SetPivotPosition;
+import frc.robot.commands.shooter.throughput.RunShooter;
+import frc.robot.commands.shooter.throughput.ShootSequence;
+import frc.robot.enums.PivotTarget;
 import frc.robot.enums.XBoxButtons;
-import frc.robot.util.Constants;
 import frc.robot.util.DPadButton;
 
 /**
@@ -54,12 +50,11 @@ public class OI {
     driveController = new XboxController(RobotMap.XBOX_DRIVE_PORT);
     altController = new XboxController(RobotMap.XBOX_ALT_PORT);
 
-    setPivotGround = new SetPivotAngle(PivotTargets.GROUND);
-    setPivotLow = new SetPivotAngle(PivotTargets.LOW);
-    setPivotMid = new SetPivotAngle(PivotTargets.MID);
-    setPivotHigh = new SetPivotAngle(PivotTargets.HIGH);
-    setPivotCargo = new SetPivotAngle(PivotTargets.CARGO);
-
+    setPivotGround = new SetPivotPosition(PivotTarget.GROUND);
+    setPivotLow = new SetPivotPosition(PivotTarget.LOW);
+    setPivotMid = new SetPivotPosition(PivotTarget.MID);
+    setPivotHigh = new SetPivotPosition(PivotTarget.HIGH);
+    setPivotCargo = new SetPivotPosition(PivotTarget.CARGO);
 
     // ***** Drive Controller Buttons *****
 
@@ -68,30 +63,32 @@ public class OI {
     shifterToggle.whenPressed(new ShifterToggle());
 
     // Toggle for switching between climbing mode and driving mode
-    Button shiftToClimberToggle = new JoystickButton(driveController, XBoxButtons.kX.getValue());
-    shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
+    // Button shiftToClimberToggle = new JoystickButton(driveController,
+    // XBoxButtons.kX.getValue());
+    // shiftToClimberToggle.whenPressed(new ShiftToClimberToggle());
 
     // Toggle for extending and retracting the rear lifter pistons
     Button rearLifterToggle = new JoystickButton(driveController, XBoxButtons.kA.getValue());
     rearLifterToggle.whenPressed(new RearLifterToggle());
 
-    /* Does rearLifter pistons with Dpad up rather than button A
-    Button rearLifterToggle = new DPadButton(driveController, Direction.Down);
-    rearLifterToggle.whenPressed(new RearLifterToggle());
-    */
+    /*
+     * Does rearLifter pistons with Dpad up rather than button A Button
+     * rearLifterToggle = new DPadButton(driveController, Direction.Down);
+     * rearLifterToggle.whenPressed(new RearLifterToggle());
+     */
 
     // Toggle for extending and retracting the front lifter pistons
     Button frontLifterToggle = new JoystickButton(driveController, XBoxButtons.kY.getValue());
     frontLifterToggle.whenPressed(new FrontLifterToggle());
 
-    /* Does frontLifter pistons with Dpad dwon rather than button Y
-    Button frontLifterToggle = new DPadButton(driveController, Direction.Up);
-    frontLifterToggle.whenPressed(new FrontLifterToggle());
-    */
+    /*
+     * Does frontLifter pistons with Dpad dwon rather than button Y Button
+     * frontLifterToggle = new DPadButton(driveController, Direction.Up);
+     * frontLifterToggle.whenPressed(new FrontLifterToggle());
+     */
 
     Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperLeft.getValue());
     turnToTape.whenPressed(new VisionTurning());
-
 
     // ***** Alt Controller Buttons *****
 
@@ -135,13 +132,14 @@ public class OI {
     hatchToggle.whenPressed(new HatchExtenderToggle());
 
     Button runIntake = new JoystickButton(altController, XBoxButtons.kA.getValue());
-    runIntake.whileHeld(new RunShooter(-0.4));
+    runIntake.whileHeld(new RunShooter(-0.25));
 
-    // Button runShooter = new JoystickButton(altController, XBoxButtons.kB.getValue());
-    // runShooter.whenPressed(new ShootSequence());
+    Button runShooter = new JoystickButton(altController, XBoxButtons.kB.getValue());
+    runShooter.whenPressed(new ShootSequence());
 
-    Button runOutput = new JoystickButton(altController, XBoxButtons.kB.getValue());
-    runOutput.whileHeld(new RunShooter(0.4));
+    // Button runOutput = new JoystickButton(altController,
+    // XBoxButtons.kB.getValue());
+    // runOutput.whileHeld(new RunShooter(0.4));
   }
 
   public static OI getInstance() {
@@ -150,7 +148,6 @@ public class OI {
     }
     return instance;
   }
-
 
   // ***** Getters for X-Box controller(s) joystick axis and trigger values *****
 

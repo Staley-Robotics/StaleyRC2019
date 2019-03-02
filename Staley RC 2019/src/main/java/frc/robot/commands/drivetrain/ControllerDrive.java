@@ -37,6 +37,10 @@ public class ControllerDrive extends Command {
         double reversePower = OI.getInstance().getDriveLeftTrigger();
         double turnPower = OI.getInstance().getDriveLeftX();
 
+        // double leftPower = OI.getInstance().getDriveLeftY();
+        // double rightPower = OI.getInstance().getDriveRightY();
+
+        // driveTrain.tankDrive(leftPower, rightPower);
         driveTrain.worldOfTanksDrive(forwardPower, reversePower, turnPower);
     }
 

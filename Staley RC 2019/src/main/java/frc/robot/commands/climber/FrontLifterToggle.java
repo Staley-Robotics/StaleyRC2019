@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Climber;
 
 /**
- * Toggles the front piston for the climber.
+ * Toggles the front pistons for the climber.
  */
 public class FrontLifterToggle extends Command {
 
@@ -22,11 +22,12 @@ public class FrontLifterToggle extends Command {
 	public FrontLifterToggle() {
 		climber = Climber.getInstance();
 		requires(climber);
+		
+		isExtended = false;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		isExtended = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -41,6 +42,7 @@ public class FrontLifterToggle extends Command {
 			climber.extendFront();
 			isExtended = true;
 		}
+		System.out.println("front " + isExtended);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

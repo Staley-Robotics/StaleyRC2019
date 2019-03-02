@@ -5,48 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.climber;
+package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ShooterThroughput;
 
-/**
- * Toggles between climber mode and drive mode
- */
-public class ShiftToClimberToggle extends Command {
+public class ExtendShooterPiston extends Command {
 
-  private DriveTrain driveTrain;
-  private Climber climber;
-  
-  private static boolean inClimberMode;
+  private ShooterThroughput shooter;
 
-  public ShiftToClimberToggle() {
-    driveTrain = DriveTrain.getInstance();
-    climber = Climber.getInstance();
-		requires(climber);
+  public ExtendShooterPiston() {
+    shooter = ShooterThroughput.getInstance();
+    requires(shooter);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    driveTrain.shiftLowGear();
-    inClimberMode = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Shifts to drive mode
-		if (inClimberMode) {
-			climber.shiftToDrive();
-			inClimberMode = false;
-		}
-		// Shifts to climb mode
-		else {
-			climber.shiftToClimber();
-			inClimberMode = true;
-		}
+    shooter.extendShooterPiston();
   }
 
   // Make this return true when this Command no longer needs to run execute()

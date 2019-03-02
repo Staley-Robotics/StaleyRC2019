@@ -14,6 +14,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
 
 /**
+ * VisionTurning2 works in auto
  * Uses gyro to turn the robot toward vision target until gyro yaw is zero
  */
 public class VisionTurning2 extends Command implements PIDOutput {

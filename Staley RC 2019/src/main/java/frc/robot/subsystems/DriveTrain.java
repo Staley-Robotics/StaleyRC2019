@@ -18,13 +18,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.ControllerDrive;
-import frc.robot.enums.GearStates;
+import frc.robot.enums.GearState;
 import frc.robot.util.SpeedControllerFactory;
 
 /**
+ * <p>
  * Controls the basic drive functionality of the robot
  */
 public class DriveTrain extends Subsystem {
@@ -53,10 +53,9 @@ public class DriveTrain extends Subsystem {
   private DifferentialDrive drive;
 
   // tracks whether shifter is in low or high gear
-  public static GearStates gearState;
+  public static GearState gearState;
 
   private DoubleSolenoid shifter;
-
 
   private DriveTrain() {
 
@@ -74,19 +73,19 @@ public class DriveTrain extends Subsystem {
     rightFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.RIGHT_FOLLOWER_DRIVE_CAN_ID, rightMaster,
         brakeFollower);
     rightMaster.setInverted(false);
-    rightFollower.setInverted(true);
+    rightFollower.setInverted(false);
 
     leftMaster = SpeedControllerFactory.createMasterSrx(RobotMap.LEFT_MASTER_DRIVE_CAN_ID, false, brakeMaster);
     leftFollower = SpeedControllerFactory.createFollowerSpx(RobotMap.LEFT_FOLLOWER_DRIVE_CAN_ID, leftMaster,
         brakeFollower);
-    leftMaster.setInverted(false);
-    leftFollower.setInverted(false);
+    leftMaster.setInverted(true);
+    leftFollower.setInverted(true);
 
     drive = new DifferentialDrive(leftMaster, rightMaster);
     drive.setSafetyEnabled(false);
     drive.setRightSideInverted(false);
 
-    shifter = new DoubleSolenoid(RobotMap.DRIVE_SHIFTER_SOLENOID_PORT1, RobotMap.DRIVE_SHIFTER_SOLENOID_PORT2);
+    shifter = new DoubleSolenoid(RobotMap.DRIVE_SHIFTER_SOLENOID_PORT_ONE, RobotMap.DRIVE_SHIFTER_SOLENOID_PORT_TWO);
 
     zeroDriveEncoders();
   }
@@ -155,9 +154,9 @@ public class DriveTrain extends Subsystem {
     }
 
     if (backward > 0) {
-      drive.arcadeDrive(-backward, rotate);
+      drive.arcadeDrive(backward, rotate);
     } else if (forward > 0) {
-      drive.arcadeDrive(forward, rotate);
+      drive.arcadeDrive(-forward, rotate);
     } else {
       drive.arcadeDrive(0, rotate);
     }
@@ -222,19 +221,13 @@ public class DriveTrain extends Subsystem {
 
   // ***** Shifter *****
 
-  /**
-   * Shifts into high gear
-   */
   public void shiftHighGear() {
     shifter.set(Value.kReverse);
-    gearState = GearStates.HIGH_GEAR;
+    gearState = GearState.HIGH_GEAR;
   }
 
-  /**
-   * Shifts into low gear
-   */
   public void shiftLowGear() {
     shifter.set(Value.kForward);
-    gearState = GearStates.LOW_GEAR;
+    gearState = GearState.LOW_GEAR;
   }
 }

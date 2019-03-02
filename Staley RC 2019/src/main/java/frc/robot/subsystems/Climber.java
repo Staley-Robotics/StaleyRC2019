@@ -22,14 +22,10 @@ public class Climber extends Subsystem {
 
   private DoubleSolenoid frontLifter;
   private DoubleSolenoid rearLifter;
-  private Solenoid shiftToClimber;
 
-  // Solenoid ports need to be changed;:,
-  // ports are defined in robot map
   private Climber() {
-    frontLifter = new DoubleSolenoid(RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT1, RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT2);
-    rearLifter = new DoubleSolenoid(RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT1, RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT2);
-    shiftToClimber = new Solenoid(RobotMap.CLIMBER_SHIFT_TO_CLIMB_SOLENOID_PORT);
+    frontLifter = new DoubleSolenoid(RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT_ONE, RobotMap.CLIMBER_FRONT_LIFTER_SOLENOID_PORT_TWO);
+    rearLifter = new DoubleSolenoid(RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT_ONE, RobotMap.CLIMBER_REAR_LIFTER_SOLENOID_PORT_TWO);
   }
 
   public static Climber getInstance() {
@@ -41,8 +37,9 @@ public class Climber extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-
   }
+
+  // ***** Lifters *****
 
   public void extendFront() {
     frontLifter.set(Value.kForward);
@@ -58,19 +55,5 @@ public class Climber extends Subsystem {
 
   public void retractRear() {
     rearLifter.set(Value.kReverse);
-  }
-
-  /**
-   * Shifts to lifting mode
-   */
-  public void shiftToClimber() {
-    shiftToClimber.set(false);
-  }
-
-  /**
-   * Shifts control back to the drivetrain
-   */
-  public void shiftToDrive() {
-    shiftToClimber.set(true);
   }
 }

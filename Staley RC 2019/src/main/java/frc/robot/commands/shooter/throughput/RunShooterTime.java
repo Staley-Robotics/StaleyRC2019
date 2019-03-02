@@ -5,12 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.robot.enums.PivotTargets;
-import frc.robot.enums.PivotControlModes;
-import frc.robot.subsystems.Shooter;
+import frc.robot.enums.PivotTarget;
+import frc.robot.enums.PivotControlMode;
+import frc.robot.subsystems.ShooterThroughput;
+import frc.robot.subsystems.ShooterPivot;
 
 /**
  * Runs shooting/intake mechanism depending on whether power is +/- for given
@@ -18,32 +19,39 @@ import frc.robot.subsystems.Shooter;
  */
 public class RunShooterTime extends TimedCommand {
 
-  private static Shooter shooter;
+  private static ShooterThroughput shooter;
 
   private double power;
-  private double defaultPower = 0.65;
+  private double defaultPower = 0.3;
 
-  private PivotTargets pivotState;
+  private double batteryWatt;
+
+  private PivotTarget pivotTarget;
+
+  private ShooterPivot shooterPivot;
 
   public RunShooterTime(double time) {
     super(time);
-    shooter = Shooter.getInstance();
+    shooter = ShooterThroughput.getInstance();
     requires(shooter);
-    pivotState = shooter.pivotTarget;
-
-    if (shooter.pivotControlMode == PivotControlModes.PID_CONTROL)
-      this.power = pivotState.getPower();
-    else
-      this.power = defaultPower;
+    shooterPivot = ShooterPivot.getInstance();
+    requires(shooterPivot);
   }
 
   // Called just before this Command runs the first time
   protected void initialize() {
+    pivotTarget = shooterPivot.pivotTarget;
+
+    if (shooterPivot.pivotControlMode == PivotControlMode.PID_CONTROL)
+      this.power = pivotTarget.getPower();
+    else
+      this.power = defaultPower;
   }
 
   // Called repeatedly when this Command is scheduled to run
   protected void execute() {
     shooter.runShooter(power);
+    System.out.println("Pivot Target: " + pivotTarget + "\tPower for ShoooterTime:" + power);
   }
 
   // Make this return true when this Command no longer needs to run execute()

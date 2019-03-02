@@ -2,18 +2,18 @@ package frc.robot.enums;
 /**
  * Holds angle setpoints for the Shooter pivots
  */
-public enum PivotTargets {
+public enum PivotTarget {
     
-    GROUND(0, 0), LOW(20, 0.2), MID(45, 0.4), HIGH(60, 0.6), CARGO(80, 0.8);
+    GROUND(0, 0), LOW(300000, 0.2), MID(1030000, 0.28), HIGH(960000, 0.355), CARGO(800000, 0.3);
 
-    private final double angle;
+    private final double position;
     private final double power;
 
     /**
      * Constructor: enum object takes in angle and power
      */
-    PivotTargets(double angle, double power) {
-        this.angle = angle;
+    PivotTarget(double position, double power) {
+        this.position = position;
         this.power = power;
     }
 
@@ -21,8 +21,8 @@ public enum PivotTargets {
      * 
      * @return angle
      */
-    public double getAngle() {
-        return angle;
+    public double getPosition() {
+        return position;
     }
 
     /**

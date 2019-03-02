@@ -5,24 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterThroughput;
 
 /**
  * Runs shooting/intake mechanism depending on whether power is +/-
  */
-public class ControllerShooter extends Command {
+public class RunShooter extends Command {
 
-  private OI oi;
-  private Shooter shooter;
+	private ShooterThroughput shooter;
 
-	public ControllerShooter() {
-    oi = OI.getInstance();
-		shooter = Shooter.getInstance();
+	private double power;
+
+	public RunShooter(double power) {
+		shooter = ShooterThroughput.getInstance();
 		requires(shooter);
+
+		this.power = power;
 	}
 
 	// Called just before this Command runs the first time
@@ -31,15 +32,7 @@ public class ControllerShooter extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-    // double power = 0;
-    // if(oi.getAltBump > oi.getAltRightTrigger()){
-    //   power = oi.getAltLeftTrigger() * -1;
-    // }
-    // else if(oi.getAltRightTrigger() > oi.getAltLeftTrigger()){
-    //   power = oi.getAltRightTrigger();
-    // }
-
-		// shooter.runShooter(power);
+		shooter.runShooter(power);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

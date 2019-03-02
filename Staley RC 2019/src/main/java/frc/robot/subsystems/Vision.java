@@ -40,6 +40,9 @@ public class Vision extends Subsystem {
   public void initDefaultCommand() {
   }
 
+  /**
+   * @return Yaw, the x-axis offset of the tape target
+   */
   public double getYaw() {
     tapeYaw = table.getEntry("tapeYaw");
     return tapeYaw.getDouble(0.0);

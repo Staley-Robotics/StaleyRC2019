@@ -7,7 +7,6 @@
 
 package frc.robot.commands.hatch;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.HatchSlingingSlasher;
 
@@ -35,10 +34,12 @@ public class HatchExtenderToggle extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(isExtended) {
+    if (isExtended) {
       hatchSlingingSlasher.retract();
+      System.out.println("Extending");
     } else {
       hatchSlingingSlasher.extend();
+      System.out.println("Retracting");
     }
     isExtended = !isExtended;
   }

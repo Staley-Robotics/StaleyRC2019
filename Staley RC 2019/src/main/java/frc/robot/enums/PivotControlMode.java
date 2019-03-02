@@ -1,5 +1,5 @@
 package frc.robot.enums;
 
-public enum PivotControlModes {
+public enum PivotControlMode {
     PID_CONTROL, USER_CONTROL
 }

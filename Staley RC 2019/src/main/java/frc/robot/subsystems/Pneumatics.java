@@ -13,32 +13,30 @@ import frc.robot.RobotMap;
 import frc.robot.commands.RunCompressor;
 
 /**
- * Runs compressor
+ * Control center for pnuematics
  */
 public class Pneumatics extends Subsystem {
 
     private static Pneumatics instance;
+
     private Compressor compressor;
 
     private Pneumatics() {
         compressor = new Compressor(RobotMap.COMPRESSOR_PORT);
     }
-    /**
-     * @return static instance of Pneumatics
-     */
+
     public static Pneumatics getInstance() {
         if (instance == null) {
             instance = new Pneumatics();
         }
         return instance;
     }
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new RunCompressor());
     }
+
     /**
      * Runs the compressor using local Compressor object
      */

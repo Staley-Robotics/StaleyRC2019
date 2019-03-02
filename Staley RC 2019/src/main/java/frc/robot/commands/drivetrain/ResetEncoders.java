@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
 /**
- * Sets encoder values to zero
+ * Sets drive encoder values to zero.
  */
 public class ResetEncoders extends Command {
 

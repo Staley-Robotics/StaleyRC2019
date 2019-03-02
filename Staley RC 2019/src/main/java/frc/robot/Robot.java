@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,11 +18,11 @@ import frc.robot.commands.auto.commands.VisionTurning2;
 import frc.robot.commands.auto.modes.AutoBrettV6;
 import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
 import frc.robot.commands.auto.modes.MidToFrontCargoRight;
-import frc.robot.commands.drivetrain.EncoderDrive;
 import frc.robot.commands.drivetrain.ResetEncoders;
-import frc.robot.commands.shooter.ZeroShooterPivot;
+import frc.robot.commands.shooter.pivot.ZeroShooterPivot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPivot;
+import frc.robot.subsystems.ShooterThroughput;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -35,9 +36,12 @@ public class Robot extends TimedRobot {
 
   private OI oi;
   private DriveTrain driveTrain;
-  private Shooter shooter;
+  private ShooterThroughput shooter;
   private Command autonomousCommand;
   private SendableChooser<Command> chooser = new SendableChooser<>();
+
+  private PowerDistributionPanel pdp;
+  private ShooterPivot shooterPivot;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -48,9 +52,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    pdp = new PowerDistributionPanel();
+
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
-    shooter = Shooter.getInstance();
+    shooter = ShooterThroughput.getInstance();
+    shooterPivot = ShooterPivot.getInstance();
 
     // chooser.setDefaultOption("Delay", new Delay(5));
     chooser.setDefaultOption("Mid front cargo left", new MidToFrontCargoLeft());
@@ -64,7 +71,6 @@ public class Robot extends TimedRobot {
     // chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
     // chooser.addOption("Drive 108 inches", new DriveTurn(108, 0.8, 0));
     // chooser.addOption("Follow Path", new FollowPath());
-    chooser.addOption("Encoder drive 600 ", new EncoderDrive(600, 800));
     SmartDashboard.putData("Auto mode", chooser);
 
     SmartDashboard.putData(new ResetGyro());
@@ -92,8 +98,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
     SmartDashboard.putString("Shifter State", DriveTrain.gearState.toString());
-    SmartDashboard.putNumber("Shooter Pivot Encoder", shooter.getPivotPosition());
-    SmartDashboard.putNumber("Shooter Pivot Angle", shooter.getPivotAngle());
+    SmartDashboard.putNumber("Shooter Pivot Encoder", shooterPivot.getPivotPosition());
+    // SmartDashboard.putNumber("Shooter Pivot Angle", shooter.getPivotAngle());
+    SmartDashboard.putBoolean("Limit Switch", shooterPivot.getLimitSwitch());
+    SmartDashboard.putString("Pivot Target", shooterPivot.pivotTarget.toString());
+    SmartDashboard.putString("Pivot State", shooterPivot.pivotControlMode.toString());
+    SmartDashboard.putNumber("Battery Watts: ", pdp.getTotalPower());
 
     Vision.getInstance().setTape(true);
   }
@@ -106,8 +116,9 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
   }
+
   /**
-   * Disables robot periodic 
+   * Disables robot periodic
    */
   @Override
   public void disabledPeriodic() {
@@ -143,6 +154,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
   }
+
   /**
    * Insures no autonomous command is running when teleop is initialized
    */

@@ -5,18 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.shooter.pivot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterPivot;
 
 public class ZeroShooterPivot extends Command {
 
-  private Shooter shooter;
+  private ShooterPivot shooterPivot;
 
   public ZeroShooterPivot() {
-    shooter = Shooter.getInstance();
-    requires(shooter);
+    shooterPivot = ShooterPivot.getInstance();
+    requires(shooterPivot);
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +27,7 @@ public class ZeroShooterPivot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    shooter.zeroPivotEncoder();
+    shooterPivot.zeroPivotEncoder();
   }
 
   // Make this return true when this Command no longer needs to run execute()

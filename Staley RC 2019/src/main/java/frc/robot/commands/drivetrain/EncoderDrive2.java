@@ -7,11 +7,13 @@
 
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.Timer;
-//for real this time
-//Much obliged Jason
+
+/**
+ * Ryan's jank ass shit
+ */
 public class EncoderDrive2 extends Command {
   private double leftDistance;
   private double rightDistance;
@@ -20,19 +22,16 @@ public class EncoderDrive2 extends Command {
   private double leftPower;
   private double rightPower;
   private Timer timer;
-  
-  private final double timeConstant = 0.2;//0.2 seconds
+
+  private final double timeConstant = 0.2;// 0.2 seconds
   private final double leftEncoderError = 1;
   private final double rightEncoderError = 1;
 
   private final double maxPower = 0.8;
 
   public DriveTrain driveTrain;
-  public EncoderDrive2(double leftDistance, double rightDistance) {
-    
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
 
+  public EncoderDrive2(double leftDistance, double rightDistance) {
     this.leftDistance = leftDistance;
     this.rightDistance = rightDistance;
     driveTrain = DriveTrain.getInstance();
@@ -43,7 +42,7 @@ public class EncoderDrive2 extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    leftDistanceDifference = leftDistanceDifference -driveTrain.getLeftPosition();
+    leftDistanceDifference = leftDistanceDifference - driveTrain.getLeftPosition();
     rightDistanceDifference = rightDistanceDifference - driveTrain.getRightPosition();
     leftDistance = 0;
     rightDistance = 0;
@@ -52,13 +51,12 @@ public class EncoderDrive2 extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(leftDistanceDifference/leftEncoderError > rightDistanceDifference/rightEncoderError){
+    if (leftDistanceDifference / leftEncoderError > rightDistanceDifference / rightEncoderError) {
       leftPower = maxPower;
-      rightPower = maxPower/(rightDistance/leftDistance);
-    }
-    else{
+      rightPower = maxPower / (rightDistance / leftDistance);
+    } else {
       rightPower = maxPower;
-      leftPower = maxPower/(leftDistance/rightDistance);
+      leftPower = maxPower / (leftDistance / rightDistance);
 
     }
     driveTrain.tankDrive(leftPower, rightPower);

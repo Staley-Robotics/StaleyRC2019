@@ -14,6 +14,7 @@ import frc.robot.subsystems.Vision;
 //Use VisionTurning2 for autonomous turning, or VisionTurning2 in general.
 
 /**
+ * VisionTurning works better than VisionTurning2 except in auto (where VisionTurning doesn't work)
  * Uses GyroTurning to turn the robot toward vision target until gyro yaw is
  * zero, cannot be used in auto mode
  */

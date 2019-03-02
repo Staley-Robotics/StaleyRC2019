@@ -8,7 +8,7 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.enums.GearStates;
+import frc.robot.enums.GearState;
 import frc.robot.subsystems.DriveTrain;
 
 /**
@@ -32,7 +32,7 @@ public class ShifterToggle extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// Toggles to high gear
-		if (DriveTrain.gearState == GearStates.LOW_GEAR) {
+		if (DriveTrain.gearState == GearState.LOW_GEAR) {
 			driveTrain.shiftHighGear();
 
 			System.out.println(TAG + "High Gear");
@@ -57,6 +57,5 @@ public class ShifterToggle extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		end();
 	}
 }

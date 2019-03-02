@@ -5,70 +5,45 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
-import frc.robot.enums.PivotControlModes;
-import frc.robot.enums.PivotTargets;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterThroughput;
 
-public class SetPivotAngle extends Command {
+public class RetractShooterPiston extends Command {
 
-  private Shooter shooter;
+  private ShooterThroughput shooter;
 
-  private double targetAngle;
-
-  private PivotTargets targetPosition;
-
-  public SetPivotAngle(PivotTargets targetPosition) {
-    shooter = Shooter.getInstance();
+  public RetractShooterPiston() {
+    shooter = ShooterThroughput.getInstance();
     requires(shooter);
-
-    this.targetPosition = targetPosition;
-    this.targetAngle = targetPosition.getAngle();
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    shooter.pivotControlMode = PivotControlModes.PID_CONTROL;
-    shooter.setPivotTarget(targetAngle);
-
-    // untested
-    // for (PivotTargets pt : PivotTargets.values()) {
-    //   if (pt.getAngle() == targetAngle) {
-    //     shooter.pivotTarget = pt;
-    //     break;
-    //   }
-    // }
-
-    shooter.pivotTarget = targetPosition;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("PID Control, Target:\t" + targetAngle + "\tActual:\t" + shooter.getPivotAngle());
+    shooter.retractShooterPiston();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(OI.getInstance().getAltLeftY()) > 0.1;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    shooter.pivotControlMode = PivotControlModes.USER_CONTROL;
-    shooter.stopPivot();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
