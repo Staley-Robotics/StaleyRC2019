@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private SendableChooser<Command> chooser = new SendableChooser<>();
 
-  private PowerDistributionPanel pdp;
+  public static PowerDistributionPanel pdp;
   private ShooterPivot shooterPivot;
 
   /**
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Limit Switch", shooterPivot.getLimitSwitch());
     SmartDashboard.putString("Pivot Target", shooterPivot.pivotTarget.toString());
     SmartDashboard.putString("Pivot State", shooterPivot.pivotControlMode.toString());
-    SmartDashboard.putNumber("Battery Watts: ", pdp.getTotalPower());
+    SmartDashboard.putNumber("Battery Volts: ", pdp.getVoltage());
 
     Vision.getInstance().setTape(true);
   }

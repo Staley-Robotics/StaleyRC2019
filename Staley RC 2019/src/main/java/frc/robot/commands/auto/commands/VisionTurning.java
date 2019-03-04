@@ -7,7 +7,7 @@
 
 package frc.robot.commands.auto.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.Vision;
 
 //addSequential does not like a command that calls another command.
@@ -18,7 +18,7 @@ import frc.robot.subsystems.Vision;
  * Uses GyroTurning to turn the robot toward vision target until gyro yaw is
  * zero, cannot be used in auto mode
  */
-public class VisionTurning extends Command {
+public class VisionTurning extends TimedCommand {
 
     private Vision vision;
     private double offset;
@@ -26,6 +26,7 @@ public class VisionTurning extends Command {
     private GyroTurning turnMyGuy;
 
     public VisionTurning() {
+        super(0.25);
         vision = Vision.getInstance();
         requires(vision);
     }
@@ -56,7 +57,10 @@ public class VisionTurning extends Command {
         }
     }
 
-    // Called once after isFinished returns true
+    /* Called once after isFinished returns true
+    *Now that it is a timed command, end() is called
+    *when the timer ends
+    */
     @Override
     protected void end() {
         System.out.println("Done Vision Turning!");
