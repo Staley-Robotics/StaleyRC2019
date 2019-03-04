@@ -4,7 +4,7 @@ package frc.robot.enums;
  */
 public enum PivotTarget {
     
-    GROUND(0, 0), LOW(300000, 0.2), MID(1030000, 0.28), HIGH(960000, 0.355), CARGO(800000, 0.3);
+    GROUND(0, 0), LOW(300000, 0.2), MID(1030000, 0.31), HIGH(960000, 0.355), CARGO(800000, 0.3);
 
     private final double position;
     private final double power;
