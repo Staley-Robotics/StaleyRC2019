@@ -33,8 +33,12 @@ public class ControllerDrive extends Command {
     @Override
     protected void execute() {
 
-        double forwardPower = OI.getInstance().getDriveRightTrigger();
-        double reversePower = OI.getInstance().getDriveLeftTrigger();
+        //double forwardPower = OI.getInstance().getDriveRightTrigger();
+        //double reversePower = OI.getInstance().getDriveLeftTrigger();
+        //I'm swapping these and nobody can stop me
+
+        double forwardPower = OI.getInstance().getDriveLeftTrigger();
+        double reversePower = OI.getInstance().getDriveRightTrigger();
         double turnPower = OI.getInstance().getDriveLeftX();
 
         // double leftPower = OI.getInstance().getDriveLeftY();
