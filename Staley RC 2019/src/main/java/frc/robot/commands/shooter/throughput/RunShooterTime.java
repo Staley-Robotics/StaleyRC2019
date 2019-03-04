@@ -9,6 +9,7 @@ package frc.robot.commands.shooter.throughput;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.enums.PivotTarget;
+import frc.robot.Robot;
 import frc.robot.enums.PivotControlMode;
 import frc.robot.subsystems.ShooterThroughput;
 import frc.robot.subsystems.ShooterPivot;
@@ -24,12 +25,11 @@ public class RunShooterTime extends TimedCommand {
   private double power;
   private double defaultPower = 0.3;
 
-  private double batteryWatt;
-
   private PivotTarget pivotTarget;
 
   private ShooterPivot shooterPivot;
-
+  //private double testedVolt = 13;
+  //private double currentVolt;
   public RunShooterTime(double time) {
     super(time);
     shooter = ShooterThroughput.getInstance();
@@ -42,10 +42,13 @@ public class RunShooterTime extends TimedCommand {
   protected void initialize() {
     pivotTarget = shooterPivot.pivotTarget;
 
-    if (shooterPivot.pivotControlMode == PivotControlMode.PID_CONTROL)
+    if (shooterPivot.pivotControlMode == PivotControlMode.PID_CONTROL) {
       this.power = pivotTarget.getPower();
-    else
+      // this.power = Robot.pdp.getVoltage() * pivotTarget.getPower()/this.testedVolt;
+    } else {
       this.power = defaultPower;
+      //this.testedVolt = 0;
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
