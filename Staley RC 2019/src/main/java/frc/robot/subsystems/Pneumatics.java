@@ -34,7 +34,7 @@ public class Pneumatics extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new RunCompressor());
+        // setDefaultCommand(new RunCompressor());
     }
 
     /**
@@ -42,5 +42,17 @@ public class Pneumatics extends Subsystem {
      */
     public void runCompressor() {
         compressor.setClosedLoopControl(true);
+    }
+
+    public void stopCompressor() {
+        compressor.setClosedLoopControl(false);
+    }
+
+    public boolean isCompressing() {
+        return compressor.enabled();
+    }
+
+    public Compressor getCompressor() {
+        return compressor;
     }
 }

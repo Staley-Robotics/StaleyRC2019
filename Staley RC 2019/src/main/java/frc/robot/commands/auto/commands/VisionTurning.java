@@ -14,9 +14,9 @@ import frc.robot.subsystems.Vision;
 //Use VisionTurning2 for autonomous turning, or VisionTurning2 in general.
 
 /**
- * VisionTurning works better than VisionTurning2 except in auto (where VisionTurning doesn't work)
- * Uses GyroTurning to turn the robot toward vision target until gyro yaw is
- * zero, cannot be used in auto mode
+ * VisionTurning works better than VisionTurning2 except in auto (where
+ * VisionTurning doesn't work) Uses GyroTurning to turn the robot toward vision
+ * target until gyro yaw is zero, cannot be used in auto mode
  */
 public class VisionTurning extends TimedCommand {
 
@@ -26,7 +26,7 @@ public class VisionTurning extends TimedCommand {
     private GyroTurning turnMyGuy;
 
     public VisionTurning() {
-        super(0.25);
+        super(2);
         vision = Vision.getInstance();
         requires(vision);
     }
@@ -34,6 +34,10 @@ public class VisionTurning extends TimedCommand {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        // set networktable tape to True
+        vision.setTape(true);
+        //got got
+
         offset = vision.getYaw();
 
         turnMyGuy = new GyroTurning(offset);
@@ -57,10 +61,10 @@ public class VisionTurning extends TimedCommand {
         }
     }
 
-    /* Called once after isFinished returns true
-    *Now that it is a timed command, end() is called
-    *when the timer ends
-    */
+    /*
+     * Called once after isFinished returns true Now that it is a timed command,
+     * end() is called when the timer ends
+     */
     @Override
     protected void end() {
         System.out.println("Done Vision Turning!");
@@ -69,6 +73,8 @@ public class VisionTurning extends TimedCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // set networktable tape to false
+        vision.setTape(false);
     }
 
     // Called when another command which requires one or more of the same

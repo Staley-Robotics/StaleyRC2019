@@ -28,7 +28,7 @@ public class RunShooterTime extends TimedCommand {
   private PivotTarget pivotTarget;
 
   private ShooterPivot shooterPivot;
-  //private double testedVolt = 13;
+  //private final double testedVoltage = 13;
   //private double currentVolt;
   public RunShooterTime(double time) {
     super(time);
@@ -44,10 +44,19 @@ public class RunShooterTime extends TimedCommand {
 
     if (shooterPivot.pivotControlMode == PivotControlMode.PID_CONTROL) {
       this.power = pivotTarget.getPower();
-      // this.power = Robot.pdp.getVoltage() * pivotTarget.getPower()/this.testedVolt;
+      // this.power =  (this.testedVoltage * pivotTarget.getPower())/ Robot.pdp.getVoltage();
+      // pivotTarget.getPower(); //battery could be at like 12.5 volts
+      // 12.5 * 0.8 = 10 volts to.3 shooter
+      //if power is 0.8 for the pivotTarget
+      //if battery when actually doing pivot power is at 11.5 volts
+      // 11.5*0.8 = 9.2 volts to shooter
+
+      // pivotTarget.getPower(); //0.7 (twice our highest)
+      // (13*0.7) / 12.5 = 0.728 (power) *12.5 v = 9.1 v to shooter
+      // (13*0.7) / 11.5 = 0.7913 (power) * 11.5 v = 9.1 v to shooter
+
     } else {
       this.power = defaultPower;
-      //this.testedVolt = 0;
     }
   }
 

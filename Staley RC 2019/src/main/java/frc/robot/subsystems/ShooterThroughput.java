@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -21,7 +23,7 @@ public class ShooterThroughput extends Subsystem {
 
     private Talon leftMotor, rightMotor, topMotor;
 
-    private static Solenoid piston;
+    private static DoubleSolenoid piston;
 
     private ShooterThroughput() {
 
@@ -29,10 +31,16 @@ public class ShooterThroughput extends Subsystem {
         rightMotor = new Talon(RobotMap.THROUGHPUT_RIGHT_TALON_PORT);
         topMotor = new Talon(RobotMap.THROUGHPUT_TOP_TALON_PORT);
 
+        //added by ryan
+        leftMotor.setInverted(true);
+        rightMotor.setInverted(true);
         topMotor.setInverted(true);
+        //end add by ryan
+
+
 
         if(piston == null) {
-            piston = new Solenoid(RobotMap.THROUGHPUT_SOLENOID_PORT);
+            piston = new DoubleSolenoid(7,4);
         }
     }
 
@@ -54,9 +62,9 @@ public class ShooterThroughput extends Subsystem {
      * 
      * @return An instance of the Solenoid used for this piston.
      */
-    public static Solenoid getSolenoid() {
+    public static DoubleSolenoid getSolenoid() {
         if (piston == null) {
-            piston = new Solenoid(RobotMap.THROUGHPUT_SOLENOID_PORT);
+            piston = new DoubleSolenoid(7, 4);
         }
         return piston;
     }
@@ -85,11 +93,11 @@ public class ShooterThroughput extends Subsystem {
     // ***** Piston *****
 
     public void extendShooterPiston() {
-        piston.set(true);
+        piston.set(Value.kForward);
     }
 
     public void retractShooterPiston() {
-        piston.set(false);
+        piston.set(Value.kReverse);
     }
 
 }

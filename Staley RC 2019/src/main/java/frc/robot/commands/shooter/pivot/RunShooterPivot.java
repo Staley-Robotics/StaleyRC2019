@@ -37,7 +37,7 @@ public class RunShooterPivot extends Command {
   @Override
   protected void execute() {
 
-    //If the Limit Switch is activated, the shooterPivot is set to zero
+    // If the Limit Switch is activated, the shooterPivot is set to zero
     if (shooterPivot.getLimitSwitch()) {
       shooterPivot.zeroPivotEncoder();
     }
@@ -49,7 +49,11 @@ public class RunShooterPivot extends Command {
     }
 
     if (shooterPivot.pivotControlMode == PivotControlMode.USER_CONTROL) {
-      shooterPivot.runPivot((power > 0 && shooterPivot.getLimitSwitch()) ? 0 : power);
+      if (Math.abs(power) > 0.12) {
+        shooterPivot.runPivot((power > 0 && shooterPivot.getLimitSwitch()) ? 0 : power);
+      } else {
+        shooterPivot.runPivot(0);
+      }
     } else {
       shooterPivot.runPivot(0);
     }

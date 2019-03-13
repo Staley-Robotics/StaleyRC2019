@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.hatch.RunPivotMotor;
@@ -21,9 +23,11 @@ public class HatchSlingingSlasher extends Subsystem {
 
   private static HatchSlingingSlasher instance;
 
+  public static boolean isExtended;
+
   private Talon pivotMotor;
   
-  private Solenoid hatchRelease;
+  private DoubleSolenoid hatchRelease;
 
   private HatchSlingingSlasher() {
     pivotMotor = new Talon(RobotMap.HATCH_PIVOT_TALON_PORT);
@@ -45,11 +49,15 @@ public class HatchSlingingSlasher extends Subsystem {
   // ***** Piston *****
 
   public void extend() {
-    hatchRelease.set(false);
+    // hatchRelease.set(false);
+    hatchRelease.set(Value.kReverse);
+    isExtended = false;
   }
 
   public void retract() {
-    hatchRelease.set(true);
+    // hatchRelease.set(true);
+    hatchRelease.set(Value.kForward);
+    isExtended = true;
   }
 
   // ***** Pivot *****

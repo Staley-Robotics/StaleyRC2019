@@ -36,6 +36,7 @@ public class ShooterPivot extends Subsystem {
 
   private ShooterPivot() {
     master = SpeedControllerFactory.createMasterSrx(RobotMap.SHOOTER_PIVOT_TALONSRX_CAN_ID, false, true);
+    master.setInverted(false);
     follower = SpeedControllerFactory.createFollowerSpx(RobotMap.SHOOTER_PIVOT_VICTORSPX_CAN_ID, master, true);
     follower.setInverted(true);
 
@@ -65,7 +66,7 @@ public class ShooterPivot extends Subsystem {
   // ***** Running Motors *****
 
   public void runPivot(double power) {
-    master.set(-power);
+    master.set(power);
   }
 
   public void stopPivot() {

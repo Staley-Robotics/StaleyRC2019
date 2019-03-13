@@ -15,6 +15,7 @@ deploy {
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
             // want to store a team number in this file.
             team = frc.getTeamNumber()
+            validImageVersions = ['2019_v12', '2019_v13', '2019_v14']
         }
     }
     artifacts {

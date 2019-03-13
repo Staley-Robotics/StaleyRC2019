@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.ResetGyro;
 import frc.robot.commands.auto.commands.VisionTurning2;
 import frc.robot.commands.auto.modes.AutoBrettV6;
@@ -21,6 +22,8 @@ import frc.robot.commands.auto.modes.MidToFrontCargoRight;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.commands.shooter.pivot.ZeroShooterPivot;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.HatchSlingingSlasher;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.ShooterPivot;
 import frc.robot.subsystems.ShooterThroughput;
 import frc.robot.subsystems.Vision;
@@ -42,6 +45,7 @@ public class Robot extends TimedRobot {
 
   public static PowerDistributionPanel pdp;
   private ShooterPivot shooterPivot;
+  private Pneumatics pneumatics;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -58,9 +62,9 @@ public class Robot extends TimedRobot {
     driveTrain = DriveTrain.getInstance();
     shooter = ShooterThroughput.getInstance();
     shooterPivot = ShooterPivot.getInstance();
+    pneumatics = Pneumatics.getInstance();
 
-    // chooser.setDefaultOption("Delay", new Delay(5));
-    chooser.setDefaultOption("Mid front cargo left", new MidToFrontCargoLeft());
+    chooser.setDefaultOption("Delay", new Delay(0.01));
     chooser.addOption("Mid front cargo right", new MidToFrontCargoRight());
     chooser.addOption("AutoBrett", new AutoBrettV6());
     // chooser.addOption("Turn 90", new GyroTurning(90));
@@ -79,6 +83,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new ZeroShooterPivot());
 
     driveTrain.shiftLowGear();
+
+    Vision.getInstance().setTape(false);
   }
 
   /**
@@ -104,8 +110,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Pivot Target", shooterPivot.pivotTarget.toString());
     SmartDashboard.putString("Pivot State", shooterPivot.pivotControlMode.toString());
     SmartDashboard.putNumber("Battery Volts: ", pdp.getVoltage());
+    SmartDashboard.putBoolean("Compressor", pneumatics.isCompressing());
+    SmartDashboard.putBoolean("Hatch Piston", HatchSlingingSlasher.getInstance().isExtended);
 
-    Vision.getInstance().setTape(true);
+    // remove this line
+    // Vision.getInstance().setTape(true);
+    // above line got got
   }
 
   /**

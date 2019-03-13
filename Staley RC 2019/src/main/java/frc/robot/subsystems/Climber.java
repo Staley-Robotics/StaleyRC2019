@@ -56,4 +56,12 @@ public class Climber extends Subsystem {
   public void retractRear() {
     rearLifter.set(Value.kReverse);
   }
+
+  public void shiftToClimber() {
+    // shiftToClimber.set(Value.kForward);
+  }
+
+  public void shiftToDrive() {
+    // shiftToClimber.set(Value.kForward);
+  }
 }

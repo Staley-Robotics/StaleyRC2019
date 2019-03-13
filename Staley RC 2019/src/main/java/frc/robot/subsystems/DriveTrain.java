@@ -145,6 +145,12 @@ public class DriveTrain extends Subsystem {
     double speedModifier = 1;
     double turnSpeedModifier = 0.85;
 
+    // if(forward < 0.9 || backward < 0.9) {
+    //   speedModifier = 0.7;
+    // } else {
+    //   speedModifier = 1;
+    // }
+
     backward = backward * speedModifier;
     forward = forward * speedModifier;
     if (rotate > 0.1 || rotate < 0.1) {

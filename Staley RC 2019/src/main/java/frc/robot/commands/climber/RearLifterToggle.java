@@ -42,7 +42,7 @@ public class RearLifterToggle extends Command {
 			climber.extendRear();
 			isExtended = true;
 		}
-		System.out.println("Back " + isExtended);
+		System.out.println("Back: " + isExtended);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

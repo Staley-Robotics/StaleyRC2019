@@ -19,17 +19,21 @@ public class RobotMap {
 	public static final int XBOX_DRIVE_PORT = 0;
 	public static final int XBOX_ALT_PORT = 1;
 
-	// ***** Motor/Speed Controller Ports *****
+	// ***** Drivetrain Ports *****
 	public static final int LEFT_MASTER_DRIVE_CAN_ID = 2;
 	public static final int LEFT_FOLLOWER_DRIVE_CAN_ID = 7;
 	public static final int RIGHT_MASTER_DRIVE_CAN_ID = 0;
 	public static final int RIGHT_FOLLOWER_DRIVE_CAN_ID = 10;
 
+	public static final int DRIVE_SHIFTER_SOLENOID_PORT_ONE = 0;
+	public static final int DRIVE_SHIFTER_SOLENOID_PORT_TWO = 1;
+
 	// ***** Compressor Port *****
 	public static final int COMPRESSOR_PORT = 0;
 
 	// ***** Hatch Slinging Slasher Ports *****
-	public static final int HATCH_SOLENOID_PORT = 7;
+	public static final int HATCH_SOLENOID_PORT_ONE = 7;
+	public static final int HATCH_SOLENOID_PORT_TWO = 4;
 	public static final int HATCH_PIVOT_TALON_PORT = 3;
 
 	// ***** Shooter Intake/Outtake Ports *****
@@ -46,9 +50,6 @@ public class RobotMap {
 	public static final int SHOOTER_LIMIT_SWITCH = 0;
 	
 	// ***** Climber Ports *****
-	public static final int DRIVE_SHIFTER_SOLENOID_PORT_ONE = 0;
-	public static final int DRIVE_SHIFTER_SOLENOID_PORT_TWO = 1;
-
 	public static final int CLIMBER_FRONT_LIFTER_SOLENOID_PORT_ONE = 2;
 	public static final int CLIMBER_FRONT_LIFTER_SOLENOID_PORT_TWO = 3;
 

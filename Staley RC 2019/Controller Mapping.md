@@ -25,8 +25,8 @@
 -Moves Shooter
 
 ## DPad/pivotTargets
-- start is ground
-- down is low
-- right is mid
-- left is cargo
-- up is high
+- Start -Ground Position
+- Down -Low Position
+- Right -Mid Position
+- Left -Cargo Position
+- Up -High Position

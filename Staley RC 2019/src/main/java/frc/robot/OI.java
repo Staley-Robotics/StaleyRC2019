@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.RunCompressor;
+import frc.robot.commands.ToggleCompressor;
 import frc.robot.commands.auto.commands.VisionTurning;
 import frc.robot.commands.climber.FrontLifterToggle;
 import frc.robot.commands.climber.RearLifterToggle;
@@ -140,6 +142,9 @@ public class OI {
     // Button runOutput = new JoystickButton(altController,
     // XBoxButtons.kB.getValue());
     // runOutput.whileHeld(new RunShooter(0.4));
+
+    Button runCompressor = new JoystickButton(altController, XBoxButtons.kY.getValue());
+    runCompressor.whenPressed(new ToggleCompressor());
   }
 
   public static OI getInstance() {
