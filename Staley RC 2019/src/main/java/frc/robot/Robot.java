@@ -112,10 +112,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Battery Volts: ", pdp.getVoltage());
     SmartDashboard.putBoolean("Compressor", pneumatics.isCompressing());
     SmartDashboard.putBoolean("Hatch Piston", HatchSlingingSlasher.getInstance().isExtended);
-
-    // remove this line
-    // Vision.getInstance().setTape(true);
-    // above line got got
   }
 
   /**

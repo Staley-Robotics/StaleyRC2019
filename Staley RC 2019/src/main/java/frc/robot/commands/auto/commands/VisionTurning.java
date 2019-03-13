@@ -36,7 +36,6 @@ public class VisionTurning extends TimedCommand {
     protected void initialize() {
         // set networktable tape to True
         vision.setTape(true);
-        //got got
 
         offset = vision.getYaw();
 
