@@ -73,7 +73,7 @@ public class VisionTurning extends TimedCommand {
             e.printStackTrace();
         }
         // set networktable tape to false
-        vision.setTape(false);
+        vision.setTape(true);
     }
 
     // Called when another command which requires one or more of the same

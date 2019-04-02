@@ -720,7 +720,8 @@ if __name__ == "__main__":
     cameraServer = streams[0]
     #Start thread reading camera
     cap = WebcamVideoStream(webcam, cameraServer, image_width, image_height).start()
-
+    cap2 = WebcamVideoStream(webcam, cameraServer, image_width, image_height).start()
+    cap2.autoExpose = True
     # (optional) Setup a CvSource. This will send images back to the Dashboard
     # Allocating new images is very expensive, always try to preallocate
     img = np.zeros(shape=(image_height, image_width, 3), dtype=np.uint8)
@@ -741,7 +742,8 @@ if __name__ == "__main__":
         frame = img
         if timestamp == 0:
             # Send the output the error.
-            streamViewer.notifyError(cap.getError());
+            streamViewer.notifyError(cap.getError())
+            streamViewer.notifyError(cap2.getError())
             # skip the rest of the current iteration
             continue
         #Checks if you just want camera for driver (No processing), False by default
@@ -764,7 +766,9 @@ if __name__ == "__main__":
                 processed = findCargo(frame, threshold)
         #Puts timestamp of camera on network tables
         networkTable.putNumber("VideoTimestamp", timestamp)
-        streamViewer.frame = processed;
+        timestamp2, img2 = cap2.read()
+        streamViewer.frame = img2
+        #streamViewer.frame = processed
         # update the FPS counter
         fps.update()
         #Flushes camera values to reduce latency
