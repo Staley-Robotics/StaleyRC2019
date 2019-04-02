@@ -34,7 +34,7 @@ public class Pneumatics extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        // setDefaultCommand(new RunCompressor());
+        //setDefaultCommand(new RunCompressor());
     }
 
     /**

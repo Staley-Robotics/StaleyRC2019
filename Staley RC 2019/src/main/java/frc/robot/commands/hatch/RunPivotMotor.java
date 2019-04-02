@@ -33,8 +33,8 @@ public class RunPivotMotor extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double forwardPower = oi.getAltRightTrigger() * 0.5;
-    double reversePower = oi.getAltLeftTrigger() * 0.5;
+    double forwardPower = oi.getAltRightTrigger() * 0.75;
+    double reversePower = oi.getAltLeftTrigger() * 0.75;
 
     if (forwardPower > 0.1) {
       hatchSlingingSlasher.runPivotMotor(forwardPower);

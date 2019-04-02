@@ -153,11 +153,13 @@ public class DriveTrain extends Subsystem {
 
     backward = backward * speedModifier;
     forward = forward * speedModifier;
-    if (rotate > 0.1 || rotate < 0.1) {
-      rotate = rotate * turnSpeedModifier;
-    } else {
-      rotate = 0;
-    }
+
+    // This was a thing but it was making the robot do a bad so I made it not a thing anymore
+    // if (rotate > 0.1 || rotate < -0.1) {
+    //   rotate = rotate * turnSpeedModifier;
+    // } else {
+    //   rotate = 0;
+    // }
 
     if (backward > 0) {
       drive.arcadeDrive(backward, rotate);

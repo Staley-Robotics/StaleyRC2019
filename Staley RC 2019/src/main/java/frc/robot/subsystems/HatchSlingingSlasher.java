@@ -31,7 +31,7 @@ public class HatchSlingingSlasher extends Subsystem {
 
   private HatchSlingingSlasher() {
     pivotMotor = new Talon(RobotMap.HATCH_PIVOT_TALON_PORT);
-    hatchRelease = ShooterThroughput.getSolenoid();
+    hatchRelease = new DoubleSolenoid(RobotMap.HATCH_SOLENOID_PORT_ONE, RobotMap.HATCH_SOLENOID_PORT_TWO);
   }
 
   public static HatchSlingingSlasher getInstance() {
