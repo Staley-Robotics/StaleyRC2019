@@ -11,20 +11,14 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.RunCompressor;
 import frc.robot.commands.ToggleCompressor;
-import frc.robot.commands.auto.commands.VisionTurning;
+import frc.robot.commands.auto.commands.VisionTurning2;
 import frc.robot.commands.climber.FrontLifterToggle;
 import frc.robot.commands.climber.RearLifterToggle;
 import frc.robot.commands.drivetrain.ShifterToggle;
 import frc.robot.commands.hatch.HatchExtenderToggle;
-import frc.robot.commands.shooter.pivot.SetPivotPosition;
-import frc.robot.commands.shooter.throughput.RunShooter;
-import frc.robot.commands.shooter.throughput.ShootSequence;
-import frc.robot.enums.PivotTarget;
+import frc.robot.commands.throughput.RunShooterToggle;
 import frc.robot.enums.XBoxButtons;
-import frc.robot.util.DPadButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,13 +31,6 @@ public class OI {
   private XboxController driveController;
   private XboxController altController;
 
-  // Commands used to set the targetAngle of the shooter pivot
-  private final Command setPivotGround;
-  private final Command setPivotLow;
-  private final Command setPivotMid;
-  private final Command setPivotHigh;
-  private final Command setPivotCargo;
-
   /**
    * Sets driveController and altController. Sets the functions of each button for
    * both controllers
@@ -51,12 +38,6 @@ public class OI {
   private OI() {
     driveController = new XboxController(RobotMap.XBOX_DRIVE_PORT);
     altController = new XboxController(RobotMap.XBOX_ALT_PORT);
-
-    setPivotGround = new SetPivotPosition(PivotTarget.GROUND);
-    setPivotLow = new SetPivotPosition(PivotTarget.LOW);
-    setPivotMid = new SetPivotPosition(PivotTarget.MID);
-    setPivotHigh = new SetPivotPosition(PivotTarget.HIGH);
-    setPivotCargo = new SetPivotPosition(PivotTarget.CARGO);
 
     // ***** Drive Controller Buttons *****
 
@@ -90,54 +71,17 @@ public class OI {
      */
 
     Button turnToTape = new JoystickButton(driveController, XBoxButtons.kBumperLeft.getValue());
-    turnToTape.whenPressed(new VisionTurning());
+    //turnToTape.whenPressed(new VisionTurning());
+    turnToTape.whenPressed(new VisionTurning2());
 
     // ***** Alt Controller Buttons *****
-
-    Button setGround = new JoystickButton(altController, XBoxButtons.kStart.getValue());
-    setGround.whenPressed(setPivotGround);
-    setGround.cancelWhenPressed(setPivotLow);
-    setGround.cancelWhenPressed(setPivotMid);
-    setGround.cancelWhenPressed(setPivotHigh);
-    setGround.cancelWhenPressed(setPivotCargo);
-
-    Button setLow = new DPadButton(altController, DPadButton.Direction.Down);
-    setLow.cancelWhenPressed(setPivotGround);
-    setLow.whenPressed(setPivotLow);
-    setLow.cancelWhenPressed(setPivotMid);
-    setLow.cancelWhenPressed(setPivotHigh);
-    setLow.cancelWhenPressed(setPivotCargo);
-
-    Button setMid = new DPadButton(altController, DPadButton.Direction.Right);
-    setMid.cancelWhenPressed(setPivotGround);
-    setMid.cancelWhenPressed(setPivotLow);
-    setMid.whenPressed(setPivotMid);
-    setMid.cancelWhenPressed(setPivotHigh);
-    setMid.cancelWhenPressed(setPivotCargo);
-
-    Button setHigh = new DPadButton(altController, DPadButton.Direction.Up);
-    setHigh.cancelWhenPressed(setPivotGround);
-    setHigh.cancelWhenPressed(setPivotLow);
-    setHigh.cancelWhenPressed(setPivotMid);
-    setHigh.whenPressed(setPivotHigh);
-    setHigh.cancelWhenPressed(setPivotCargo);
-
-    Button setCargo = new DPadButton(altController, DPadButton.Direction.Left);
-    setCargo.cancelWhenPressed(setPivotGround);
-    setCargo.cancelWhenPressed(setPivotLow);
-    setCargo.cancelWhenPressed(setPivotMid);
-    setCargo.cancelWhenPressed(setPivotHigh);
-    setCargo.whenPressed(setPivotCargo);
 
     // Toggle for extending and retracting hatch placer
     Button hatchToggle = new JoystickButton(altController, XBoxButtons.kX.getValue());
     hatchToggle.whenPressed(new HatchExtenderToggle());
 
     Button runIntake = new JoystickButton(altController, XBoxButtons.kA.getValue());
-    runIntake.whileHeld(new RunShooter(-0.25));
-
-    Button runShooter = new JoystickButton(altController, XBoxButtons.kB.getValue());
-    runShooter.whenPressed(new ShootSequence());
+    runIntake.whenPressed(new RunShooterToggle(-0.25));
 
     // Button runOutput = new JoystickButton(altController,
     // XBoxButtons.kB.getValue());

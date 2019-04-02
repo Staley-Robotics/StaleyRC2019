@@ -37,17 +37,14 @@ public class RobotMap {
 	public static final int HATCH_PIVOT_TALON_PORT = 3;
 
 	// ***** Shooter Intake/Outtake Ports *****
-	public static final int THROUGHPUT_TOP_TALON_PORT = 1;
-	public static final int THROUGHPUT_RIGHT_TALON_PORT = 2;
-	public static final int THROUGHPUT_LEFT_TALON_PORT = 4;
+	public static final int THROUGHPUT_HIGH_TALON_PORT = 2;
+	public static final int THROUGHPUT_LOW_TALON_PORT = 4;
 
-	public static final int THROUGHPUT_SOLENOID_PORT = 7;
+	public static final int THROUGHPUT_LIMIT_SWITCH = 0;
 
 	// ***** Shooter Pivot Ports *****
 	public static final int SHOOTER_PIVOT_TALONSRX_CAN_ID = 1;
 	public static final int SHOOTER_PIVOT_VICTORSPX_CAN_ID = 9;
-
-	public static final int SHOOTER_LIMIT_SWITCH = 0;
 	
 	// ***** Climber Ports *****
 	public static final int CLIMBER_FRONT_LIFTER_SOLENOID_PORT_ONE = 2;

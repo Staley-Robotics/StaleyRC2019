@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter.throughput;
+package frc.robot.commands.throughput;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.ShooterThroughput;
@@ -13,13 +13,13 @@ import frc.robot.subsystems.ShooterThroughput;
 /**
  * Runs shooting/intake mechanism depending on whether power is +/-
  */
-public class RunShooter extends Command {
+public class RunShooterToggle extends Command {
 
 	private ShooterThroughput shooter;
 
 	private double power;
 
-	public RunShooter(double power) {
+	public RunShooterToggle(double power) {
 		shooter = ShooterThroughput.getInstance();
 		requires(shooter);
 
@@ -28,21 +28,36 @@ public class RunShooter extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		shooter.succ = !shooter.succ;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		shooter.runShooter(power);
+
+		shooter.runThroughput(power);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		if (shooter.hasBall && !shooter.getLimitSwitch()) {
+			shooter.hasBall = false;
+		}
+		if (!shooter.succ) {
+			return true;
+		}
+		if (shooter.getLimitSwitch() && !shooter.hasBall) {
+			shooter.hasBall = true;
+			shooter.succ = false;
+
+			return true;
+		}
+
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		shooter.stopShooter();
+		shooter.stopThroughput();
 	}
 
 	// Called when another command which requires one or more of the same

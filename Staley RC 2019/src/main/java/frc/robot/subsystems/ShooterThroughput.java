@@ -7,10 +7,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -20,28 +18,25 @@ import frc.robot.RobotMap;
 public class ShooterThroughput extends Subsystem {
 
     private static ShooterThroughput instance;
+    
+    public static boolean succ;
+    public static boolean hasBall;
+    private Talon lowMotor, highMotor;
 
-    private Talon leftMotor, rightMotor, topMotor;
-
-    private static DoubleSolenoid piston;
+    private DigitalInput limitSwitch;
 
     private ShooterThroughput() {
+        hasBall = false;
+        succ = false;
+        lowMotor = new Talon(RobotMap.THROUGHPUT_LOW_TALON_PORT);
+        highMotor = new Talon(RobotMap.THROUGHPUT_HIGH_TALON_PORT);
 
-        leftMotor = new Talon(RobotMap.THROUGHPUT_LEFT_TALON_PORT);
-        rightMotor = new Talon(RobotMap.THROUGHPUT_RIGHT_TALON_PORT);
-        topMotor = new Talon(RobotMap.THROUGHPUT_TOP_TALON_PORT);
+        // added by ryan
+        lowMotor.setInverted(true);
+        highMotor.setInverted(false);
+        // end added by ryan
 
-        //added by ryan
-        leftMotor.setInverted(true);
-        rightMotor.setInverted(true);
-        topMotor.setInverted(true);
-        //end add by ryan
-
-
-
-        if(piston == null) {
-            piston = new DoubleSolenoid(7,4);
-        }
+        limitSwitch = new DigitalInput(RobotMap.THROUGHPUT_LIMIT_SWITCH);
     }
 
     /**
@@ -56,19 +51,6 @@ public class ShooterThroughput extends Subsystem {
         return instance;
     }
 
-    /**
-     * The piston for the Shooter and the pistons for the Hatch Slinging Slasher are
-     * hooked up to the same solenoid so this is needed elsewhere.
-     * 
-     * @return An instance of the Solenoid used for this piston.
-     */
-    public static DoubleSolenoid getSolenoid() {
-        if (piston == null) {
-            piston = new DoubleSolenoid(7, 4);
-        }
-        return piston;
-    }
-
     @Override
     protected void initDefaultCommand() {
     }
@@ -78,26 +60,20 @@ public class ShooterThroughput extends Subsystem {
     /**
      * Runs shooter when power > 0, runs intake when power < 0
      */
-    public void runShooter(double power) {
-        leftMotor.set(power);
-        rightMotor.set(power);
-        topMotor.set(power);
+    public void runThroughput(double power) {
+        lowMotor.set(power);
+        highMotor.set(power);
     }
 
-    public void stopShooter() {
-        leftMotor.set(0);
-        rightMotor.set(0);
-        topMotor.set(0);
+    public void stopThroughput() {
+        lowMotor.set(0);
+        highMotor.set(0);
     }
 
-    // ***** Piston *****
+    // ***** Limit Switch *****
 
-    public void extendShooterPiston() {
-        piston.set(Value.kForward);
-    }
-
-    public void retractShooterPiston() {
-        piston.set(Value.kReverse);
+    public boolean getLimitSwitch() {
+        return limitSwitch.get();
     }
 
 }

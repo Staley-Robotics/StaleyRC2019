@@ -15,16 +15,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.commands.Delay;
 import frc.robot.commands.auto.commands.ResetGyro;
-import frc.robot.commands.auto.commands.VisionTurning2;
+import frc.robot.commands.auto.commands.VisionTurning;
 import frc.robot.commands.auto.modes.AutoBrettV6;
 import frc.robot.commands.auto.modes.MidToFrontCargoLeft;
 import frc.robot.commands.auto.modes.MidToFrontCargoRight;
 import frc.robot.commands.drivetrain.ResetEncoders;
-import frc.robot.commands.shooter.pivot.ZeroShooterPivot;
+//import frc.robot.commands.shooter.pivot.ZeroShooterPivot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchSlingingSlasher;
 import frc.robot.subsystems.Pneumatics;
-import frc.robot.subsystems.ShooterPivot;
+//import frc.robot.subsystems.ShooterPivot;
 import frc.robot.subsystems.ShooterThroughput;
 import frc.robot.subsystems.Vision;
 
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   private SendableChooser<Command> chooser = new SendableChooser<>();
 
   public static PowerDistributionPanel pdp;
-  private ShooterPivot shooterPivot;
+  //private ShooterPivot shooterPivot;
   private Pneumatics pneumatics;
 
   /**
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     oi = OI.getInstance();
     driveTrain = DriveTrain.getInstance();
     shooter = ShooterThroughput.getInstance();
-    shooterPivot = ShooterPivot.getInstance();
+    //shooterPivot = ShooterPivot.getInstance();
     pneumatics = Pneumatics.getInstance();
 
     chooser.setDefaultOption("Delay", new Delay(0.01));
@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("AutoBrett", new AutoBrettV6());
     // chooser.addOption("Turn 90", new GyroTurning(90));
     // chooser.addOption("Sicko Mode", new SickoMode());
-    chooser.addOption("Vision Turn", new VisionTurning2());
+    chooser.addOption("Vision Turn", new VisionTurning());
     // chooser.addOption("Reset Encoders", new ResetEncoders());
     // chooser.addOption("Drive 100 inches", new DriveTurn(100, 0.8, 0));
     // chooser.addOption("Drive -10 inches", new DriveTurn(10, -0.3, 0));
@@ -80,11 +80,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(new ResetGyro());
     SmartDashboard.putData(new ResetEncoders());
 
-    SmartDashboard.putData(new ZeroShooterPivot());
+    //SmartDashboard.putData(new ZeroShooterPivot());
 
     driveTrain.shiftLowGear();
 
-    Vision.getInstance().setTape(false);
+    Vision.getInstance().setTape(true);
   }
 
   /**
@@ -104,12 +104,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right encoder inches", driveTrain.pulsesToInches(driveTrain.getRightPosition()));
     SmartDashboard.putNumber("Left encoder inches", driveTrain.pulsesToInches(driveTrain.getLeftPosition()));
     SmartDashboard.putString("Shifter State", DriveTrain.gearState.toString());
-    SmartDashboard.putNumber("Shooter Pivot Encoder", shooterPivot.getPivotPosition());
-    // SmartDashboard.putNumber("Shooter Pivot Angle", shooter.getPivotAngle());
-    SmartDashboard.putBoolean("Limit Switch", shooterPivot.getLimitSwitch());
-    SmartDashboard.putString("Pivot Target", shooterPivot.pivotTarget.toString());
-    SmartDashboard.putString("Pivot State", shooterPivot.pivotControlMode.toString());
-    SmartDashboard.putNumber("Battery Volts: ", pdp.getVoltage());
+    // SmartDashboard.putNumber("Shooter Pivot Encoder", shooterPivot.getPivotPosition());
+    // // SmartDashboard.putNumber("Shooter Pivot Angle", shooter.getPivotAngle());
+    // SmartDashboard.putBoolean("Limit Switch", shooterPivot.getLimitSwitch());
+    // SmartDashboard.putString("Pivot Target", shooterPivot.pivotTarget.toString());
+    // SmartDashboard.putString("Pivot State", shooterPivot.pivotControlMode.toString());
+    // SmartDashboard.putNumber("Battery Volts: ", pdp.getVoltage());
     SmartDashboard.putBoolean("Compressor", pneumatics.isCompressing());
     SmartDashboard.putBoolean("Hatch Piston", HatchSlingingSlasher.getInstance().isExtended);
   }
